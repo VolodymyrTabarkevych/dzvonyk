@@ -63,46 +63,54 @@ body{
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
 }
-body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 556px));width:2px;background:var(--margin-line);pointer-events:none}
+body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 612px));width:2px;background:var(--margin-line);pointer-events:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.wrap{position:relative;max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:max(18px,env(safe-area-inset-top,0px)) 48px;display:flex;flex-direction:column;gap:18px}
+.wrap{position:relative;max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:max(10px,env(safe-area-inset-top,0px)) 40px;display:flex;flex-direction:column;gap:12px}
 
 .top{display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap}
 .brand{display:flex;align-items:baseline;gap:6px 16px;flex-wrap:wrap}
-.logo{font-family:var(--font-hand);font-size:40px;line-height:1;display:inline-flex;align-items:center;gap:6px}
+.logo{font-family:var(--font-hand);font-size:34px;line-height:1;display:inline-flex;align-items:center;gap:6px}
 .logo svg{color:var(--accent)}
 .today{color:var(--ink-2);font-size:14px}
 .clock{font-family:var(--font-display);font-size:26px;color:var(--ink-2);font-variant-numeric:tabular-nums;letter-spacing:.02em}
 
 .banner{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;padding:12px 16px;border-radius:var(--r);background:var(--warn-soft);border:1px solid var(--warn);color:var(--ink)}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
-.grid{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
-@media (min-width:880px){.grid{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:start}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.layout{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (min-width:900px){
+  .layout{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);grid-template-rows:auto 1fr;grid-template-areas:"now side" "music side";align-items:start}
+  .now{grid-area:now}
+  .music{grid-area:music}
+  .side{grid-area:side}
+}
 
 /* now card */
-.now{display:flex;flex-direction:column;gap:14px}
+.now{display:flex;flex-direction:column;gap:10px}
+.now-top{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
+.now-main{display:flex;align-items:flex-end;gap:4px 24px;flex-wrap:wrap}
+.now-info{display:flex;flex-direction:column;gap:2px;padding-bottom:8px;min-width:0}
 .now-head{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
 .chip{font-family:var(--font-display);font-weight:500;font-size:15px;text-transform:uppercase;letter-spacing:.08em;padding:3px 12px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2)}
 .now[data-kind="lesson"] .chip{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .now[data-kind="break"] .chip{background:var(--rest-soft);border-color:var(--rest-soft);color:var(--rest)}
 .now-range{font-family:var(--font-display);font-size:18px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.count{font-family:var(--font-display);font-weight:500;font-size:clamp(72px,17vw,150px);line-height:.95;color:var(--ink);white-space:nowrap}
+.count{font-family:var(--font-display);font-weight:500;font-size:clamp(60px,10vw,100px);line-height:.9;color:var(--ink);white-space:nowrap}
 .count .d{display:inline-block;width:.52em;text-align:center}
 .count .c{display:inline-block;width:.26em;text-align:center;position:relative;top:-.06em}
 .now[data-kind="break"] .count{color:var(--rest)}
-.count-sub{font-size:17px;color:var(--ink-2);margin-top:-6px}
+.count-sub{font-size:16px;color:var(--ink-2)}
 .bar{height:8px;border-radius:99px;background:var(--track);overflow:hidden}
 .bar-fill{height:100%;width:0;background:var(--accent);border-radius:inherit;transition:width .9s linear}
 .now[data-kind="break"] .bar-fill{background:var(--rest)}
 .next{font-weight:500}
 
-.power{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding-top:14px;border-top:1px dashed var(--line)}
-.power.on{flex-direction:row;align-items:center;flex-wrap:wrap;gap:10px}
-.hint{margin:0;color:var(--ink-2);font-size:14px;max-width:60ch}
+.power{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hint{margin:0;color:var(--ink-2);font-size:13px;max-width:70ch}
 .err{margin:0;color:var(--warn);font-size:14px}
-.live{display:inline-flex;align-items:center;gap:8px;font-weight:600;margin-right:auto}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;margin-right:4px}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--rest);animation:pulse 2s ease-out infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--rest) 55%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
 
@@ -110,19 +118,17 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 55
 .btn:hover{border-color:var(--ink-3)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .btn.primary:hover{filter:brightness(1.08)}
-.btn.big{font-size:17px;padding:13px 22px}
+.btn.sm{font-size:13px;padding:6px 10px}
 .btn.ghost{background:transparent}
 .btn.icon{padding:9px 11px}
 .link{font:inherit;font-size:13px;background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 
 /* day ruler */
-.day{display:flex;flex-direction:column;gap:6px}
-.day-cap{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
-.day-cap span:last-child{font-family:var(--font-display);font-size:14px;letter-spacing:.02em}
-.track{position:relative;height:24px;border-bottom:1px solid var(--line)}
+.day{display:flex;flex-direction:column;gap:4px}
+.track{position:relative;height:20px;border-bottom:1px solid var(--line)}
 .blk{position:absolute;border-radius:3px}
-.blk.lesson{top:2px;bottom:3px;background:var(--accent-soft);border-right:2px solid var(--surface)}
-.blk.break{top:9px;bottom:10px;background:var(--rest-soft)}
+.blk.lesson{top:2px;bottom:2px;background:var(--accent-soft);border-right:2px solid var(--surface)}
+.blk.break{top:7px;bottom:8px;background:var(--rest-soft)}
 .blk.past{background:var(--track)}
 .blk.lesson.cur{background:var(--accent)}
 .blk.break.cur{background:var(--rest)}
@@ -131,36 +137,36 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 55
 .tick{position:absolute;transform:translateX(-50%)}
 
 /* schedule */
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;margin-bottom:6px}
-h2,.settings summary{font-family:var(--font-hand);font-weight:700;font-size:32px;line-height:1;margin:0;text-wrap:balance}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;margin-bottom:4px}
+h2,.settings summary{font-family:var(--font-hand);font-weight:700;font-size:28px;line-height:1;margin:0;text-wrap:balance}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 th{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
-td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td{padding:4px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
 td.n{font-family:var(--font-display);color:var(--ink-3);width:2.4em}
-td.t{font-family:var(--font-display);font-size:18px;white-space:nowrap}
+td.t{font-family:var(--font-display);font-size:16px;white-space:nowrap}
 td.b{white-space:nowrap;color:var(--ink-2)}
 td.end{font-family:var(--font-hand);font-size:20px;color:var(--ink-3)}
 tr.past td{opacity:.45}
 tr.cur{background:var(--accent-soft)}
 tr.cur td.t,tr.cur td.n{color:var(--ink)}
 td.b.cur{background:var(--rest-soft);color:var(--rest)}
-.brk{width:4.4em;font:inherit;font-variant-numeric:tabular-nums;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);text-align:right}
+.brk{width:4.4em;font:inherit;font-variant-numeric:tabular-nums;padding:2px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);text-align:right}
 .brk.custom{border-color:var(--rest);color:var(--rest);font-weight:600}
 .fine{margin:10px 0 0;font-size:13px;color:var(--ink-3);max-width:60ch}
 
 /* music */
-.music-note{font-size:13px;color:var(--ink-3)}
-.music-grid{display:grid;gap:18px;grid-template-columns:minmax(0,1fr);margin-top:10px}
-@media (min-width:880px){.music-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:start}}
+.music-ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.music-grid{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);margin-top:8px}
+@media (min-width:600px){.music-grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start}}
 .player{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:8px;overflow:hidden;background:var(--track)}
 .player iframe,#yt{position:absolute;inset:0;width:100%;height:100%;border:0}
 .player-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--ink-2);font-size:14px}
-.playlist{display:flex;flex-direction:column;gap:12px;min-width:0}
+.playlist{display:flex;flex-direction:column;gap:10px;min-width:0}
 .add{display:flex;flex-direction:column;gap:6px;margin:0}
 .lbl{font-size:13px;font-weight:600;color:var(--ink-2);padding:0}
 .add input{flex:1;min-width:0;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-.tracks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);max-height:280px;overflow-y:auto}
+.tracks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);max-height:160px;overflow-y:auto}
 .trk{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
 .trk-play{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left;background:none;border:0;padding:8px 8px;font:inherit;color:var(--ink);cursor:pointer}
 .trk-play:hover{background:var(--track)}
@@ -215,35 +221,71 @@ input[type=range]{accent-color:var(--accent);width:100%}
     <button class="btn primary" id="resumeBtn" type="button">Відновити дзвінки</button>
   </div>
 
-  <main class="grid">
+  <main class="layout">
     <section class="card now" id="now" data-kind="lesson">
-      <div class="now-head">
-        <span class="chip" id="chip">Урок 3</span>
-        <span class="now-range" id="range">10:00 – 10:45</span>
+      <div class="now-top">
+        <div class="now-head">
+          <span class="chip" id="chip">Урок 3</span>
+          <span class="now-range" id="range">10:00 – 10:45</span>
+        </div>
+        <div class="power" id="powerOff">
+          <button class="btn primary" id="enableBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="enableLabel">Увімкнути дзвінки</span></button>
+        </div>
+        <div class="power" id="powerOn" hidden>
+          <span class="live"><span class="dot"></span>Дзвінки увімкнені</span>
+          <button class="btn sm" id="testBtn" type="button">Тест</button>
+          <button class="btn sm ghost" id="disableBtn" type="button">Вимкнути</button>
+        </div>
       </div>
-      <div class="count" id="count" aria-hidden="true">23:53</div>
-      <div class="count-sub" id="countSub">до перерви о 10:45</div>
+      <p class="hint" id="hint">Браузер вмикає звук лише після натискання. Потім вкладку можна згорнути або перейти на іншу: дзвінки гратимуть самі.</p>
+      <p class="err" id="err" hidden></p>
+      <div class="now-main">
+        <div class="count" id="count" aria-hidden="true">23:53</div>
+        <div class="now-info">
+          <div class="count-sub" id="countSub">до перерви о 10:45</div>
+          <div class="next" id="next">Далі перерва 15 хв, потім урок 4 об 11:00</div>
+        </div>
+      </div>
       <div class="bar" id="bar"><div class="bar-fill" id="barFill"></div></div>
-      <div class="next" id="next">Далі перерва 15 хв, потім урок 4 об 11:00</div>
-
-      <div class="power" id="powerOff">
-        <button class="btn primary big" id="enableBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="enableLabel">Увімкнути дзвінки</span></button>
-        <p class="hint">Браузер вмикає звук лише після натискання. Потім вкладку можна згорнути або перейти на іншу: дзвінки гратимуть самі.</p>
-        <p class="err" id="err" hidden></p>
-      </div>
-      <div class="power on" id="powerOn" hidden>
-        <span class="live"><span class="dot"></span>Дзвінки увімкнені</span>
-        <button class="btn" id="testBtn" type="button">Тест дзвінка</button>
-        <button class="btn ghost" id="disableBtn" type="button">Вимкнути</button>
-      </div>
-
       <div class="day" id="day">
-        <div class="day-cap"><span>Сьогодні</span><span id="dayRange">08:00 – 15:45</span></div>
         <div class="track" id="track"></div>
         <div class="ticks" id="ticks"></div>
       </div>
     </section>
 
+    <section class="card music" id="music">
+      <div class="sec-head">
+        <h2>Музика</h2>
+        <div class="music-ctl">
+          <button class="btn sm" id="prevBtn" type="button">Попереднє</button>
+          <button class="btn sm" id="nextBtn" type="button">Наступне</button>
+          <label class="check"><input type="checkbox" id="sDuck" checked><span>Тихіше на дзвінок</span></label>
+        </div>
+      </div>
+      <div class="music-grid">
+        <div>
+          <div class="player">
+            <div id="yt"></div>
+            <div class="player-empty" id="playerEmpty">Додай посилання з YouTube, і відео з'явиться тут.</div>
+          </div>
+          <p class="err" id="ytErr" hidden></p>
+        </div>
+        <div class="playlist">
+          <form class="add" id="addForm" novalidate>
+            <label class="lbl" for="ytUrl">Посилання на відео або плейлист YouTube</label>
+            <div class="row">
+              <input type="text" id="ytUrl" inputmode="url" autocomplete="off" placeholder="https://youtu.be/…">
+              <button class="btn primary" type="submit">Додати</button>
+            </div>
+            <p class="err" id="addErr" hidden></p>
+          </form>
+          <ol class="tracks" id="tracks"></ol>
+          <p class="empty" id="tracksEmpty" hidden>Список порожній. Встав вище посилання на відео або плейлист: його можна скопіювати з адресного рядка чи кнопкою «Поділитися».</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="side">
     <section class="card sched">
       <div class="sec-head">
         <h2>Розклад дзвінків</h2>
@@ -257,40 +299,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
       </div>
       <p class="fine">Будь-яку перерву можна змінити прямо в таблиці, наприклад зробити довшу перерву на обід.</p>
     </section>
-  </main>
-
-  <section class="card music" id="music">
-    <div class="sec-head">
-      <h2>Музика</h2>
-      <label class="check"><input type="checkbox" id="sDuck" checked><span>Приглушувати на дзвінок</span></label>
-    </div>
-    <div class="music-grid">
-      <div>
-        <div class="player">
-          <div id="yt"></div>
-          <div class="player-empty" id="playerEmpty">Додай посилання з YouTube, і відео з'явиться тут.</div>
-        </div>
-        <p class="err" id="ytErr" hidden></p>
-      </div>
-      <div class="playlist">
-        <form class="add" id="addForm" novalidate>
-          <label class="lbl" for="ytUrl">Посилання на відео або плейлист YouTube</label>
-          <div class="row">
-            <input type="text" id="ytUrl" inputmode="url" autocomplete="off" placeholder="https://youtu.be/…">
-            <button class="btn primary" type="submit">Додати</button>
-          </div>
-          <p class="err" id="addErr" hidden></p>
-        </form>
-        <ol class="tracks" id="tracks"></ol>
-        <p class="empty" id="tracksEmpty" hidden>Список порожній. Встав вище посилання на відео або плейлист: його можна скопіювати з адресного рядка чи кнопкою «Поділитися».</p>
-        <div class="row">
-          <button class="btn" id="prevBtn" type="button">Попереднє</button>
-          <button class="btn" id="nextBtn" type="button">Наступне</button>
-        </div>
-        <p class="music-note">Список грає по колу. Під час дзвінка музика стишується до 10% і потім плавно повертається.</p>
-      </div>
-    </div>
-  </section>
 
   <details class="card settings" id="settings">
     <summary>Налаштування</summary>
@@ -327,6 +335,8 @@ input[type=range]{accent-color:var(--accent);width:100%}
     <p>Комп'ютер не повинен засинати, бо в режимі сну браузер не грає звук.</p>
     <p>Розклад, налаштування і список музики зберігаються в цьому браузері.</p>
   </footer>
+    </div>
+  </main>
 </div>
 
 <script>
@@ -630,6 +640,7 @@ function updatePower(){
   const on = isRunning();
   $('powerOff').hidden = on;
   $('powerOn').hidden = !on;
+  $('hint').hidden = on;
   $('enableLabel').textContent = S.enabled ? 'Відновити дзвінки' : 'Увімкнути дзвінки';
   $('banner').hidden = !(S.enabled && !on);
 }
@@ -874,7 +885,6 @@ function renderDay(){
     t.style.left = pct(h); t.textContent = new Date(h).getHours();
     ticks.append(t);
   }
-  $('dayRange').textContent = hm(s) + ' – ' + hm(e);
   dayInfo = {s, e, blocks, mark};
 }
 
