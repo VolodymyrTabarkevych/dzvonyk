@@ -79,20 +79,20 @@
   --glow:none;
   color-scheme:dark;
 }
-/* Persona 5: phantom-thief red, black and white; halftone dots, hard offset shadows, ransom-note headings */
+/* Persona 5, calm: black menu screen, one muted red slash, faint halftone, red only for accents; ransom tiles only in the logo */
 :root[data-skin="persona"]{
-  --bg:#c8000f; --grid:rgba(0,0,0,.3); --margin-line:transparent; --surface:#0c0c0c; --line:#383838; --track:#262626;
-  --ink:#ffffff; --ink-2:#d6d6d6; --ink-3:#9a9a9a; --accent:#ff1a2d; --accent-ink:#ffffff; --accent-soft:#45070d;
-  --rest:#ffffff; --rest-soft:#2e2e2e; --now:#ffe600; --warn:#ffe600; --warn-soft:#2e2a00;
+  --bg:#111112; --grid:rgba(255,255,255,.045); --margin-line:transparent; --surface:#19191b; --line:#2f2f33; --track:#2a2a2e;
+  --ink:#f5f5f5; --ink-2:#b9b9bd; --ink-3:#808086; --accent:#e5192b; --accent-ink:#ffffff; --accent-soft:#3a1216;
+  --rest:#f5f5f5; --rest-soft:#2c2c30; --now:#e5192b; --warn:#ffd23f; --warn-soft:#2e2a10;
   --font-display:"Anton","Oswald",sans-serif;
   --font-body:"Rubik","Golos Text","Segoe UI",sans-serif;
   --font-hand:"Rubik Mono One","Rubik",sans-serif;
-  --bg-pattern:radial-gradient(var(--grid) 1.3px,transparent 1.8px),repeating-linear-gradient(-58deg,transparent 0 90px,rgba(0,0,0,.14) 90px 170px);
-  --bg-size:9px 9px,auto;
+  --bg-pattern:linear-gradient(118deg,transparent 0 58%,rgba(229,25,43,.12) 58% 70%,transparent 70%),radial-gradient(var(--grid) 1.1px,transparent 1.6px);
+  --bg-size:auto,8px 8px;
   --r:0px; --chip-r:0px; --btn-r:0px;
-  --card-shadow:8px 8px 0 #000;
+  --card-shadow:5px 5px 0 #3d0b11;
   --count-size:clamp(64px,10.5vw,108px); --count-weight:400; --digit-w:.5em; --colon-w:.24em;
-  --glow:5px 5px 0 var(--accent);
+  --glow:3px 3px 0 var(--accent);
   color-scheme:dark;
 }
 
@@ -278,29 +278,27 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="japan"] h2,:root[data-skin="japan"] .settings summary{font-weight:800;font-size:21px}
 :root[data-skin="japan"] h2::before,:root[data-skin="japan"] .settings summary::before{content:"";display:inline-block;width:.6em;height:.6em;background:var(--accent);border-radius:2px;margin-right:.5em;vertical-align:.05em}
 :root[data-skin="japan"] td.end{font-size:13px;font-weight:800}
-:root[data-skin="persona"] .card{border:3px solid var(--ink)}
-:root[data-skin="persona"] .today,:root[data-skin="persona"] .tips{color:var(--ink);text-shadow:1px 1px 0 #000}
-:root[data-skin="persona"] .clock{color:var(--ink);font-size:32px;text-shadow:3px 3px 0 #000}
-:root[data-skin="persona"] .logo{font-size:24px}
-:root[data-skin="persona"] .logo svg{color:var(--ink);filter:drop-shadow(2px 2px 0 #000)}
-:root[data-skin="persona"] h2,:root[data-skin="persona"] .settings summary{font-size:18px;font-weight:400}
-:root[data-skin="persona"] .chip,:root[data-skin="persona"] .btn,:root[data-skin="persona"] .skin{transform:skewX(-10deg);font-style:italic;text-transform:uppercase;letter-spacing:.04em}
-:root[data-skin="persona"] .btn{border:2px solid var(--ink);font-weight:700;box-shadow:3px 3px 0 #000}
-:root[data-skin="persona"] .btn.primary{border-color:var(--ink)}
-:root[data-skin="persona"] .skin{border-color:#000;background:#000;color:var(--ink)}
-:root[data-skin="persona"] .skin[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#000}
-:root[data-skin="persona"] .now[data-kind="break"] .chip{background:var(--ink);border-color:var(--ink);color:#000}
-:root[data-skin="persona"] .now[data-kind="break"] .count{text-shadow:5px 5px 0 #4a4a4a}
-:root[data-skin="persona"] .bar{height:10px;border-radius:0;transform:skewX(-24deg)}
+:root[data-skin="persona"] .card{border:1px solid #3a3a3e}
+:root[data-skin="persona"] .clock{color:var(--ink);text-shadow:2px 2px 0 var(--accent)}
+:root[data-skin="persona"] .logo{font-size:22px}
+:root[data-skin="persona"] .logo svg{color:var(--accent)}
+:root[data-skin="persona"] h2,:root[data-skin="persona"] .settings summary{font-family:var(--font-body);font-style:italic;font-weight:900;font-size:19px;text-transform:uppercase;letter-spacing:.03em}
+:root[data-skin="persona"] h2>[aria-hidden],:root[data-skin="persona"] .settings summary>[aria-hidden]{padding:0 .15em;background:linear-gradient(transparent 64%,var(--accent) 64% 82%,transparent 82%)}
+:root[data-skin="persona"] .chip,:root[data-skin="persona"] .btn,:root[data-skin="persona"] .skin{transform:skewX(-8deg);font-style:italic;text-transform:uppercase;letter-spacing:.03em}
+:root[data-skin="persona"] .btn{border:1px solid #4a4a4e;font-weight:700;box-shadow:2px 2px 0 #000}
+:root[data-skin="persona"] .btn.primary{border-color:var(--accent)}
+:root[data-skin="persona"] .skin[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+:root[data-skin="persona"] .now[data-kind="break"] .chip{background:var(--ink);border-color:var(--ink);color:#111}
+:root[data-skin="persona"] .now[data-kind="break"] .count{text-shadow:3px 3px 0 #4a4a4e}
+:root[data-skin="persona"] .bar{height:8px;border-radius:0;transform:skewX(-20deg)}
 :root[data-skin="persona"] .bar-fill{border-radius:0}
-:root[data-skin="persona"] .blk{border-radius:0;transform:skewX(-14deg)}
-:root[data-skin="persona"] td.end{font-family:var(--font-hand);font-size:11px}
-:root[data-skin="persona"] .add input,:root[data-skin="persona"] .brk,:root[data-skin="persona"] .form input[type=time],:root[data-skin="persona"] .form input[type=number],:root[data-skin="persona"] .form select{background:#1a1a1a;border:2px solid var(--ink);border-radius:0;color:var(--ink)}
-:root[data-skin="persona"] .brk.custom{border-color:var(--now);color:var(--now)}
-:root[data-skin="persona"] .rn{display:inline-block;padding:.06em .12em;margin:0 .03em;line-height:1;background:var(--ink);color:#000;font-family:"Rubik Mono One",sans-serif;transform:rotate(-4deg)}
-:root[data-skin="persona"] .rn:nth-child(4n+2){background:#000;color:var(--ink);font-family:"Anton","Oswald",sans-serif;font-size:1.2em;box-shadow:0 0 0 1px var(--ink);transform:rotate(3deg)}
-:root[data-skin="persona"] .rn:nth-child(4n+3){background:var(--accent);color:var(--ink);font-family:"Rubik",sans-serif;font-weight:900;font-style:italic;transform:rotate(-2deg) translateY(.06em)}
-:root[data-skin="persona"] .rn:nth-child(4n){background:var(--ink);color:var(--accent);font-family:"Oswald",sans-serif;font-weight:500;font-size:1.1em;transform:rotate(5deg)}
+:root[data-skin="persona"] .blk{border-radius:0;transform:skewX(-12deg)}
+:root[data-skin="persona"] td.end{font-style:italic;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+:root[data-skin="persona"] .add input,:root[data-skin="persona"] .brk,:root[data-skin="persona"] .form input[type=time],:root[data-skin="persona"] .form input[type=number],:root[data-skin="persona"] .form select{background:#141416;border:1px solid #44444a;border-radius:0;color:var(--ink)}
+:root[data-skin="persona"] .brk.custom{border-color:var(--accent);color:var(--ink)}
+:root[data-skin="persona"] .logo .rn{display:inline-block;padding:.05em .1em;margin:0 .02em;line-height:1;background:var(--ink);color:#111;font-family:"Rubik Mono One",sans-serif;transform:rotate(-3deg)}
+:root[data-skin="persona"] .logo .rn:nth-child(2n){background:#111;color:var(--ink);box-shadow:0 0 0 1px var(--ink);transform:rotate(2deg)}
+:root[data-skin="persona"] .logo .rn:nth-child(3n){background:var(--accent);color:var(--accent-ink);box-shadow:none;transform:rotate(-1deg)}
 
 @media (prefers-reduced-motion: reduce){.dot{animation:none}.bar-fill{transition:none}}
 </style>
