@@ -4,49 +4,95 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Дзвоник</title>
+<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','japan','persona'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
 <meta name="description" content="Особистий розклад дзвінків: уроки й перерви у фіксований час, дзвінки та музика з YouTube.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%232545c2'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%232545c2' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%23f1cf5e'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23f1cf5e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=M+PLUS+Rounded+1c:wght@500;800&family=Anton&family=Rubik:ital,wght@0,500;0,700;1,900&family=Rubik+Mono+One&display=swap">
 <style>
-/* Layout: a squared notebook sheet in light, a school chalkboard in dark; live "now" card left, bell schedule right, music and settings below */
+/* Layout: dark-only page; live "now" card left with music under it, bell schedule right. Skins only swap tokens. */
+/* Chalkboard (default): school slate green, chalk yellow for lessons, chalk green for breaks */
 :root{
-  --bg:#f8fafc;
-  --grid:#e4eaf1;
-  --margin-line:#f2c4c6;
-  --surface:#ffffff;
-  --line:#d6dee8;
-  --track:#e8edf3;
-  --ink:#17213b;
-  --ink-2:#55617c;
-  --ink-3:#8a94a9;
-  --accent:#2545c2;
-  --accent-ink:#ffffff;
-  --accent-soft:#dfe6fb;
-  --rest:#1b7f52;
-  --rest-soft:#dcf1e6;
-  --now:#e0525a;
-  --warn:#b45309;
-  --warn-soft:#fdf0e1;
+  --bg:#14201b;
+  --grid:#1b2a24;
+  --margin-line:#3b2b2e;
+  --surface:#1a2823;
+  --line:#2d4038;
+  --track:#24352e;
+  --ink:#edf2ec;
+  --ink-2:#a8bab0;
+  --ink-3:#73897e;
+  --accent:#f1cf5e;
+  --accent-ink:#1a231f;
+  --accent-soft:#3a3b24;
+  --rest:#86d6a3;
+  --rest-soft:#1e3a2c;
+  --now:#f19a9a;
+  --warn:#f3a96b;
+  --warn-soft:#3a2a1c;
   --font-display:"Oswald","Arial Narrow","Roboto Condensed",sans-serif;
   --font-body:"Golos Text","Segoe UI",system-ui,sans-serif;
   --font-hand:"Caveat","Segoe Print","Comic Sans MS",cursive;
   --r:10px;
-  color-scheme:light;
+  --bg-pattern:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  --bg-size:22px 22px;
+  --card-shadow:none;
+  --chip-r:999px;
+  --btn-r:8px;
+  --count-size:clamp(60px,10vw,100px);
+  --count-weight:500;
+  --digit-w:.52em;
+  --colon-w:.26em;
+  --glow:none;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#14201b; --grid:#1b2a24; --margin-line:#3b2b2e; --surface:#1a2823; --line:#2d4038; --track:#24352e;
-    --ink:#edf2ec; --ink-2:#a8bab0; --ink-3:#73897e; --accent:#f1cf5e; --accent-ink:#1a231f; --accent-soft:#3a3b24;
-    --rest:#86d6a3; --rest-soft:#1e3a2c; --now:#f19a9a; --warn:#f3a96b; --warn-soft:#3a2a1c;
-    color-scheme:dark;
-  }
+/* Cyberpunk: night city screen, neon magenta for lessons, cyan for breaks, scanlines over a faint grid */
+:root[data-skin="cyber"]{
+  --bg:#07070d; --grid:rgba(5,217,232,.07); --margin-line:transparent; --surface:#0d0b18; --line:#2e2552; --track:#1b1832;
+  --ink:#e9f7ff; --ink-2:#9db3d4; --ink-3:#6b6f9c; --accent:#ff2a6d; --accent-ink:#0b0610; --accent-soft:#3b0f2a;
+  --rest:#05d9e8; --rest-soft:#06303a; --now:#fcee0a; --warn:#fcee0a; --warn-soft:#2b2806;
+  --font-display:"Orbitron","Exo 2",sans-serif;
+  --font-body:"Exo 2","Segoe UI",sans-serif;
+  --font-hand:"Exo 2","Segoe UI",sans-serif;
+  --bg-pattern:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  --bg-size:auto,40px 40px,40px 40px;
+  --r:3px; --chip-r:2px; --btn-r:2px;
+  --card-shadow:0 0 0 1px rgba(5,217,232,.10),0 0 26px -8px rgba(255,42,109,.45);
+  --count-size:clamp(50px,8vw,84px); --count-weight:700; --digit-w:.86em; --colon-w:.34em;
+  --glow:0 0 2px currentColor,0 0 22px color-mix(in srgb,currentColor 55%,transparent);
+  color-scheme:dark;
 }
-:root[data-theme="dark"]{
-  --bg:#14201b; --grid:#1b2a24; --margin-line:#3b2b2e; --surface:#1a2823; --line:#2d4038; --track:#24352e;
-  --ink:#edf2ec; --ink-2:#a8bab0; --ink-3:#73897e; --accent:#f1cf5e; --accent-ink:#1a231f; --accent-soft:#3a3b24;
-  --rest:#86d6a3; --rest-soft:#1e3a2c; --now:#f19a9a; --warn:#f3a96b; --warn-soft:#3a2a1c;
+/* Japan at night: sumi-ink indigo, genkō yōshi grid in faded vermilion, shu red for lessons, sakura for breaks */
+:root[data-skin="japan"]{
+  --bg:#121522; --grid:#2a1c29; --margin-line:transparent; --surface:#191d2e; --line:#2c3047; --track:#262a3e;
+  --ink:#f3ede4; --ink-2:#b9b3c6; --ink-3:#7d7a93; --accent:#ff5a3c; --accent-ink:#1a0f0c; --accent-soft:#40201f;
+  --rest:#ff9ec4; --rest-soft:#3d2233; --now:#f2c66d; --warn:#f3a96b; --warn-soft:#3a2a1c;
+  --font-display:"M PLUS Rounded 1c","Golos Text",sans-serif;
+  --font-body:"M PLUS Rounded 1c","Golos Text","Segoe UI",sans-serif;
+  --font-hand:"M PLUS Rounded 1c","Golos Text",sans-serif;
+  --bg-pattern:linear-gradient(90deg,var(--grid) 1px,transparent 1px,transparent 22px,var(--grid) 22px,var(--grid) 23px,transparent 23px),linear-gradient(var(--grid) 1px,transparent 1px);
+  --bg-size:30px 22px,30px 22px;
+  --r:14px; --chip-r:999px; --btn-r:10px;
+  --card-shadow:0 12px 28px -18px rgba(0,0,0,.7);
+  --count-size:clamp(58px,9.5vw,96px); --count-weight:800; --digit-w:.66em; --colon-w:.36em;
+  --glow:none;
+  color-scheme:dark;
+}
+/* Persona 5: phantom-thief red, black and white; halftone dots, hard offset shadows, ransom-note headings */
+:root[data-skin="persona"]{
+  --bg:#c8000f; --grid:rgba(0,0,0,.3); --margin-line:transparent; --surface:#0c0c0c; --line:#383838; --track:#262626;
+  --ink:#ffffff; --ink-2:#d6d6d6; --ink-3:#9a9a9a; --accent:#ff1a2d; --accent-ink:#ffffff; --accent-soft:#45070d;
+  --rest:#ffffff; --rest-soft:#2e2e2e; --now:#ffe600; --warn:#ffe600; --warn-soft:#2e2a00;
+  --font-display:"Anton","Oswald",sans-serif;
+  --font-body:"Rubik","Golos Text","Segoe UI",sans-serif;
+  --font-hand:"Rubik Mono One","Rubik",sans-serif;
+  --bg-pattern:radial-gradient(var(--grid) 1.3px,transparent 1.8px),repeating-linear-gradient(-58deg,transparent 0 90px,rgba(0,0,0,.14) 90px 170px);
+  --bg-size:9px 9px,auto;
+  --r:0px; --chip-r:0px; --btn-r:0px;
+  --card-shadow:8px 8px 0 #000;
+  --count-size:clamp(64px,10.5vw,108px); --count-weight:400; --digit-w:.5em; --colon-w:.24em;
+  --glow:5px 5px 0 var(--accent);
   color-scheme:dark;
 }
 
@@ -55,8 +101,8 @@
 body{
   margin:0;
   background-color:var(--bg);
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:22px 22px;
+  background-image:var(--bg-pattern);
+  background-size:var(--bg-size);
   color:var(--ink);
   font-family:var(--font-body);
   font-size:15px;
@@ -77,7 +123,7 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 
 .banner{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;padding:12px 16px;border-radius:var(--r);background:var(--warn-soft);border:1px solid var(--warn);color:var(--ink)}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--card-shadow)}
 .layout{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
 .side{display:flex;flex-direction:column;gap:14px;min-width:0}
 @media (min-width:900px){
@@ -93,13 +139,13 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .now-main{display:flex;align-items:flex-end;gap:4px 24px;flex-wrap:wrap}
 .now-info{display:flex;flex-direction:column;gap:2px;padding-bottom:8px;min-width:0}
 .now-head{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
-.chip{font-family:var(--font-display);font-weight:500;font-size:15px;text-transform:uppercase;letter-spacing:.08em;padding:3px 12px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2)}
+.chip{font-family:var(--font-display);font-weight:500;font-size:15px;text-transform:uppercase;letter-spacing:.08em;padding:3px 12px;border-radius:var(--chip-r);border:1px solid var(--line);color:var(--ink-2)}
 .now[data-kind="lesson"] .chip{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .now[data-kind="break"] .chip{background:var(--rest-soft);border-color:var(--rest-soft);color:var(--rest)}
 .now-range{font-family:var(--font-display);font-size:18px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.count{font-family:var(--font-display);font-weight:500;font-size:clamp(60px,10vw,100px);line-height:.9;color:var(--ink);white-space:nowrap}
-.count .d{display:inline-block;width:.52em;text-align:center}
-.count .c{display:inline-block;width:.26em;text-align:center;position:relative;top:-.06em}
+.count{font-family:var(--font-display);font-weight:var(--count-weight);font-size:var(--count-size);line-height:.9;color:var(--ink);white-space:nowrap;text-shadow:var(--glow)}
+.count .d{display:inline-block;width:var(--digit-w);text-align:center}
+.count .c{display:inline-block;width:var(--colon-w);text-align:center;position:relative;top:-.06em}
 .now[data-kind="break"] .count{color:var(--rest)}
 .count-sub{font-size:16px;color:var(--ink-2)}
 .bar{height:8px;border-radius:99px;background:var(--track);overflow:hidden}
@@ -114,7 +160,7 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .dot{width:10px;height:10px;border-radius:50%;background:var(--rest);animation:pulse 2s ease-out infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--rest) 55%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
 
-.btn{font:inherit;font-size:14px;font-weight:600;line-height:1.2;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn{font:inherit;font-size:14px;font-weight:600;line-height:1.2;border-radius:var(--btn-r);border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
 .btn:hover{border-color:var(--ink-3)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .btn.primary:hover{filter:brightness(1.08)}
@@ -203,6 +249,59 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .tips{display:flex;flex-direction:column;gap:2px;color:var(--ink-2);font-size:14px}
 .tips p{margin:0;max-width:70ch}
 
+/* skin switcher */
+.skins{display:flex;gap:4px;flex-wrap:wrap}
+.skin{font:inherit;font-size:12px;font-weight:600;line-height:1;display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:var(--btn-r);border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.skin:hover{color:var(--ink);border-color:var(--ink-3)}
+.skin[aria-pressed="true"]{color:var(--ink);border-color:var(--accent);background:var(--accent-soft)}
+.sw{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(127,127,127,.4)}
+.sw-chalk{background:linear-gradient(135deg,#14201b 50%,#f1cf5e 50%)}
+.sw-cyber{background:conic-gradient(#ff2a6d 0 33%,#05d9e8 0 66%,#07070d 0)}
+.sw-japan{background:radial-gradient(circle,#ff5a3c 0 38%,#121522 42%)}
+.sw-persona{background:linear-gradient(135deg,#c8000f 0 42%,#0c0c0c 42% 70%,#fff 70%)}
+.rn{display:inline}
+
+/* skin-specific type and effects */
+:root[data-skin="cyber"] .logo{font-family:var(--font-body);font-style:italic;font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.08em;text-shadow:-1.5px 0 var(--rest),1.5px 0 var(--accent)}
+:root[data-skin="cyber"] h2,:root[data-skin="cyber"] .settings summary{font-family:var(--font-body);font-style:italic;font-weight:800;font-size:17px;text-transform:uppercase;letter-spacing:.16em;color:var(--rest)}
+:root[data-skin="cyber"] h2::before,:root[data-skin="cyber"] .settings summary::before{content:"//";color:var(--accent);margin-right:.5em}
+:root[data-skin="cyber"] .btn,:root[data-skin="cyber"] .chip,:root[data-skin="cyber"] .skin{text-transform:uppercase;letter-spacing:.08em}
+:root[data-skin="cyber"] .clock{color:var(--rest);text-shadow:var(--glow)}
+:root[data-skin="cyber"] .now[data-kind="lesson"] .count{color:var(--accent)}
+:root[data-skin="cyber"] .bar-fill{box-shadow:0 0 12px var(--accent)}
+:root[data-skin="cyber"] .now[data-kind="break"] .bar-fill{box-shadow:0 0 12px var(--rest)}
+:root[data-skin="cyber"] .blk.lesson.cur{box-shadow:0 0 10px var(--accent)}
+:root[data-skin="cyber"] .blk.break.cur{box-shadow:0 0 10px var(--rest)}
+:root[data-skin="cyber"] .nowmark{box-shadow:0 0 8px var(--now)}
+:root[data-skin="cyber"] td.end{font-style:italic;font-size:13px;text-transform:uppercase;letter-spacing:.12em}
+:root[data-skin="japan"] .logo{font-weight:800;font-size:28px}
+:root[data-skin="japan"] h2,:root[data-skin="japan"] .settings summary{font-weight:800;font-size:21px}
+:root[data-skin="japan"] h2::before,:root[data-skin="japan"] .settings summary::before{content:"";display:inline-block;width:.6em;height:.6em;background:var(--accent);border-radius:2px;margin-right:.5em;vertical-align:.05em}
+:root[data-skin="japan"] td.end{font-size:13px;font-weight:800}
+:root[data-skin="persona"] .card{border:3px solid var(--ink)}
+:root[data-skin="persona"] .today,:root[data-skin="persona"] .tips{color:var(--ink);text-shadow:1px 1px 0 #000}
+:root[data-skin="persona"] .clock{color:var(--ink);font-size:32px;text-shadow:3px 3px 0 #000}
+:root[data-skin="persona"] .logo{font-size:24px}
+:root[data-skin="persona"] .logo svg{color:var(--ink);filter:drop-shadow(2px 2px 0 #000)}
+:root[data-skin="persona"] h2,:root[data-skin="persona"] .settings summary{font-size:18px;font-weight:400}
+:root[data-skin="persona"] .chip,:root[data-skin="persona"] .btn,:root[data-skin="persona"] .skin{transform:skewX(-10deg);font-style:italic;text-transform:uppercase;letter-spacing:.04em}
+:root[data-skin="persona"] .btn{border:2px solid var(--ink);font-weight:700;box-shadow:3px 3px 0 #000}
+:root[data-skin="persona"] .btn.primary{border-color:var(--ink)}
+:root[data-skin="persona"] .skin{border-color:#000;background:#000;color:var(--ink)}
+:root[data-skin="persona"] .skin[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#000}
+:root[data-skin="persona"] .now[data-kind="break"] .chip{background:var(--ink);border-color:var(--ink);color:#000}
+:root[data-skin="persona"] .now[data-kind="break"] .count{text-shadow:5px 5px 0 #4a4a4a}
+:root[data-skin="persona"] .bar{height:10px;border-radius:0;transform:skewX(-24deg)}
+:root[data-skin="persona"] .bar-fill{border-radius:0}
+:root[data-skin="persona"] .blk{border-radius:0;transform:skewX(-14deg)}
+:root[data-skin="persona"] td.end{font-family:var(--font-hand);font-size:11px}
+:root[data-skin="persona"] .add input,:root[data-skin="persona"] .brk,:root[data-skin="persona"] .form input[type=time],:root[data-skin="persona"] .form input[type=number],:root[data-skin="persona"] .form select{background:#1a1a1a;border:2px solid var(--ink);border-radius:0;color:var(--ink)}
+:root[data-skin="persona"] .brk.custom{border-color:var(--now);color:var(--now)}
+:root[data-skin="persona"] .rn{display:inline-block;padding:.06em .12em;margin:0 .03em;line-height:1;background:var(--ink);color:#000;font-family:"Rubik Mono One",sans-serif;transform:rotate(-4deg)}
+:root[data-skin="persona"] .rn:nth-child(4n+2){background:#000;color:var(--ink);font-family:"Anton","Oswald",sans-serif;font-size:1.2em;box-shadow:0 0 0 1px var(--ink);transform:rotate(3deg)}
+:root[data-skin="persona"] .rn:nth-child(4n+3){background:var(--accent);color:var(--ink);font-family:"Rubik",sans-serif;font-weight:900;font-style:italic;transform:rotate(-2deg) translateY(.06em)}
+:root[data-skin="persona"] .rn:nth-child(4n){background:var(--ink);color:var(--accent);font-family:"Oswald",sans-serif;font-weight:500;font-size:1.1em;transform:rotate(5deg)}
+
 @media (prefers-reduced-motion: reduce){.dot{animation:none}.bar-fill{transition:none}}
 </style>
 </head>
@@ -212,6 +311,12 @@ input[type=range]{accent-color:var(--accent);width:100%}
     <div class="brand">
       <span class="logo"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Дзвоник</span>
       <span class="today" id="today">вівторок, 13 жовтня</span>
+    </div>
+    <div class="skins" id="skins" role="group" aria-label="Вигляд">
+      <button class="skin" type="button" data-skin="chalk" aria-pressed="true"><span class="sw sw-chalk"></span>Дошка</button>
+      <button class="skin" type="button" data-skin="cyber" aria-pressed="false"><span class="sw sw-cyber"></span>Кіберпанк</button>
+      <button class="skin" type="button" data-skin="japan" aria-pressed="false"><span class="sw sw-japan"></span>Японія</button>
+      <button class="skin" type="button" data-skin="persona" aria-pressed="false"><span class="sw sw-persona"></span>Персона 5</button>
     </div>
     <div class="clock" id="clock">10:21:07</div>
   </header>
@@ -345,7 +450,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 const $ = (id) => document.getElementById(id);
 const MIN = 60000;
 const KEY = 'dzvonyk.v1';
-const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false};
+const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk'};
 const SOUNDS = [['japan','Японська школа'],['japanShort','Японська школа, коротко'],['school','Шкільний дзвінок'],['rise','Три ноти вгору'],['chime','Три ноти вниз'],['dingdong','Дінь-дон'],['gong','Гонг']];
 const WARN = [[0,'Без попередження'],[1,'За 1 хв до уроку'],[2,'За 2 хв до уроку'],[3,'За 3 хв до уроку'],[5,'За 5 хв до уроку']];
 const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
@@ -1065,6 +1170,36 @@ $('nextBtn').addEventListener('click', () => playItem(M.cur + 1, true));
 $('sDuck').checked = M.duck;
 $('sDuck').addEventListener('change', () => { M.duck = $('sDuck').checked; saveMusic(); });
 window.addEventListener('pagehide', () => { if(duckBase !== null && yt.ready) yt.player.setVolume(duckBase); });
+
+// skins
+const SKINS = ['chalk', 'cyber', 'japan', 'persona'];
+function applySkin(){
+  const s = SKINS.includes(S.skin) ? S.skin : 'chalk';
+  if(s === 'chalk') delete document.documentElement.dataset.skin;
+  else document.documentElement.dataset.skin = s;
+  document.querySelectorAll('.skin').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.skin === s)));
+}
+$('skins').addEventListener('click', (e) => {
+  const b = e.target.closest('.skin');
+  if(!b) return;
+  S.skin = b.dataset.skin; save(); applySkin();
+});
+// Headings are split into letter tiles once; only the Persona skin styles them as a ransom note.
+function letterTiles(el){
+  const node = [...el.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
+  if(!node) return;
+  const text = node.textContent.trim();
+  const label = document.createElement('span'); label.className = 'sr-only'; label.textContent = text;
+  const wrap = document.createElement('span'); wrap.setAttribute('aria-hidden', 'true');
+  for(const ch of text){
+    if(ch === ' '){ wrap.append(' '); continue; }
+    const s = document.createElement('span'); s.className = 'rn'; s.textContent = ch;
+    wrap.append(s);
+  }
+  node.replaceWith(label, wrap);
+}
+document.querySelectorAll('h2, .settings summary, .logo').forEach(letterTiles);
+applySkin();
 
 // After a reload the browser needs one click before it will play sound again.
 const wake = () => { if(S.enabled && !isRunning()) enable(); };
