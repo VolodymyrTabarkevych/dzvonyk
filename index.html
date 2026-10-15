@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Дзвоник</title>
-<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','y2k','aero','soft'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
+<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','y2k','aero','soft','planner'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
 <meta name="description" content="Особистий розклад дзвінків: уроки й перерви у фіксований час, дзвінки та музика з YouTube.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%23f1cf5e'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23f1cf5e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,6 +108,21 @@
   --r:28px; --chip-r:999px; --btn-r:999px;
   --card-shadow:14px 14px 30px #1a2029,-10px -10px 26px #2e3848;
   --count-size:clamp(60px,10vw,104px); --count-weight:300; --digit-w:.64em; --colon-w:.28em;
+  --glow:none;
+  color-scheme:dark;
+}
+/* Planner: a warm day-planner app at night; charcoal ground, solid colour blocks (terracotta, periwinkle, mauve, sage), outline pills, big bold numbers */
+:root[data-skin="planner"]{
+  --bg:#1b1a18; --grid:transparent; --margin-line:transparent; --surface:#262522; --line:#3a3834; --track:#34322e;
+  --ink:#f3f0e8; --ink-2:#c6c1b6; --ink-3:#8f8a80; --accent:#e0623b; --accent-ink:#ffffff; --accent-soft:#4a2a1f;
+  --rest:#9da2e3; --rest-soft:#2e2f45; --now:#8fbf7c; --warn:#e0623b; --warn-soft:#3a2219;
+  --font-display:"Onest","Golos Text",sans-serif;
+  --font-body:"Onest","Golos Text","Segoe UI",sans-serif;
+  --font-hand:"Onest","Golos Text",sans-serif;
+  --bg-pattern:none; --bg-size:auto;
+  --r:22px; --chip-r:999px; --btn-r:999px;
+  --card-shadow:none;
+  --count-size:clamp(60px,10vw,104px); --count-weight:700; --digit-w:.68em; --colon-w:.28em;
   --glow:none;
   color-scheme:dark;
 }
@@ -277,6 +292,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .sw-y2k{background:conic-gradient(#ff2d7a 0 25%,#d4ff1e 0 50%,#b65cff 0 75%,#ff5a1f 0)}
 .sw-aero{background:linear-gradient(135deg,#1a5ae6 0 55%,#e8f51c 55%)}
 .sw-soft{background:linear-gradient(135deg,#283140 50%,#e6ecf5 50%)}
+.sw-planner{background:conic-gradient(#e0623b 0 25%,#9da2e3 0 50%,#8c4a50 0 75%,#8fbf7c 0)}
 
 /* skin-specific type and effects */
 :root[data-skin="cyber"] .logo{font-family:var(--font-body);font-style:italic;font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.08em;text-shadow:-1.5px 0 var(--rest),1.5px 0 var(--accent)}
@@ -368,6 +384,44 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="soft"] td.end{font-size:13px;color:var(--ink-3)}
 :root[data-skin="soft"] .add input,:root[data-skin="soft"] .brk,:root[data-skin="soft"] .form input[type=time],:root[data-skin="soft"] .form input[type=number],:root[data-skin="soft"] .form select{background:var(--surface);border:0;border-radius:999px;box-shadow:inset 3px 3px 6px #1b212b,inset -3px -3px 6px #333e50}
 :root[data-skin="soft"] .player{border-radius:20px}
+:root[data-skin="planner"] .card{border:0}
+:root[data-skin="planner"] .now{--surface:#3a3936}
+:root[data-skin="planner"] .now[data-kind="lesson"]{--surface:#e0623b;--ink:#ffffff;--ink-2:rgba(255,255,255,.86);--ink-3:rgba(255,255,255,.7);--line:rgba(255,255,255,.4);--track:rgba(255,255,255,.25);--accent:#ffffff;--accent-ink:#e0623b;--accent-soft:rgba(255,255,255,.28);--now:#1b1a18}
+:root[data-skin="planner"] .now[data-kind="break"]{--surface:#9da2e3;--ink:#1b1a18;--ink-2:rgba(27,26,24,.8);--ink-3:rgba(27,26,24,.62);--line:rgba(27,26,24,.3);--track:rgba(27,26,24,.15);--rest:#1b1a18;--rest-soft:rgba(27,26,24,.14);--accent:#1b1a18;--accent-ink:#9da2e3;--accent-soft:rgba(27,26,24,.2);--now:#e0623b}
+:root[data-skin="planner"] .logo{font-family:var(--font-body);font-weight:700;font-size:22px;letter-spacing:-.01em}
+:root[data-skin="planner"] .logo svg{color:var(--accent)}
+:root[data-skin="planner"] .clock{font-weight:500;font-size:24px;color:var(--ink)}
+:root[data-skin="planner"] h2,:root[data-skin="planner"] .settings summary{font-family:var(--font-body);font-weight:700;font-size:22px;letter-spacing:-.01em}
+:root[data-skin="planner"] .chip{background:transparent;border:1.5px solid var(--ink);color:var(--ink);font-family:var(--font-body);font-weight:500;font-size:13px;letter-spacing:.02em;text-transform:none;padding:4px 14px}
+:root[data-skin="planner"] .now-range{font-family:var(--font-body);font-weight:500;font-size:16px}
+:root[data-skin="planner"] .count{letter-spacing:-.02em}
+:root[data-skin="planner"] .blk{border-radius:999px}
+:root[data-skin="planner"] .btn{background:transparent;border:1.5px solid var(--ink-2);color:var(--ink);font-weight:500}
+:root[data-skin="planner"] .btn.primary{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+:root[data-skin="planner"] .btn.ghost{border-color:var(--ink-3)}
+:root[data-skin="planner"] .skin{background:transparent;border:1.5px solid var(--ink-3);color:var(--ink-2)}
+:root[data-skin="planner"] .skin[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+:root[data-skin="planner"] .player{border-radius:16px;background:#1f1e1c}
+:root[data-skin="planner"] table{border-collapse:separate;border-spacing:0 6px}
+:root[data-skin="planner"] th{border-bottom:0;padding-bottom:0}
+:root[data-skin="planner"] td{border-bottom:0;padding:9px 10px}
+:root[data-skin="planner"] td:first-child{border-radius:14px 0 0 14px}
+:root[data-skin="planner"] td:last-child{border-radius:0 14px 14px 0}
+:root[data-skin="planner"] tbody tr:nth-child(5n+1) td{background:#3a3936;color:#f3f0e8}
+:root[data-skin="planner"] tbody tr:nth-child(5n+2) td{background:#e0623b;color:#ffffff}
+:root[data-skin="planner"] tbody tr:nth-child(5n+3) td{background:#9da2e3;color:#1b1a18}
+:root[data-skin="planner"] tbody tr:nth-child(5n+4) td{background:#8c4a50;color:#ffffff}
+:root[data-skin="planner"] tbody tr:nth-child(5n) td{background:#8fbf7c;color:#1b1a18}
+:root[data-skin="planner"] td.n{color:inherit;opacity:.75}
+:root[data-skin="planner"] td.t{font-family:var(--font-body);font-weight:700;font-size:16px;color:inherit}
+:root[data-skin="planner"] td.b,:root[data-skin="planner"] td.end{color:inherit}
+:root[data-skin="planner"] td.end{font-size:13px;font-weight:500}
+:root[data-skin="planner"] .brk{background:rgba(0,0,0,.18);border:0;border-radius:999px;color:inherit}
+:root[data-skin="planner"] .brk.custom{background:rgba(0,0,0,.34);color:inherit}
+:root[data-skin="planner"] tr.cur td.n{opacity:1;box-shadow:inset 4px 0 0 currentColor}
+:root[data-skin="planner"] tr.cur td.t,:root[data-skin="planner"] tr.cur td.n{color:inherit}
+:root[data-skin="planner"] td.b.cur{box-shadow:inset 0 0 0 2px currentColor;font-weight:700}
+:root[data-skin="planner"] .add input,:root[data-skin="planner"] .form input[type=time],:root[data-skin="planner"] .form input[type=number],:root[data-skin="planner"] .form select{background:#1f1e1c;border:1px solid #3d3b37;border-radius:999px}
 
 @media (prefers-reduced-motion: reduce){.dot{animation:none}.bar-fill{transition:none}}
 </style>
@@ -385,6 +439,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <button class="skin" type="button" data-skin="y2k" aria-pressed="false"><span class="sw sw-y2k"></span>Y2K</button>
       <button class="skin" type="button" data-skin="aero" aria-pressed="false"><span class="sw sw-aero"></span>Аеро</button>
       <button class="skin" type="button" data-skin="soft" aria-pressed="false"><span class="sw sw-soft"></span>Мінімал</button>
+      <button class="skin" type="button" data-skin="planner" aria-pressed="false"><span class="sw sw-planner"></span>Планер</button>
     </div>
     <div class="clock" id="clock">10:21:07</div>
   </header>
@@ -1240,7 +1295,7 @@ $('sDuck').addEventListener('change', () => { M.duck = $('sDuck').checked; saveM
 window.addEventListener('pagehide', () => { if(duckBase !== null && yt.ready) yt.player.setVolume(duckBase); });
 
 // skins
-const SKINS = ['chalk', 'cyber', 'y2k', 'aero', 'soft'];
+const SKINS = ['chalk', 'cyber', 'y2k', 'aero', 'soft', 'planner'];
 function applySkin(){
   const s = SKINS.includes(S.skin) ? S.skin : 'chalk';
   if(s === 'chalk') delete document.documentElement.dataset.skin;
