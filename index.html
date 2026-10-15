@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Дзвоник</title>
-<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','japan','persona'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
+<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','y2k','aero','soft'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
 <meta name="description" content="Особистий розклад дзвінків: уроки й перерви у фіксований час, дзвінки та музика з YouTube.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%23f1cf5e'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23f1cf5e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=M+PLUS+Rounded+1c:wght@500;800&family=Anton&family=Rubik:ital,wght@0,500;0,700;1,900&family=Rubik+Mono+One&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=Unbounded:wght@500;600;700;800&family=Russo+One&family=Onest:wght@400;500;700&family=Rubik:wght@300;400;500&display=swap">
 <style>
 /* Layout: dark-only page; live "now" card left with music under it, bell schedule right. Skins only swap tokens. */
 /* Chalkboard (default): school slate green, chalk yellow for lessons, chalk green for breaks */
@@ -63,41 +63,58 @@
   --glow:0 0 2px currentColor,0 0 22px color-mix(in srgb,currentColor 55%,transparent);
   color-scheme:dark;
 }
-/* Japan at night: sumi-ink indigo, genkō yōshi grid in faded vermilion, shu red for lessons, sakura for breaks */
-:root[data-skin="japan"]{
-  --bg:#121522; --grid:#2a1c29; --margin-line:transparent; --surface:#191d2e; --line:#2c3047; --track:#262a3e;
-  --ink:#f3ede4; --ink-2:#b9b3c6; --ink-3:#7d7a93; --accent:#ff5a3c; --accent-ink:#1a0f0c; --accent-soft:#40201f;
-  --rest:#ff9ec4; --rest-soft:#3d2233; --now:#f2c66d; --warn:#f3a96b; --warn-soft:#3a2a1c;
-  --font-display:"M PLUS Rounded 1c","Golos Text",sans-serif;
-  --font-body:"M PLUS Rounded 1c","Golos Text","Segoe UI",sans-serif;
-  --font-hand:"M PLUS Rounded 1c","Golos Text",sans-serif;
-  --bg-pattern:linear-gradient(90deg,var(--grid) 1px,transparent 1px,transparent 22px,var(--grid) 22px,var(--grid) 23px,transparent 23px),linear-gradient(var(--grid) 1px,transparent 1px);
-  --bg-size:30px 22px,30px 22px;
-  --r:14px; --chip-r:999px; --btn-r:10px;
-  --card-shadow:0 12px 28px -18px rgba(0,0,0,.7);
-  --count-size:clamp(58px,9.5vw,96px); --count-weight:800; --digit-w:.66em; --colon-w:.36em;
+/* Y2K acid poster: black ground, hot pink lessons, acid lime breaks, orange "now", violet and grey capsules; decor peeks out around the cards */
+:root[data-skin="y2k"]{
+  --bg:#050505; --grid:transparent; --margin-line:transparent; --surface:#0e0e10; --line:#26262b; --track:#1c1c21;
+  --ink:#f4f4f6; --ink-2:#b4b4bc; --ink-3:#77777f; --accent:#ff2d7a; --accent-ink:#0a0a0a; --accent-soft:#3a0e22;
+  --rest:#d4ff1e; --rest-soft:#2a3206; --now:#ff5a1f; --warn:#ff5a1f; --warn-soft:#331406;
+  --violet:#b65cff; --pill:#cfcfd5;
+  --font-display:"Unbounded","Golos Text",sans-serif;
+  --font-body:"Golos Text","Segoe UI",sans-serif;
+  --font-hand:"Unbounded","Golos Text",sans-serif;
+  --bg-pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 1000' preserveAspectRatio='xMidYMid slice'%3E %3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E %3Cg transform='translate(1230 860) rotate(-35)'%3E %3Cg stroke-width='7'%3E %3Cpath d='M-900 -260 H140' stroke='%23d4ff1e'/%3E%3Cpath d='M-900 -244 H120' stroke='%23b65cff'/%3E%3Cpath d='M-900 -228 H100' stroke='%23ff2d7a'/%3E%3Cpath d='M-900 -212 H80' stroke='%23f4f4f6'/%3E%3Cpath d='M-900 -196 H60' stroke='%23ff5a1f'/%3E %3C/g%3E %3Cpath d='M-520 -110 H0 A110 110 0 0 1 0 110 H-160' stroke='%23ff2d7a' stroke-width='74'/%3E %3Cpath d='M0 -46 A46 46 0 0 1 0 46' stroke='%23ff5a1f' stroke-width='30'/%3E %3Cpath d='M-160 110 A110 110 0 0 0 -160 330 H420' stroke='%23d4ff1e' stroke-width='74'/%3E %3Cpath d='M-60 220 H300' stroke='%23b65cff' stroke-width='34'/%3E %3Cg stroke='%23f4f4f6' stroke-width='5'%3E%3Ccircle cx='-220' cy='0' r='36'/%3E%3Cpath d='M-245 -25 L-195 25 M-195 -25 L-245 25'/%3E%3C/g%3E %3Cpath d='M-470 -14 l14 14 l-14 14 M-446 -14 l14 14 l-14 14 M-422 -14 l14 14 l-14 14 M-398 -14 l14 14 l-14 14' stroke='%23d4ff1e' stroke-width='6'/%3E %3Cg fill='%23cfcfd5' stroke='none'%3E%3Crect x='180' y='-150' width='190' height='54' rx='27'/%3E%3Crect x='230' y='-80' width='150' height='54' rx='27'/%3E%3Crect x='-640' y='380' width='170' height='54' rx='27'/%3E%3Crect x='-600' y='450' width='120' height='54' rx='27'/%3E%3C/g%3E %3Cg stroke='%230a0a0a' stroke-width='5'%3E%3Cpath d='M210 -123 H340 M260 -53 H350 M-610 407 H-500'/%3E%3C/g%3E %3Cg fill='%23f4f4f6' stroke='none' font-family='monospace' font-weight='700' font-size='28'%3E%3Ctext x='200' y='60'%3ER 99%3C/text%3E%3Ctext x='200' y='94'%3E0054%3C/text%3E%3C/g%3E %3Ctext x='330' y='343' fill='%230a0a0a' stroke='none' font-family='monospace' font-weight='700' font-size='34'%3E02%3C/text%3E %3C/g%3E %3Cg transform='translate(300 990) rotate(-35)' stroke-width='7'%3E%3Cpath d='M-300 0 H420' stroke='%23b65cff'/%3E%3Cpath d='M-300 16 H400' stroke='%23ff2d7a'/%3E%3Cpath d='M-300 32 H380' stroke='%23d4ff1e'/%3E%3C/g%3E %3C/g%3E %3C/svg%3E");
+  --bg-size:cover;
+  --r:26px; --chip-r:999px; --btn-r:999px;
+  --card-shadow:none;
+  --count-size:clamp(46px,7vw,72px); --count-weight:700; --digit-w:.95em; --colon-w:.36em;
   --glow:none;
   color-scheme:dark;
 }
-/* Persona 5, calm: black menu screen, one muted red slash, faint halftone, red only for accents; ransom tiles only in the logo */
-:root[data-skin="persona"]{
-  --bg:#111112; --grid:rgba(255,255,255,.045); --margin-line:transparent; --surface:#19191b; --line:#2f2f33; --track:#2a2a2e;
-  --ink:#f5f5f5; --ink-2:#b9b9bd; --ink-3:#808086; --accent:#e5192b; --accent-ink:#ffffff; --accent-soft:#3a1216;
-  --rest:#f5f5f5; --rest-soft:#2c2c30; --now:#e5192b; --warn:#ffd23f; --warn-soft:#2e2a10;
-  --font-display:"Anton","Oswald",sans-serif;
+/* Aero GP: race-day ticket graphics. Night navy ground with a fine dot grid, electric blue panels, acid yellow lessons, ice breaks, barcodes, squarish numerals */
+:root[data-skin="aero"]{
+  --bg:#08132b; --grid:rgba(150,190,255,.16); --margin-line:transparent; --surface:#1a5ae6; --line:rgba(255,255,255,.22); --track:#1446bd;
+  --ink:#ffffff; --ink-2:#e3edff; --ink-3:#c3d6fb; --accent:#e8f51c; --accent-ink:#08132b; --accent-soft:#1446bd;
+  --rest:#c9f1ff; --rest-soft:#1446bd; --now:#e8f51c; --warn:#e8f51c; --warn-soft:#1446bd;
+  --font-display:"Russo One","Onest",sans-serif;
+  --font-body:"Onest","Golos Text","Segoe UI",sans-serif;
+  --font-hand:"Russo One","Onest",sans-serif;
+  --bg-pattern:radial-gradient(var(--grid) 1px,transparent 1.4px),linear-gradient(90deg,transparent calc(100% - 1px),rgba(150,190,255,.07) 0);
+  --bg-size:14px 14px,112px 100%;
+  --r:2px; --chip-r:2px; --btn-r:2px;
+  --card-shadow:none;
+  --count-size:clamp(56px,9vw,92px); --count-weight:400; --digit-w:.7em; --colon-w:.3em;
+  --glow:none;
+  color-scheme:dark;
+}
+/* Minimal: calm dark slate like a quiet weather app; soft extruded cards, thin rounded numerals, colour only as a whisper */
+:root[data-skin="soft"]{
+  --bg:#232b38; --grid:transparent; --margin-line:transparent; --surface:#283140; --line:#323c4d; --track:#323c4d;
+  --ink:#eef2f8; --ink-2:#aab4c4; --ink-3:#7c8799; --accent:#e6ecf5; --accent-ink:#232b38; --accent-soft:#333e50;
+  --rest:#9cc3ff; --rest-soft:#2f3b52; --now:#9cc3ff; --warn:#f2b98a; --warn-soft:#3a3330;
+  --font-display:"Rubik","Golos Text",sans-serif;
   --font-body:"Rubik","Golos Text","Segoe UI",sans-serif;
-  --font-hand:"Rubik Mono One","Rubik",sans-serif;
-  --bg-pattern:linear-gradient(118deg,transparent 0 58%,rgba(229,25,43,.12) 58% 70%,transparent 70%),radial-gradient(var(--grid) 1.1px,transparent 1.6px);
-  --bg-size:auto,8px 8px;
-  --r:0px; --chip-r:0px; --btn-r:0px;
-  --card-shadow:5px 5px 0 #3d0b11;
-  --count-size:clamp(64px,10.5vw,108px); --count-weight:400; --digit-w:.5em; --colon-w:.24em;
-  --glow:3px 3px 0 var(--accent);
+  --font-hand:"Rubik","Golos Text",sans-serif;
+  --bg-pattern:none; --bg-size:auto;
+  --r:28px; --chip-r:999px; --btn-r:999px;
+  --card-shadow:14px 14px 30px #1a2029,-10px -10px 26px #2e3848;
+  --count-size:clamp(60px,10vw,104px); --count-weight:300; --digit-w:.64em; --colon-w:.28em;
+  --glow:none;
   color-scheme:dark;
 }
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+html{min-height:100%}
 body{
   margin:0;
   background-color:var(--bg);
@@ -257,9 +274,9 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .sw{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(127,127,127,.4)}
 .sw-chalk{background:linear-gradient(135deg,#14201b 50%,#f1cf5e 50%)}
 .sw-cyber{background:conic-gradient(#ff2a6d 0 33%,#05d9e8 0 66%,#07070d 0)}
-.sw-japan{background:radial-gradient(circle,#ff5a3c 0 38%,#121522 42%)}
-.sw-persona{background:linear-gradient(135deg,#c8000f 0 42%,#0c0c0c 42% 70%,#fff 70%)}
-.rn{display:inline}
+.sw-y2k{background:conic-gradient(#ff2d7a 0 25%,#d4ff1e 0 50%,#b65cff 0 75%,#ff5a1f 0)}
+.sw-aero{background:linear-gradient(135deg,#1a5ae6 0 55%,#e8f51c 55%)}
+.sw-soft{background:linear-gradient(135deg,#283140 50%,#e6ecf5 50%)}
 
 /* skin-specific type and effects */
 :root[data-skin="cyber"] .logo{font-family:var(--font-body);font-style:italic;font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.08em;text-shadow:-1.5px 0 var(--rest),1.5px 0 var(--accent)}
@@ -274,31 +291,83 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="cyber"] .blk.break.cur{box-shadow:0 0 10px var(--rest)}
 :root[data-skin="cyber"] .nowmark{box-shadow:0 0 8px var(--now)}
 :root[data-skin="cyber"] td.end{font-style:italic;font-size:13px;text-transform:uppercase;letter-spacing:.12em}
-:root[data-skin="japan"] .logo{font-weight:800;font-size:28px}
-:root[data-skin="japan"] h2,:root[data-skin="japan"] .settings summary{font-weight:800;font-size:21px}
-:root[data-skin="japan"] h2::before,:root[data-skin="japan"] .settings summary::before{content:"";display:inline-block;width:.6em;height:.6em;background:var(--accent);border-radius:2px;margin-right:.5em;vertical-align:.05em}
-:root[data-skin="japan"] td.end{font-size:13px;font-weight:800}
-:root[data-skin="persona"] .card{border:1px solid #3a3a3e}
-:root[data-skin="persona"] .clock{color:var(--ink);text-shadow:2px 2px 0 var(--accent)}
-:root[data-skin="persona"] .logo{font-size:22px}
-:root[data-skin="persona"] .logo svg{color:var(--accent)}
-:root[data-skin="persona"] h2,:root[data-skin="persona"] .settings summary{font-family:var(--font-body);font-style:italic;font-weight:900;font-size:19px;text-transform:uppercase;letter-spacing:.03em}
-:root[data-skin="persona"] h2>[aria-hidden],:root[data-skin="persona"] .settings summary>[aria-hidden]{padding:0 .15em;background:linear-gradient(transparent 64%,var(--accent) 64% 82%,transparent 82%)}
-:root[data-skin="persona"] .chip,:root[data-skin="persona"] .btn,:root[data-skin="persona"] .skin{transform:skewX(-8deg);font-style:italic;text-transform:uppercase;letter-spacing:.03em}
-:root[data-skin="persona"] .btn{border:1px solid #4a4a4e;font-weight:700;box-shadow:2px 2px 0 #000}
-:root[data-skin="persona"] .btn.primary{border-color:var(--accent)}
-:root[data-skin="persona"] .skin[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-:root[data-skin="persona"] .now[data-kind="break"] .chip{background:var(--ink);border-color:var(--ink);color:#111}
-:root[data-skin="persona"] .now[data-kind="break"] .count{text-shadow:3px 3px 0 #4a4a4e}
-:root[data-skin="persona"] .bar{height:8px;border-radius:0;transform:skewX(-20deg)}
-:root[data-skin="persona"] .bar-fill{border-radius:0}
-:root[data-skin="persona"] .blk{border-radius:0;transform:skewX(-12deg)}
-:root[data-skin="persona"] td.end{font-style:italic;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
-:root[data-skin="persona"] .add input,:root[data-skin="persona"] .brk,:root[data-skin="persona"] .form input[type=time],:root[data-skin="persona"] .form input[type=number],:root[data-skin="persona"] .form select{background:#141416;border:1px solid #44444a;border-radius:0;color:var(--ink)}
-:root[data-skin="persona"] .brk.custom{border-color:var(--accent);color:var(--ink)}
-:root[data-skin="persona"] .logo .rn{display:inline-block;padding:.05em .1em;margin:0 .02em;line-height:1;background:var(--ink);color:#111;font-family:"Rubik Mono One",sans-serif;transform:rotate(-3deg)}
-:root[data-skin="persona"] .logo .rn:nth-child(2n){background:#111;color:var(--ink);box-shadow:0 0 0 1px var(--ink);transform:rotate(2deg)}
-:root[data-skin="persona"] .logo .rn:nth-child(3n){background:var(--accent);color:var(--accent-ink);box-shadow:none;transform:rotate(-1deg)}
+:root[data-skin="y2k"] body{background-attachment:fixed;background-position:center;background-repeat:no-repeat}
+:root[data-skin="y2k"] .card{border:2px solid #1f1f24}
+:root[data-skin="y2k"] .logo{font-family:var(--font-hand);font-weight:800;font-size:22px;text-transform:uppercase;letter-spacing:.02em}
+:root[data-skin="y2k"] .logo svg{color:var(--accent)}
+:root[data-skin="y2k"] .clock{font-size:22px;font-weight:600;color:var(--rest)}
+:root[data-skin="y2k"] h2,:root[data-skin="y2k"] .settings summary{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-hand);font-weight:800;font-size:13px;line-height:1;text-transform:uppercase;letter-spacing:.08em;color:#0a0a0a;background:var(--violet);padding:8px 16px;border-radius:999px}
+:root[data-skin="y2k"] .music h2{background:var(--rest)}
+:root[data-skin="y2k"] .settings summary{background:var(--pill)}
+:root[data-skin="y2k"] .settings summary::after{color:#0a0a0a;font-size:16px;margin-left:4px}
+:root[data-skin="y2k"] .chip{font-family:var(--font-hand);font-size:12px;font-weight:700;letter-spacing:.06em;padding:6px 14px}
+:root[data-skin="y2k"] .now[data-kind="break"] .chip{background:var(--rest);border-color:var(--rest);color:#0a0a0a}
+:root[data-skin="y2k"] .now-range{font-size:15px}
+:root[data-skin="y2k"] .now[data-kind="lesson"] .count{color:var(--accent)}
+:root[data-skin="y2k"] .next::before{content:"\203A\203A\203A\203A  ";color:var(--rest);letter-spacing:-.05em}
+:root[data-skin="y2k"] .bar{height:12px}
+:root[data-skin="y2k"] .bar-fill{background:repeating-linear-gradient(-45deg,var(--accent) 0 7px,#ff6fa5 7px 14px)}
+:root[data-skin="y2k"] .now[data-kind="break"] .bar-fill{background:repeating-linear-gradient(-45deg,var(--rest) 0 7px,#eaff8a 7px 14px)}
+:root[data-skin="y2k"] .blk{border-radius:999px}
+:root[data-skin="y2k"] .blk.lesson{background:#3a2160;border-right:0;top:3px;bottom:3px}
+:root[data-skin="y2k"] .blk.past{background:var(--track)}
+:root[data-skin="y2k"] .btn{background:var(--pill);border-color:var(--pill);color:#0a0a0a}
+:root[data-skin="y2k"] .btn.primary{background:var(--rest);border-color:var(--rest);color:#0a0a0a}
+:root[data-skin="y2k"] .btn.ghost{background:transparent;border-color:#44444c;color:var(--ink)}
+:root[data-skin="y2k"] .skin[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#0a0a0a}
+:root[data-skin="y2k"] td.t{font-size:14px}
+:root[data-skin="y2k"] td.end{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+:root[data-skin="y2k"] .add input,:root[data-skin="y2k"] .brk{border-radius:999px}
+:root[data-skin="y2k"] .brk{padding-inline:10px}
+:root[data-skin="y2k"] .tips{background:var(--surface);border:2px solid #1f1f24;border-radius:22px;padding:12px 16px}
+:root[data-skin="aero"] .card{border:0}
+:root[data-skin="aero"] .logo{font-family:var(--font-hand);font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+:root[data-skin="aero"] .logo svg{width:30px;height:30px;padding:4px;border-radius:2px;background:var(--accent);color:var(--accent-ink)}
+:root[data-skin="aero"] .clock{font-size:24px;color:var(--accent)}
+:root[data-skin="aero"] h2,:root[data-skin="aero"] .settings summary{font-family:var(--font-hand);font-weight:400;font-size:24px;letter-spacing:-.01em}
+:root[data-skin="aero"] h2::before,:root[data-skin="aero"] .settings summary::before{content:"";display:inline-block;width:.42em;height:.42em;margin-right:.45em;vertical-align:.12em;background:var(--accent)}
+:root[data-skin="aero"] .chip{font-family:var(--font-body);font-weight:700;font-size:12px;letter-spacing:.14em;padding:5px 10px}
+:root[data-skin="aero"] .now[data-kind="break"] .chip{background:var(--rest);border-color:var(--rest);color:var(--accent-ink)}
+:root[data-skin="aero"] .now[data-kind="lesson"] .count{color:var(--accent)}
+:root[data-skin="aero"] .now[data-kind="break"] .count{color:var(--ink)}
+:root[data-skin="aero"] .bar{height:6px;border-radius:0}
+:root[data-skin="aero"] .bar-fill,:root[data-skin="aero"] .blk{border-radius:0}
+:root[data-skin="aero"] .btn{background:var(--bg);border-color:var(--bg);color:var(--ink)}
+:root[data-skin="aero"] .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+:root[data-skin="aero"] .btn.ghost{background:transparent;border-color:rgba(255,255,255,.5)}
+:root[data-skin="aero"] .skin[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+:root[data-skin="aero"] tr.cur,:root[data-skin="aero"] td.b.cur{background:var(--bg)}
+:root[data-skin="aero"] tr.cur td.t,:root[data-skin="aero"] tr.cur td.n{color:var(--accent)}
+:root[data-skin="aero"] td.b.cur{color:var(--rest)}
+:root[data-skin="aero"] td.end{font-size:13px;text-transform:uppercase;color:var(--accent)}
+:root[data-skin="aero"] .add input,:root[data-skin="aero"] .brk,:root[data-skin="aero"] .form input[type=time],:root[data-skin="aero"] .form input[type=number],:root[data-skin="aero"] .form select{background:var(--bg);border:1px solid rgba(255,255,255,.35);border-radius:0;color:var(--ink)}
+:root[data-skin="aero"] .player{border-radius:0;background:var(--bg)}
+:root[data-skin="aero"] .sched::after{content:"";display:block;height:34px;margin-top:14px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 9px,var(--ink) 9px 13px,transparent 13px 15px,var(--ink) 15px 16px,transparent 16px 21px)}
+:root[data-skin="soft"] .card{border:0}
+:root[data-skin="soft"] .logo{font-family:var(--font-body);font-weight:500;font-size:22px}
+:root[data-skin="soft"] .logo svg{color:var(--ink-2)}
+:root[data-skin="soft"] .clock{font-weight:300;font-size:26px;color:var(--ink)}
+:root[data-skin="soft"] h2,:root[data-skin="soft"] .settings summary{font-family:var(--font-body);font-weight:500;font-size:16px;letter-spacing:.01em}
+:root[data-skin="soft"] .chip{font-family:var(--font-body);font-weight:500;font-size:12px;letter-spacing:.08em;border:0;padding:6px 14px;box-shadow:inset 3px 3px 6px #1d242f,inset -3px -3px 6px #333e50}
+:root[data-skin="soft"] .now[data-kind="lesson"] .chip{background:var(--surface);color:var(--ink)}
+:root[data-skin="soft"] .now[data-kind="break"] .chip{background:var(--surface);color:var(--rest)}
+:root[data-skin="soft"] .bar{height:6px;box-shadow:inset 2px 2px 4px #1d242f}
+:root[data-skin="soft"] .bar-fill{background:var(--ink-2)}
+:root[data-skin="soft"] .now[data-kind="break"] .bar-fill{background:var(--rest)}
+:root[data-skin="soft"] .blk{border-radius:999px}
+:root[data-skin="soft"] .blk.lesson{border-right:0;top:5px;bottom:5px}
+:root[data-skin="soft"] .blk.past{background:#2c3544}
+:root[data-skin="soft"] .btn{background:var(--surface);border:0;color:var(--ink);font-weight:500;box-shadow:5px 5px 12px #1b212b,-4px -4px 10px #313b4c}
+:root[data-skin="soft"] .btn.primary{background:var(--accent);color:var(--accent-ink)}
+:root[data-skin="soft"] .skin{border:0;background:var(--surface);box-shadow:3px 3px 8px #1b212b,-3px -3px 8px #2f3949}
+:root[data-skin="soft"] .skin[aria-pressed="true"]{color:var(--ink);box-shadow:inset 3px 3px 6px #1b212b,inset -3px -3px 6px #333e50}
+:root[data-skin="soft"] th,:root[data-skin="soft"] td{border-bottom-color:rgba(255,255,255,.05)}
+:root[data-skin="soft"] tr.cur,:root[data-skin="soft"] td.b.cur{background:#2e3848}
+:root[data-skin="soft"] tr.cur td.t,:root[data-skin="soft"] tr.cur td.n{color:var(--ink);font-weight:500}
+:root[data-skin="soft"] td.t{font-weight:300;font-size:17px}
+:root[data-skin="soft"] td.end{font-size:13px;color:var(--ink-3)}
+:root[data-skin="soft"] .add input,:root[data-skin="soft"] .brk,:root[data-skin="soft"] .form input[type=time],:root[data-skin="soft"] .form input[type=number],:root[data-skin="soft"] .form select{background:var(--surface);border:0;border-radius:999px;box-shadow:inset 3px 3px 6px #1b212b,inset -3px -3px 6px #333e50}
+:root[data-skin="soft"] .player{border-radius:20px}
 
 @media (prefers-reduced-motion: reduce){.dot{animation:none}.bar-fill{transition:none}}
 </style>
@@ -313,8 +382,9 @@ input[type=range]{accent-color:var(--accent);width:100%}
     <div class="skins" id="skins" role="group" aria-label="Вигляд">
       <button class="skin" type="button" data-skin="chalk" aria-pressed="true"><span class="sw sw-chalk"></span>Дошка</button>
       <button class="skin" type="button" data-skin="cyber" aria-pressed="false"><span class="sw sw-cyber"></span>Кіберпанк</button>
-      <button class="skin" type="button" data-skin="japan" aria-pressed="false"><span class="sw sw-japan"></span>Японія</button>
-      <button class="skin" type="button" data-skin="persona" aria-pressed="false"><span class="sw sw-persona"></span>Персона 5</button>
+      <button class="skin" type="button" data-skin="y2k" aria-pressed="false"><span class="sw sw-y2k"></span>Y2K</button>
+      <button class="skin" type="button" data-skin="aero" aria-pressed="false"><span class="sw sw-aero"></span>Аеро</button>
+      <button class="skin" type="button" data-skin="soft" aria-pressed="false"><span class="sw sw-soft"></span>Мінімал</button>
     </div>
     <div class="clock" id="clock">10:21:07</div>
   </header>
@@ -1170,7 +1240,7 @@ $('sDuck').addEventListener('change', () => { M.duck = $('sDuck').checked; saveM
 window.addEventListener('pagehide', () => { if(duckBase !== null && yt.ready) yt.player.setVolume(duckBase); });
 
 // skins
-const SKINS = ['chalk', 'cyber', 'japan', 'persona'];
+const SKINS = ['chalk', 'cyber', 'y2k', 'aero', 'soft'];
 function applySkin(){
   const s = SKINS.includes(S.skin) ? S.skin : 'chalk';
   if(s === 'chalk') delete document.documentElement.dataset.skin;
@@ -1182,21 +1252,6 @@ $('skins').addEventListener('click', (e) => {
   if(!b) return;
   S.skin = b.dataset.skin; save(); applySkin();
 });
-// Headings are split into letter tiles once; only the Persona skin styles them as a ransom note.
-function letterTiles(el){
-  const node = [...el.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
-  if(!node) return;
-  const text = node.textContent.trim();
-  const label = document.createElement('span'); label.className = 'sr-only'; label.textContent = text;
-  const wrap = document.createElement('span'); wrap.setAttribute('aria-hidden', 'true');
-  for(const ch of text){
-    if(ch === ' '){ wrap.append(' '); continue; }
-    const s = document.createElement('span'); s.className = 'rn'; s.textContent = ch;
-    wrap.append(s);
-  }
-  node.replaceWith(label, wrap);
-}
-document.querySelectorAll('h2, .settings summary, .logo').forEach(letterTiles);
 applySkin();
 
 // After a reload the browser needs one click before it will play sound again.
