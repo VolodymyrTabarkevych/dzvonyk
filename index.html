@@ -240,6 +240,8 @@ td.b.cur{background:var(--rest-soft);color:var(--rest)}
 .player{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:8px;overflow:hidden;background:var(--track)}
 .player iframe,#yt{position:absolute;left:0;top:0;width:100%;height:auto;aspect-ratio:16/9;border:0}
 .player.is-hide{aspect-ratio:auto;height:60px}
+/* hidden video: a small player makes YouTube stream a low resolution, so it costs less to decode */
+.player.is-hide #yt,.player.is-viz #yt{width:320px;max-width:100%}
 .cover{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;background:inherit}
 .cover canvas{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
 .viz-src{position:absolute;top:10px;left:12px;right:12px;display:flex;justify-content:flex-end;align-items:baseline;flex-wrap:wrap;gap:4px 10px;font-size:12px;color:var(--ink-2);text-align:right;pointer-events:none}
@@ -1022,6 +1024,7 @@ function applyView(){
   const v = M.view;
   $('cover').hidden = v === 'video';
   $('playerBox').classList.toggle('is-hide', v === 'hide');
+  $('playerBox').classList.toggle('is-viz', v === 'viz');
   document.querySelectorAll('#viewSeg [data-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
   if(v === 'viz'){ sizeViz(); if(!V.raf) V.raf = requestAnimationFrame(vizFrame); }
   updateCover();
@@ -1033,9 +1036,7 @@ function updateCover(){
   $('coverPlay').disabled = !M.items.length;
   $('vizConnect').hidden = !(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
   $('vizConnect').textContent = V.analyser ? 'Відключити' : 'Підключити звук';
-  $('vizSrcText').textContent = V.analyser
-    ? 'Візуал чує звук комп’ютера. Панель Chrome унизу екрана можна сховати кнопкою «Сховати» (Hide).'
-    : 'Візуал рухається в такт сам і не чує музики.';
+  $('vizSrcText').textContent = ''; // only connection errors are shown here
 }
 function togglePlay(){
   if(!yt.ready || M.cur < 0){ if(M.items.length) playItem(Math.max(0, M.cur), true); return; }
@@ -1120,7 +1121,7 @@ async function vizConnect(){
     // a small panel at the bottom of the screen that has a "Hide" button, instead of a bar on top of the tab.
     // The video track is kept (stopping it can end the capture) but never shown.
     const stream = await navigator.mediaDevices.getDisplayMedia({
-      video:{frameRate:1, displaySurface:'monitor'}, audio:{suppressLocalAudioPlayback:false},
+      video:{frameRate:{max:1}, width:{max:640}, height:{max:360}, displaySurface:'monitor'}, audio:{suppressLocalAudioPlayback:false},
       systemAudio:'include', monitorTypeSurfaces:'include', selfBrowserSurface:'exclude', surfaceSwitching:'exclude',
     });
     const track = stream.getAudioTracks()[0];
