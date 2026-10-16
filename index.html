@@ -242,6 +242,7 @@ td.b.cur{background:var(--rest-soft);color:var(--rest)}
 .player.is-hide{aspect-ratio:auto;height:60px}
 /* hidden video: a small player makes YouTube stream a low resolution, so it costs less to decode */
 .player.is-hide #yt,.player.is-viz #yt{width:320px;max-width:100%}
+.player.is-viz{aspect-ratio:16/7}
 .cover{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;background:inherit}
 .cover canvas{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
 .viz-src{position:absolute;top:10px;left:12px;right:12px;display:flex;justify-content:flex-end;align-items:baseline;flex-wrap:wrap;gap:4px 10px;font-size:12px;color:var(--ink-2);text-align:right;pointer-events:none}
@@ -1046,6 +1047,17 @@ function sizeViz(){
   const cv = $('viz'), r = $('playerBox').getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
   const w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
   if(cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; }
+  V.dpr = dpr;
+}
+// 48 log-spaced bands from deep bass to the top of the melody range, as FFT bin ranges.
+function makeBands(){
+  const N = V.levels.length, hz = A.ctx.sampleRate / V.analyser.fftSize, lo = 40, hi = 9000, out = [];
+  for(let i = 0; i < N; i++){
+    const a = Math.max(1, Math.floor(lo * Math.pow(hi / lo, i / N) / hz));
+    const b = Math.max(a + 1, Math.ceil(lo * Math.pow(hi / lo, (i + 1) / N) / hz));
+    out.push([a, Math.min(b, V.data.length)]);
+  }
+  return out;
 }
 function vizColors(){
   const cs = getComputedStyle(document.documentElement), get = (n) => cs.getPropertyValue(n).trim();
@@ -1059,12 +1071,12 @@ function vizFrame(ts){
   const C = V.colors, playing = yt.state === 1;
   if(V.analyser){
     V.analyser.getByteFrequencyData(V.data);
-    const top = V.data.length * .72;
     for(let i = 0; i < N; i++){
-      const a = Math.floor(Math.pow(i / N, 1.8) * top), b = Math.max(a + 1, Math.floor(Math.pow((i + 1) / N, 1.8) * top));
-      let s = 0;
-      for(let k = a; k < b; k++) s += V.data[k];
-      T[i] = s / (b - a) / 255;
+      const [a, b] = V.bands[i];
+      let m = 0;
+      for(let k = a; k < b; k++) if(V.data[k] > m) m = V.data[k];
+      // music is bass-heavy: lift the upper bands so the whole width moves
+      T[i] = Math.min(1, Math.pow(m / 255, 1.3) * (.85 + .75 * i / N));
     }
   }else{
     const t = ts / 1000, beat = Math.pow(Math.max(0, Math.sin(t * Math.PI * 3.8)), 10) * .3;
@@ -1078,10 +1090,15 @@ function vizFrame(ts){
     V.levels[i] += d * (d > 0 ? .45 : .1);
   }
   g.clearRect(0, 0, W, H);
-  const padX = W * .06, step = (W - padX * 2) / N, mid = H * .46;
+  // draw between the "connect" link on top and the title bar at the bottom
+  const dpr = V.dpr || 1, top = 36 * dpr, bottom = 58 * dpr, area = Math.max(10, H - top - bottom), mid = top + area / 2;
+  const padX = W * .05, step = (W - padX * 2) / N;
   if(C.skin === 'dots'){
-    // dot-matrix display
-    const rows = 13, pitch = Math.min(step, H * .7 / rows), rad = pitch * .32, c = (rows - 1) / 2;
+    // dot-matrix display: as many rows as fit, always an odd count so there is a centre row
+    let rows = Math.floor(area / step);
+    if(rows % 2 === 0) rows--;
+    rows = Math.max(5, rows);
+    const pitch = Math.min(step, area / rows), rad = pitch * .32, c = (rows - 1) / 2;
     for(let i = 0; i < N; i++){
       const lit = Math.round(V.levels[i] * rows), x = padX + step * (i + .5);
       for(let k = 0; k < rows; k++){
@@ -1097,7 +1114,7 @@ function vizFrame(ts){
     const lw = Math.max(1, step * .12);
     g.fillStyle = C.a;
     for(let i = 0; i < N; i++){
-      const h = Math.max(lw, V.levels[i] * H * .7);
+      const h = Math.max(lw, V.levels[i] * area);
       g.fillRect(padX + step * (i + .5) - lw / 2, mid - h / 2, lw, h);
     }
   }else{
@@ -1106,7 +1123,7 @@ function vizFrame(ts){
     grad.addColorStop(0, C.a); grad.addColorStop(1, C.r);
     g.fillStyle = grad;
     for(let i = 0; i < N; i++){
-      const h = Math.max(bw, V.levels[i] * H * .72), x = padX + step * (i + .5) - bw / 2;
+      const h = Math.max(bw, V.levels[i] * area), x = padX + step * (i + .5) - bw / 2;
       g.beginPath();
       if(g.roundRect) g.roundRect(x, mid - h / 2, bw, h, bw / 2); else g.rect(x, mid - h / 2, bw, h);
       g.fill();
@@ -1134,9 +1151,11 @@ async function vizConnect(){
     ensureCtx(); await A.ctx.resume();
     V.src = A.ctx.createMediaStreamSource(new MediaStream([track]));
     V.analyser = A.ctx.createAnalyser();
-    V.analyser.fftSize = 1024; V.analyser.smoothingTimeConstant = .7;
+    V.analyser.fftSize = 2048; V.analyser.smoothingTimeConstant = .72;
+    V.analyser.minDecibels = -90; V.analyser.maxDecibels = -20;
     V.src.connect(V.analyser);
     V.data = new Uint8Array(V.analyser.frequencyBinCount);
+    V.bands = makeBands();
     V.stream = stream;
     track.addEventListener('ended', vizDisconnect);
     updateCover();
