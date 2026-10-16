@@ -107,7 +107,7 @@
   --bg-pattern:none; --bg-size:auto;
   --r:24px; --chip-r:999px; --btn-r:999px;
   --card-shadow:none;
-  --count-size:clamp(56px,9vw,96px); --count-weight:800; --digit-w:.62em; --colon-w:.3em;
+  --count-size:clamp(56px,9vw,96px); --count-weight:800; --digit-w:.62em; --colon-w:.4em;
   --glow:none;
   color-scheme:dark;
 }
@@ -369,6 +369,9 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="dots"] .now[data-kind="break"] .chip{background:var(--rest);border-color:var(--rest);color:#fff}
 :root[data-skin="dots"] .now-range,:root[data-skin="dots"] td.t,:root[data-skin="dots"] td.n,:root[data-skin="dots"] .ticks{font-family:var(--font-body)}
 :root[data-skin="dots"] td.t{font-size:15px}
+:root[data-skin="dots"] .count .c,:root[data-skin="dots"] .clock .cc{-webkit-text-fill-color:transparent;background-repeat:no-repeat;background-size:.08em .08em;background-image:radial-gradient(circle closest-side,currentColor 80%,transparent),radial-gradient(circle closest-side,currentColor 80%,transparent)}
+:root[data-skin="dots"] .count .c{top:0;background-position:.11em .32em,.11em .52em}
+:root[data-skin="dots"] .clock .cc{background-position:.21em .47em,.21em .67em}
 :root[data-skin="dots"] .bar{height:8px;border-radius:0;background:radial-gradient(#3a3a3a 1.3px,transparent 1.8px) 0 50%/8px 8px}
 :root[data-skin="dots"] .bar-fill{border-radius:0;background:radial-gradient(var(--ink) 1.6px,transparent 2px) 0 50%/8px 8px}
 :root[data-skin="dots"] .now[data-kind="break"] .bar-fill{background:radial-gradient(var(--rest) 1.6px,transparent 2px) 0 50%/8px 8px}
@@ -1128,7 +1131,8 @@ function renderAll(){ renderRows(); renderDay(); lastDate = new Date().toDateStr
 function tick(){
   const now = Date.now(), d = new Date(now);
   if(d.toDateString() !== lastDate) renderAll();
-  $('clock').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+  // colons get their own spans so the dot-matrix skin can draw them as single dots
+  $('clock').innerHTML = [pad(d.getHours()), pad(d.getMinutes()), pad(d.getSeconds())].join('<span class="cc">:</span>');
   $('today').textContent = DOW[d.getDay()] + ', ' + d.getDate() + ' ' + MON[d.getMonth()];
 
   const st = stateAt(now);
