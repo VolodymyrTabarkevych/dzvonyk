@@ -238,7 +238,22 @@ td.b.cur{background:var(--rest-soft);color:var(--rest)}
 .music-grid{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .player{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:8px;overflow:hidden;background:var(--track)}
-.player iframe,#yt{position:absolute;inset:0;width:100%;height:100%;border:0}
+.player iframe,#yt{position:absolute;left:0;top:0;width:100%;height:auto;aspect-ratio:16/9;border:0}
+.player.is-hide{aspect-ratio:auto;height:60px}
+.cover{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;background:inherit}
+.cover canvas{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
+.viz-src{position:absolute;top:10px;left:12px;right:12px;display:flex;justify-content:flex-end;align-items:baseline;flex-wrap:wrap;gap:4px 10px;font-size:12px;color:var(--ink-2);text-align:right;pointer-events:none}
+.viz-src .link{pointer-events:auto;font-size:12px}
+.cover-info{position:relative;display:flex;align-items:center;gap:10px;padding:12px 14px;background:linear-gradient(transparent,rgba(0,0,0,.45))}
+.cover-title{flex:1;min-width:0;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player.is-hide #viz,.player.is-hide .viz-src{display:none}
+.player.is-hide .cover-info{height:100%;background:none}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--btn-r);overflow:hidden}
+.seg button{font:inherit;font-size:12px;font-weight:600;line-height:1.2;padding:6px 10px;border:0;background:transparent;color:var(--ink-2);cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.btn.sm.icon{padding:6px 8px}
 .player-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--ink-2);font-size:14px}
 .playlist{display:flex;flex-direction:column;gap:10px;min-width:0}
 .add{display:flex;flex-direction:column;gap:6px;margin:0}
@@ -474,16 +489,26 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <div class="sec-head">
         <h2>Музика</h2>
         <div class="music-ctl">
-          <button class="btn sm" id="prevBtn" type="button">Попереднє</button>
-          <button class="btn sm" id="nextBtn" type="button">Наступне</button>
+          <div class="seg" id="viewSeg" role="group" aria-label="Що показувати в плеєрі">
+            <button type="button" data-view="video" aria-pressed="true">Відео</button>
+            <button type="button" data-view="viz" aria-pressed="false">Візуал</button>
+            <button type="button" data-view="hide" aria-pressed="false">Сховати</button>
+          </div>
+          <button class="btn sm icon" id="prevBtn" type="button" aria-label="Попереднє" title="Попереднє"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn sm icon" id="nextBtn" type="button" aria-label="Наступне" title="Наступне"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <label class="check"><input type="checkbox" id="sDuck" checked><span>Тихіше на дзвінок</span></label>
         </div>
       </div>
       <div class="music-grid">
         <div>
-          <div class="player">
+          <div class="player" id="playerBox">
             <div id="yt"></div>
             <div class="player-empty" id="playerEmpty">Додай посилання з YouTube, і відео з'явиться тут.</div>
+            <div class="cover" id="cover" hidden>
+              <canvas id="viz" aria-hidden="true"></canvas>
+              <div class="viz-src"><span id="vizSrcText"></span><button class="link" id="vizConnect" type="button">Підключити звук</button></div>
+              <div class="cover-info"><span class="cover-title" id="coverTitle">Нічого не вибрано</span><button class="btn sm" id="coverPlay" type="button">Грати</button></div>
+            </div>
           </div>
           <p class="err" id="ytErr" hidden></p>
         </div>
@@ -895,7 +920,7 @@ function parseYt(s){
 }
 const sameItem = (a, b) => a.type === b.type && (a.type === 'video' ? a.id === b.id : a.list === b.list);
 
-const yt = {player:null, ready:false, pending:null};
+const yt = {player:null, ready:false, pending:null, state:-1};
 function withPlayer(cb){
   yt.pending = cb;
   if(!window.YT || !window.YT.Player) return;        // runs from onYouTubeIframeAPIReady
@@ -943,6 +968,8 @@ function playItem(i, autoplay){
   });
 }
 function onYtState(e){
+  yt.state = e.data;
+  updateCover();
   const it = M.items[M.cur];
   if(e.data === YT.PlayerState.PLAYING && it && !it.title){
     const d = yt.player.getVideoData();
@@ -982,6 +1009,142 @@ function renderTracks(){
     del.setAttribute('aria-label', 'Видалити зі списку');
     li.append(b, del); ol.append(li);
   });
+  updateCover();
+}
+
+/* ---------- music view: video, visualiser, or hidden ---------- */
+// YouTube audio lives in a cross-origin frame, so the page cannot hear it directly.
+// The visualiser moves on its own until the viewer shares this tab's audio.
+if(!['video', 'viz', 'hide'].includes(M.view)) M.view = 'video';
+const V = {analyser:null, data:null, stream:null, src:null, raf:0, levels:new Float32Array(48), target:new Float32Array(48), colors:null};
+
+function applyView(){
+  const v = M.view;
+  $('cover').hidden = v === 'video';
+  $('playerBox').classList.toggle('is-hide', v === 'hide');
+  document.querySelectorAll('#viewSeg [data-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+  if(v === 'viz'){ sizeViz(); if(!V.raf) V.raf = requestAnimationFrame(vizFrame); }
+  updateCover();
+}
+function updateCover(){
+  const it = M.items[M.cur];
+  $('coverTitle').textContent = it ? (it.title || (it.type === 'playlist' ? 'Плейлист' : 'Відео')) : 'Нічого не вибрано';
+  $('coverPlay').textContent = yt.state === 1 ? 'Пауза' : 'Грати';
+  $('coverPlay').disabled = !M.items.length;
+  $('vizConnect').hidden = !(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
+  $('vizConnect').textContent = V.analyser ? 'Відключити' : 'Підключити звук';
+  $('vizSrcText').textContent = V.analyser ? 'Візуал чує звук цієї вкладки.' : 'Візуал рухається в такт сам і не чує музики.';
+}
+function togglePlay(){
+  if(!yt.ready || M.cur < 0){ if(M.items.length) playItem(Math.max(0, M.cur), true); return; }
+  if(yt.state === 1) yt.player.pauseVideo(); else yt.player.playVideo();
+}
+function sizeViz(){
+  const cv = $('viz'), r = $('playerBox').getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+  const w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+  if(cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; }
+}
+function vizColors(){
+  const cs = getComputedStyle(document.documentElement), get = (n) => cs.getPropertyValue(n).trim();
+  return {a:get('--accent'), r:get('--rest'), i:get('--ink-3'), skin:document.documentElement.dataset.skin || 'chalk'};
+}
+function vizFrame(ts){
+  V.raf = 0;
+  if(M.view !== 'viz') return;
+  const cv = $('viz'), g = cv.getContext('2d'), W = cv.width, H = cv.height, N = V.levels.length, T = V.target;
+  if(!V.colors) V.colors = vizColors();
+  const C = V.colors, playing = yt.state === 1;
+  if(V.analyser){
+    V.analyser.getByteFrequencyData(V.data);
+    const top = V.data.length * .72;
+    for(let i = 0; i < N; i++){
+      const a = Math.floor(Math.pow(i / N, 1.8) * top), b = Math.max(a + 1, Math.floor(Math.pow((i + 1) / N, 1.8) * top));
+      let s = 0;
+      for(let k = a; k < b; k++) s += V.data[k];
+      T[i] = s / (b - a) / 255;
+    }
+  }else{
+    const t = ts / 1000, beat = Math.pow(Math.max(0, Math.sin(t * Math.PI * 3.8)), 10) * .3;
+    for(let i = 0; i < N; i++){
+      const wave = .22 + .34 * Math.pow(Math.sin(t * 2.1 + i * .37) * .5 + .5, 2) + .24 * Math.pow(Math.sin(t * 3.3 - i * .23) * .5 + .5, 3);
+      T[i] = playing ? Math.min(1, (wave + beat) * (1 - i / N * .5)) : .03;
+    }
+  }
+  for(let i = 0; i < N; i++){
+    const d = T[i] - V.levels[i];
+    V.levels[i] += d * (d > 0 ? .45 : .1);
+  }
+  g.clearRect(0, 0, W, H);
+  const padX = W * .06, step = (W - padX * 2) / N, mid = H * .46;
+  if(C.skin === 'dots'){
+    // dot-matrix display
+    const rows = 13, pitch = Math.min(step, H * .7 / rows), rad = pitch * .32, c = (rows - 1) / 2;
+    for(let i = 0; i < N; i++){
+      const lit = Math.round(V.levels[i] * rows), x = padX + step * (i + .5);
+      for(let k = 0; k < rows; k++){
+        const on = Math.abs(k - c) <= lit / 2;
+        g.globalAlpha = on ? 1 : .18;
+        g.fillStyle = on ? C.a : C.i;
+        g.beginPath(); g.arc(x, mid + (k - c) * pitch, rad, 0, Math.PI * 2); g.fill();
+      }
+    }
+    g.globalAlpha = 1;
+  }else if(C.skin === 'line'){
+    // hairlines
+    const lw = Math.max(1, step * .12);
+    g.fillStyle = C.a;
+    for(let i = 0; i < N; i++){
+      const h = Math.max(lw, V.levels[i] * H * .7);
+      g.fillRect(padX + step * (i + .5) - lw / 2, mid - h / 2, lw, h);
+    }
+  }else{
+    // rounded bars, accent to break colour
+    const grad = g.createLinearGradient(0, 0, W, 0), bw = step * .56;
+    grad.addColorStop(0, C.a); grad.addColorStop(1, C.r);
+    g.fillStyle = grad;
+    for(let i = 0; i < N; i++){
+      const h = Math.max(bw, V.levels[i] * H * .72), x = padX + step * (i + .5) - bw / 2;
+      g.beginPath();
+      if(g.roundRect) g.roundRect(x, mid - h / 2, bw, h, bw / 2); else g.rect(x, mid - h / 2, bw, h);
+      g.fill();
+    }
+  }
+  V.raf = requestAnimationFrame(vizFrame);
+}
+async function vizConnect(){
+  if(V.analyser){ vizDisconnect(); return; }
+  try{
+    // Chrome/Edge: "share this tab" with its audio; the video track is kept but never shown.
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video:{frameRate:1}, audio:{suppressLocalAudioPlayback:false},
+      preferCurrentTab:true, selfBrowserSurface:'include', systemAudio:'exclude', surfaceSwitching:'exclude',
+    });
+    const track = stream.getAudioTracks()[0];
+    if(!track){
+      stream.getTracks().forEach(t => t.stop());
+      updateCover();
+      $('vizSrcText').textContent = 'Звук не підключився: у вікні вибору залиш увімкненим «Поділитися звуком вкладки».';
+      return;
+    }
+    ensureCtx(); await A.ctx.resume();
+    V.src = A.ctx.createMediaStreamSource(new MediaStream([track]));
+    V.analyser = A.ctx.createAnalyser();
+    V.analyser.fftSize = 1024; V.analyser.smoothingTimeConstant = .7;
+    V.src.connect(V.analyser);
+    V.data = new Uint8Array(V.analyser.frequencyBinCount);
+    V.stream = stream;
+    track.addEventListener('ended', vizDisconnect);
+    updateCover();
+  }catch(e){
+    updateCover();
+    if(e && e.name !== 'NotAllowedError') $('vizSrcText').textContent = 'Не вдалося підключити звук: ' + e.message;
+  }
+}
+function vizDisconnect(){
+  if(V.stream) V.stream.getTracks().forEach(t => t.stop());
+  try{ if(V.src) V.src.disconnect(); }catch(e){}
+  V.stream = V.src = V.analyser = null;
+  updateCover();
 }
 
 // Ducking: music fades to 10% just before each bell and comes back after it.
@@ -1283,6 +1446,12 @@ $('nextBtn').addEventListener('click', () => playItem(M.cur + 1, true));
 $('sDuck').checked = M.duck;
 $('sDuck').addEventListener('change', () => { M.duck = $('sDuck').checked; saveMusic(); });
 window.addEventListener('pagehide', () => { if(duckBase !== null && yt.ready) yt.player.setVolume(duckBase); });
+document.querySelectorAll('#viewSeg [data-view]').forEach(b => b.addEventListener('click', () => { M.view = b.dataset.view; saveMusic(); applyView(); }));
+$('coverPlay').addEventListener('click', togglePlay);
+$('viz').addEventListener('click', togglePlay);
+$('vizConnect').addEventListener('click', vizConnect);
+new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerBox'));
+applyView();
 
 // skins
 const SKINS = ['chalk', 'cyber', 'y2k', 'aero', 'dots', 'line'];
@@ -1296,6 +1465,7 @@ $('skins').addEventListener('click', (e) => {
   const b = e.target.closest('.skin');
   if(!b) return;
   S.skin = b.dataset.skin; save(); applySkin();
+  V.colors = null; // the visualiser picks up the new skin's colours
 });
 applySkin();
 
