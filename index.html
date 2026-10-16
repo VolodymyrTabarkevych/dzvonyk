@@ -1033,7 +1033,9 @@ function updateCover(){
   $('coverPlay').disabled = !M.items.length;
   $('vizConnect').hidden = !(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
   $('vizConnect').textContent = V.analyser ? 'Відключити' : 'Підключити звук';
-  $('vizSrcText').textContent = V.analyser ? 'Візуал чує звук цієї вкладки.' : 'Візуал рухається в такт сам і не чує музики.';
+  $('vizSrcText').textContent = V.analyser
+    ? 'Візуал чує звук комп’ютера. Панель Chrome унизу екрана можна сховати кнопкою «Сховати» (Hide).'
+    : 'Візуал рухається в такт сам і не чує музики.';
 }
 function togglePlay(){
   if(!yt.ready || M.cur < 0){ if(M.items.length) playItem(Math.max(0, M.cur), true); return; }
@@ -1114,16 +1116,18 @@ function vizFrame(ts){
 async function vizConnect(){
   if(V.analyser){ vizDisconnect(); return; }
   try{
-    // Chrome/Edge: "share this tab" with its audio; the video track is kept but never shown.
+    // Chrome/Edge: share the whole screen with system audio. Unlike tab sharing, Chrome then shows
+    // a small panel at the bottom of the screen that has a "Hide" button, instead of a bar on top of the tab.
+    // The video track is kept (stopping it can end the capture) but never shown.
     const stream = await navigator.mediaDevices.getDisplayMedia({
-      video:{frameRate:1}, audio:{suppressLocalAudioPlayback:false},
-      preferCurrentTab:true, selfBrowserSurface:'include', systemAudio:'exclude', surfaceSwitching:'exclude',
+      video:{frameRate:1, displaySurface:'monitor'}, audio:{suppressLocalAudioPlayback:false},
+      systemAudio:'include', monitorTypeSurfaces:'include', selfBrowserSurface:'exclude', surfaceSwitching:'exclude',
     });
     const track = stream.getAudioTracks()[0];
     if(!track){
       stream.getTracks().forEach(t => t.stop());
       updateCover();
-      $('vizSrcText').textContent = 'Звук не підключився: у вікні вибору залиш увімкненим «Поділитися звуком вкладки».';
+      $('vizSrcText').textContent = 'Звук не підключився: у вікні вибору відкрий «Весь екран» і ввімкни «Поділитися системним звуком».';
       return;
     }
     ensureCtx(); await A.ctx.resume();
