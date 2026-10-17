@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Дзвоник</title>
-<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','y2k','aero','dots','line'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
+<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','y2k','aero','dots','line','synth'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
 <meta name="description" content="Особистий розклад дзвінків: уроки й перерви у фіксований час, дзвінки та музика з YouTube.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%23f1cf5e'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23f1cf5e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,6 +123,22 @@
   --r:0px; --chip-r:0px; --btn-r:0px;
   --card-shadow:none;
   --count-size:clamp(64px,10vw,104px); --count-weight:200; --digit-w:.7em; --colon-w:.3em;
+  --glow:none;
+  color-scheme:dark;
+}
+/* Retro: 80s synthwave night. Starry purple sky, striped sunset sun, neon grid rolling toward you, chrome-sunset numerals */
+:root[data-skin="synth"]{
+  --bg:#0d0221; --grid:transparent; --margin-line:transparent; --surface:rgba(22,6,44,.86); --line:#3b1d5e; --track:#2a1048;
+  --ink:#fbeaff; --ink-2:#d0b3e8; --ink-3:#9a7fb5; --accent:#ff3ea5; --accent-ink:#1a0526; --accent-soft:#4a1340;
+  --rest:#36e2f0; --rest-soft:#0f3a4a; --now:#ffd319; --warn:#ffd319; --warn-soft:#3a3010;
+  --font-display:"Russo One","Exo 2",sans-serif;
+  --font-body:"Exo 2","Segoe UI",sans-serif;
+  --font-hand:"Russo One","Exo 2",sans-serif;
+  --bg-pattern:radial-gradient(#fff 1px,transparent 1.6px),radial-gradient(rgba(255,255,255,.65) 1px,transparent 1.6px),linear-gradient(#0d0221 0%,#1f0540 38%,#4a0d5e 56%,#8a2066 64%,#0d0221 64.2%);
+  --bg-size:160px 110px,97px 71px,100% 100%;
+  --r:14px; --chip-r:999px; --btn-r:10px;
+  --card-shadow:0 0 0 1px rgba(255,62,165,.18),0 10px 30px -12px rgba(255,62,165,.35);
+  --count-size:clamp(56px,9vw,92px); --count-weight:400; --digit-w:.72em; --colon-w:.3em;
   --glow:none;
   color-scheme:dark;
 }
@@ -312,6 +328,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .sw-aero{background:linear-gradient(135deg,#1a5ae6 0 55%,#e8f51c 55%)}
 .sw-dots{background:radial-gradient(circle,#e8202a 0 24%,#141414 28%)}
 .sw-line{background:linear-gradient(135deg,#0f0f0f 0 44%,#ff4f00 44% 56%,#0f0f0f 56%)}
+.sw-synth{background:linear-gradient(#ffd319 0 28%,#ff2975 28% 52%,#2a0a4a 52%)}
 
 /* skin-specific type and effects */
 :root[data-skin="cyber"] .logo{font-family:var(--font-body);font-style:italic;font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.08em;text-shadow:-1.5px 0 var(--rest),1.5px 0 var(--accent)}
@@ -430,24 +447,47 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="line"] td.end{font-size:12px;text-transform:uppercase;letter-spacing:.14em}
 :root[data-skin="line"] .add input,:root[data-skin="line"] .brk,:root[data-skin="line"] .form input[type=time],:root[data-skin="line"] .form input[type=number],:root[data-skin="line"] .form select{background:transparent;border:0;border-bottom:1px solid #3a3a3a;border-radius:0}
 :root[data-skin="line"] .player{border-radius:0;background:#161616}
+:root[data-skin="synth"] body{background-attachment:fixed}
+:root[data-skin="synth"] .scene{display:block}
+:root[data-skin="synth"] .wrap{z-index:1}
+:root[data-skin="synth"] .card{border:0}
+:root[data-skin="synth"] .logo{font-family:var(--font-hand);font-style:italic;font-size:26px;text-transform:uppercase;letter-spacing:.04em;color:transparent;background:linear-gradient(#ffd319 10%,#ff8c42 50%,#ff2975 90%);-webkit-background-clip:text;background-clip:text}
+:root[data-skin="synth"] .logo svg{color:#ff3ea5}
+:root[data-skin="synth"] .clock{font-style:italic;color:var(--now);text-shadow:0 0 12px rgba(255,211,25,.45)}
+:root[data-skin="synth"] h2,:root[data-skin="synth"] .settings summary{font-family:var(--font-hand);font-weight:400;font-style:italic;font-size:20px;text-transform:uppercase;letter-spacing:.06em;color:var(--rest);text-shadow:0 0 12px rgba(54,226,240,.45)}
+:root[data-skin="synth"] .chip{font-style:italic}
+:root[data-skin="synth"] .count{font-style:italic;filter:drop-shadow(0 0 10px rgba(255,41,117,.5))}
+:root[data-skin="synth"] .count .d,:root[data-skin="synth"] .count .c{color:transparent;-webkit-text-fill-color:transparent;background:linear-gradient(#ffe36e 12%,#ff8c42 45%,#ff2975 75%,#b026ff 100%);-webkit-background-clip:text;background-clip:text}
+:root[data-skin="synth"] .now[data-kind="break"] .count{filter:drop-shadow(0 0 10px rgba(54,226,240,.45))}
+:root[data-skin="synth"] .now[data-kind="break"] .count .d,:root[data-skin="synth"] .now[data-kind="break"] .count .c{background-image:linear-gradient(#d8fcff 12%,#36e2f0 50%,#7a5cff 100%)}
+:root[data-skin="synth"] .bar-fill{background:linear-gradient(90deg,#ff2975,#ff8c42)}
+:root[data-skin="synth"] .now[data-kind="break"] .bar-fill{background:linear-gradient(90deg,#36e2f0,#7a5cff)}
+:root[data-skin="synth"] .btn.primary{background:linear-gradient(90deg,#ff2975,#ff8c42);border-color:transparent;color:#1a0526}
+:root[data-skin="synth"] .tips{background:var(--surface);border-radius:var(--r);padding:12px 16px}
+/* the timer card carries its own little sunset: a dim striped sun on the right and a neon grid floor */
+:root[data-skin="synth"] .now{position:relative;overflow:hidden;isolation:isolate;background:#16062c}
+:root[data-skin="synth"] .now::before{content:"";position:absolute;z-index:-1;right:2.5%;top:60%;width:min(28%,180px);aspect-ratio:1;transform:translateY(-50%);border-radius:50%;opacity:.42;background:linear-gradient(#ffd319 8%,#ff8c42 38%,#ff2975 72%,#b026ff);-webkit-mask-image:linear-gradient(#000 0 30%,transparent 30% 33%,#000 33% 38%,transparent 38% 42%,#000 42% 46%,transparent 46% 50%,#000 50%);mask-image:linear-gradient(#000 0 30%,transparent 30% 33%,#000 33% 38%,transparent 38% 42%,#000 42% 46%,transparent 46% 50%,#000 50%)}
+:root[data-skin="synth"] .now::after{content:"";position:absolute;z-index:-1;left:-50%;right:-50%;top:60%;height:200%;transform-origin:50% 0;transform:perspective(220px) rotateX(58deg);background:linear-gradient(#16062c,rgba(22,6,44,0) 30%),repeating-linear-gradient(90deg,rgba(255,62,165,.4) 0 1px,transparent 1px 44px),repeating-linear-gradient(0deg,rgba(255,62,165,.4) 0 1px,transparent 1px 30px),#16062c}
+:root[data-skin="synth"] .now-info,:root[data-skin="synth"] .now-range,:root[data-skin="synth"] .hint{text-shadow:0 1px 8px rgba(13,2,33,.95)}
+:root[data-skin="synth"] .sun{display:none}
+.scene{display:none;position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.sun{position:absolute;left:50%;top:64%;width:min(46vmin,440px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(#ffd319 8%,#ff8c42 38%,#ff2975 72%,#b026ff);-webkit-mask-image:linear-gradient(#000 0 30%,transparent 30% 32%,#000 32% 38%,transparent 38% 41%,#000 41% 45%,transparent 45% 49%,#000 49%);mask-image:linear-gradient(#000 0 30%,transparent 30% 32%,#000 32% 38%,transparent 38% 41%,#000 41% 45%,transparent 45% 49%,#000 49%);filter:drop-shadow(0 0 40px rgba(255,41,117,.55))}
+.floor{position:absolute;left:0;right:0;top:64%;bottom:0;overflow:hidden;perspective:260px;perspective-origin:50% 0;background:#0d0221}
+.floor::after{content:"";position:absolute;inset:0;background:linear-gradient(#0d0221 0%,transparent 40%)}
+.plane{position:absolute;left:-60%;right:-60%;top:0;height:220%;transform-origin:50% 0;transform:rotateX(62deg);background:repeating-linear-gradient(90deg,rgba(255,62,165,.6) 0 2px,transparent 2px 70px),repeating-linear-gradient(0deg,rgba(255,62,165,.6) 0 2px,transparent 2px 50px);animation:synthRoll 2.4s linear infinite}
+@keyframes synthRoll{from{transform:rotateX(62deg) translateY(-50px)}to{transform:rotateX(62deg) translateY(0)}}
+@media (prefers-reduced-motion: reduce){.plane{animation:none}}
 
 @media (prefers-reduced-motion: reduce){.dot{animation:none}.bar-fill{transition:none}}
 </style>
 </head>
 <body>
+<div class="scene" aria-hidden="true"><div class="sun"></div><div class="floor"><div class="plane"></div></div></div>
 <div class="wrap">
   <header class="top">
     <div class="brand">
       <span class="logo"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Дзвоник</span>
       <span class="today" id="today">вівторок, 13 жовтня</span>
-    </div>
-    <div class="skins" id="skins" role="group" aria-label="Вигляд">
-      <button class="skin" type="button" data-skin="chalk" aria-pressed="true"><span class="sw sw-chalk"></span>Дошка</button>
-      <button class="skin" type="button" data-skin="cyber" aria-pressed="false"><span class="sw sw-cyber"></span>Неон</button>
-      <button class="skin" type="button" data-skin="y2k" aria-pressed="false"><span class="sw sw-y2k"></span>Y2K</button>
-      <button class="skin" type="button" data-skin="aero" aria-pressed="false"><span class="sw sw-aero"></span>Аеро</button>
-      <button class="skin" type="button" data-skin="dots" aria-pressed="false"><span class="sw sw-dots"></span>Точки</button>
-      <button class="skin" type="button" data-skin="line" aria-pressed="false"><span class="sw sw-line"></span>Лінія</button>
     </div>
     <div class="clock" id="clock">10:21:07</div>
   </header>
@@ -553,6 +593,18 @@ input[type=range]{accent-color:var(--accent);width:100%}
   <details class="card settings" id="settings">
     <summary>Налаштування</summary>
     <form class="form" id="form" autocomplete="off">
+      <fieldset class="field wide">
+        <legend class="lbl">Тема</legend>
+        <div class="skins" id="skins" role="group" aria-label="Тема">
+          <button class="skin" type="button" data-skin="chalk" aria-pressed="true"><span class="sw sw-chalk"></span>Дошка</button>
+          <button class="skin" type="button" data-skin="cyber" aria-pressed="false"><span class="sw sw-cyber"></span>Неон</button>
+          <button class="skin" type="button" data-skin="y2k" aria-pressed="false"><span class="sw sw-y2k"></span>Y2K</button>
+          <button class="skin" type="button" data-skin="aero" aria-pressed="false"><span class="sw sw-aero"></span>Аеро</button>
+          <button class="skin" type="button" data-skin="dots" aria-pressed="false"><span class="sw sw-dots"></span>Точки</button>
+          <button class="skin" type="button" data-skin="line" aria-pressed="false"><span class="sw sw-line"></span>Лінія</button>
+          <button class="skin" type="button" data-skin="synth" aria-pressed="false"><span class="sw sw-synth"></span>Ретро</button>
+        </div>
+      </fieldset>
       <div class="field"><label for="sStart">Початок першого уроку</label><input type="time" id="sStart" value="08:00"></div>
       <div class="field"><label for="sLesson">Тривалість уроку, хв</label><input type="number" id="sLesson" min="1" max="240" inputmode="numeric" value="45"></div>
       <div class="field"><label for="sBreak">Тривалість перерви, хв</label><input type="number" id="sBreak" min="0" max="180" inputmode="numeric" value="15"></div>
@@ -1504,7 +1556,7 @@ new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerB
 applyView();
 
 // skins
-const SKINS = ['chalk', 'cyber', 'y2k', 'aero', 'dots', 'line'];
+const SKINS = ['chalk', 'cyber', 'y2k', 'aero', 'dots', 'line', 'synth'];
 function applySkin(){
   const s = SKINS.includes(S.skin) ? S.skin : 'chalk';
   if(s === 'chalk') delete document.documentElement.dataset.skin;
