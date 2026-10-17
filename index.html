@@ -544,7 +544,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
           </div>
           <button class="btn sm icon" id="prevBtn" type="button" aria-label="Попереднє" title="Попереднє"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <button class="btn sm icon" id="nextBtn" type="button" aria-label="Наступне" title="Наступне"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <label class="check"><input type="checkbox" id="sDuck" checked><span>Тихіше на дзвінок</span></label>
         </div>
       </div>
       <div class="music-grid">
@@ -625,6 +624,10 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <div class="field"><label for="sSoundBreak">Дзвінок на перерву</label><div class="row"><select id="sSoundBreak"></select><button class="btn icon" type="button" data-preview="sSoundBreak" aria-label="Прослухати дзвінок на перерву"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div></div>
       <div class="field"><label for="sWarn">Попередній сигнал</label><div class="row"><select id="sWarn"></select><button class="btn icon" type="button" data-preview="warn" aria-label="Прослухати попередній сигнал"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div></div>
       <div class="field"><label for="sVol">Гучність дзвінків: <span id="volOut">70%</span></label><input type="range" id="sVol" min="0" max="100" step="5" value="70"></div>
+      <div class="field wide">
+        <label class="check"><input type="checkbox" id="sDuck" checked><span>Тихіше на дзвінок</span></label>
+        <p class="fine">Музика з YouTube стишується до 10%, поки звучить дзвінок, і потім плавно повертається.</p>
+      </div>
       <div class="field wide">
         <label class="check"><input type="checkbox" id="sKeep" checked><span>Не давати браузеру приспати вкладку</span></label>
         <p class="fine">Грає дуже тихий фоновий тон, якого не чути. Без нього Chrome або Edge можуть приспати фонову вкладку, і дзвінок спрацює із запізненням.</p>
@@ -1492,7 +1495,7 @@ document.querySelectorAll('[data-preview]').forEach(b => b.addEventListener('cli
 
 $('form').addEventListener('submit', (e) => e.preventDefault());
 $('form').addEventListener('change', (e) => {
-  if(e.target.id === 'sVol') return;
+  if(e.target.id === 'sVol' || e.target.id === 'sDuck') return; // these two have their own handlers
   readForm(); fillForm(); save();
   renderAll();
   setKeepAlive(S.keepAlive && isRunning());
