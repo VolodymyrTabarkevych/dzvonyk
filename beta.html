@@ -689,6 +689,8 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <label class="check"><input type="checkbox" id="fCam"><span>Стежити через вебкамеру</span></label>
         <label class="check"><input type="checkbox" id="fPosture"><span>Нагадувати сидіти рівно</span></label>
         <label class="check"><input type="checkbox" id="fPostureNotify"><span>Нагадування сповіщенням Windows, коли Дзвоник згорнутий</span></label>
+        <label class="lbl" for="fPostureSound">Звук нагадування про поставу</label>
+        <div class="row"><select id="fPostureSound"></select><button class="btn icon" type="button" id="fPostureSoundTry" aria-label="Прослухати звук нагадування про поставу"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
         <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
       </fieldset>
     </form>
@@ -883,8 +885,22 @@ const SYNTH = {
   dingdong: seq([659.25, 523.25], .62, 3.2),
   gong: (sr) => { const out = new Float32Array(Math.floor(5 * sr)); tone(out, sr, 0, 196, GONG, .012); return out; },
   warn: seq([1318.5, 1318.5], .2, 1.2, PIP),
+  // posture reminders: short, soft and rising ("sit up"), unlike any bell
+  postureRise: seq([659.25, 830.61, 987.77], .11, 1.2, [[1,1,.35],[3.9,.22,.08],[9.2,.06,.03]]),
+  postureGlide: (sr) => {
+    const n = Math.floor(.8 * sr), out = new Float32Array(n);
+    let ph = 0;
+    for(let i = 0; i < n; i++){
+      const t = i / sr, f = 420 + 520 * Math.min(1, t / .35);
+      ph += 2 * Math.PI * f / sr;
+      out[i] = Math.sin(ph) * Math.min(1, t / .02) * Math.exp(-Math.max(0, t - .3) / .12);
+    }
+    return out;
+  },
+  postureSoft: seq([1174.66], 0, 1.8),
 };
-const LEVEL = {japan:.85, japanShort:.85, school:.8, rise:.85, chime:.85, dingdong:.85, gong:.9, warn:.45};
+const LEVEL = {japan:.85, japanShort:.85, school:.8, rise:.85, chime:.85, dingdong:.85, gong:.9, warn:.45,
+  postureRise:.5, postureGlide:.35, postureSoft:.4};
 
 /* ---------- audio engine ---------- */
 const A = {ctx:null, master:null, cache:{}, sched:new Map(), keep:null};
@@ -1555,7 +1571,7 @@ document.querySelectorAll('[data-preview]').forEach(b => b.addEventListener('cli
 
 $('form').addEventListener('submit', (e) => e.preventDefault());
 $('form').addEventListener('change', (e) => {
-  if(['sVol', 'sDuck', 'fCam', 'fPosture', 'fPostureNotify'].includes(e.target.id)) return; // these have their own handlers
+  if(['sVol', 'sDuck', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound'].includes(e.target.id)) return; // these have their own handlers
   readForm(); fillForm(); save();
   renderAll();
   setKeepAlive(S.keepAlive && isRunning());
@@ -1642,7 +1658,7 @@ applySkin();
 const FKEY = 'dzvonyk.focus.v1';
 const F = loadFocus();
 function loadFocus(){
-  const base = {cam:false, preview:false, screens:[], posture:false, postureNotify:false, postureBase:null, days:{}};
+  const base = {cam:false, preview:false, screens:[], posture:false, postureNotify:false, postureSound:'postureRise', postureBase:null, days:{}};
   try{
     const o = JSON.parse(localStorage.getItem(FKEY) || 'null');
     if(o && typeof o === 'object') Object.assign(base, o);
@@ -1811,7 +1827,7 @@ function setSlouch(on){
 function remindPosture(){
   $('toastText').textContent = 'Сядь рівно: ти вже 20 секунд сидиш згорбившись.';
   $('toast').hidden = false;
-  try{ if(A.ctx && A.ctx.state === 'running') playNow('warn'); }catch(e){}
+  try{ if(F.postureSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.postureSound || 'postureRise'); }catch(e){}
   if(F.postureNotify && document.hidden && 'Notification' in window && Notification.permission === 'granted'){
     try{ new Notification('Дзвоник', {body:'Сядь рівно: ти вже 20 секунд сидиш згорбившись.', tag:'posture'}); }catch(e){}
   }
@@ -1936,6 +1952,16 @@ function initFocus(){
     saveFocus(); renderFocusNow();
   });
   $('fPostureSet').addEventListener('click', () => { FS.postureCap = {until:Date.now() + 1500, samples:[]}; setSlouch(false); renderFocusNow(); });
+  for(const [v, label] of [['postureRise', 'Перелив угору'], ['postureGlide', 'Ковзання вгору'], ['postureSoft', 'Тихий дзвіночок'], ['none', 'Без звуку']]){
+    const o = document.createElement('option'); o.value = v; o.textContent = label; $('fPostureSound').append(o);
+  }
+  $('fPostureSound').value = F.postureSound || 'postureRise';
+  $('fPostureSound').addEventListener('change', () => { F.postureSound = $('fPostureSound').value; saveFocus(); });
+  $('fPostureSoundTry').addEventListener('click', async () => {
+    const v = $('fPostureSound').value;
+    if(v === 'none') return;
+    try{ ensureCtx(); await A.ctx.resume(); playNow(v); }catch(e){}
+  });
   $('toastOk').addEventListener('click', () => { $('toast').hidden = true; });
   $('fScreensReset').addEventListener('click', () => { F.screens = []; saveFocus(); renderFocusNow(); });
   // after a reload the camera comes back on by itself once the browser remembers the permission
