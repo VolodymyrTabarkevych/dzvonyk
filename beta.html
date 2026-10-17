@@ -605,7 +605,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
     <section class="card sched">
       <div class="sec-head">
         <h2>Розклад дзвінків</h2>
-        <button class="link" id="resetBreaks" type="button" hidden>Скинути перерви</button>
       </div>
       <div class="table-wrap">
         <table>
@@ -613,7 +612,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <tbody id="rows"></tbody>
         </table>
       </div>
-      <p class="fine">Будь-яку перерву можна змінити прямо в таблиці, наприклад зробити довшу перерву на обід.</p>
     </section>
 
     <section class="card focus" id="focusCard" hidden>
@@ -1404,7 +1402,6 @@ function renderRows(){
       inp.classList.toggle('custom', S.overrides[p.n] != null);
     }
   });
-  $('resetBreaks').hidden = Object.keys(S.overrides).length === 0;
 }
 
 let dayInfo = null;
@@ -1594,7 +1591,6 @@ $('rows').addEventListener('change', (e) => {
   inp.value = v;
   save(); renderAll(); syncBells(true); tick();
 });
-$('resetBreaks').addEventListener('click', () => { S.overrides = {}; save(); renderAll(); syncBells(true); tick(); });
 
 // music
 $('addForm').addEventListener('submit', (e) => {
