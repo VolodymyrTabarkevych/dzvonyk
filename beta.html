@@ -686,11 +686,14 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <legend class="lbl">Фокус (бета)</legend>
         <label class="check"><input type="checkbox" id="fCam"><span>Стежити через вебкамеру</span></label>
         <label class="check"><input type="checkbox" id="fPosture"><span>Нагадувати сидіти рівно</span></label>
+        <label class="check"><input type="checkbox" id="fStand"><span>Нагадувати встати на перерві</span></label>
         <label class="check"><input type="checkbox" id="fPostureNotify"><span>Нагадування сповіщенням Windows, коли Дзвоник згорнутий</span></label>
         <label class="lbl" for="fPostureSound">Звук нагадування про поставу</label>
         <div class="row"><select id="fPostureSound"></select><button class="btn icon" type="button" id="fPostureSoundTry" aria-label="Прослухати звук нагадування про поставу"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
         <label class="lbl" for="fPhoneSound">Звук, коли береш телефон на уроці</label>
         <div class="row"><select id="fPhoneSound"></select><button class="btn icon" type="button" id="fPhoneSoundTry" aria-label="Прослухати звук про телефон"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
+        <label class="lbl" for="fStandSound">Звук, коли пора встати на перерві</label>
+        <div class="row"><select id="fStandSound"></select><button class="btn icon" type="button" id="fStandSoundTry" aria-label="Прослухати звук нагадування встати"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
         <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
       </fieldset>
     </form>
@@ -902,9 +905,38 @@ const SYNTH = {
   phoneUhOh: seq([783.99, 622.25], .2, 1.1, [[1,1,.3],[2,.25,.1],[3,.08,.05]]),
   phoneKnock: seq([820, 820], .17, .6, [[1,1,.045],[2.6,.45,.02],[4.1,.2,.012]]),
   phonePips: seq([1567.98, 1567.98, 1567.98], .13, .8, PIP),
+  // break reminder to stand up: light and cheerful, unlike the bells and the lesson reminders
+  standBirds: (sr) => {
+    const out = new Float32Array(Math.floor(.75 * sr));
+    for(const [st, d, f0, f1] of [[0, .1, 2300, 3700], [.15, .1, 2300, 3700], [.36, .18, 3500, 2400]]){
+      const a = Math.floor(st * sr), m = Math.floor(d * sr);
+      let ph = 0;
+      for(let i = 0; i < m && a + i < out.length; i++){
+        const x = i / m;
+        ph += 2 * Math.PI * (f0 + (f1 - f0) * x * x) / sr;
+        out[a + i] += Math.sin(ph) * Math.sin(Math.PI * x);
+      }
+    }
+    return out;
+  },
+  standMarimba: seq([392, 523.25, 659.25, 783.99], .09, 1.3, [[1,1,.28],[4,.35,.04],[9.9,.1,.015]]),
+  standWhistle: (sr) => {
+    const out = new Float32Array(Math.floor(.8 * sr));
+    for(const [st, d, f0, f1] of [[0, .2, 1000, 1800], [.3, .26, 1200, 2100]]){
+      const a = Math.floor(st * sr), m = Math.floor(d * sr);
+      let ph = 0;
+      for(let i = 0; i < m && a + i < out.length; i++){
+        const x = i / m, t = i / sr;
+        ph += 2 * Math.PI * (f0 + (f1 - f0) * Math.sqrt(x)) * (1 + .006 * Math.sin(2 * Math.PI * 6 * t)) / sr;
+        out[a + i] += Math.sin(ph) * Math.min(1, t / .02) * Math.min(1, (1 - x) * 6);
+      }
+    }
+    return out;
+  },
 };
 const LEVEL = {japan:.85, japanShort:.85, school:.8, rise:.85, chime:.85, dingdong:.85, gong:.9, warn:.45,
-  postureRise:.5, postureGlide:.35, postureSoft:.4, phoneUhOh:.55, phoneKnock:.7, phonePips:.4};
+  postureRise:.5, postureGlide:.35, postureSoft:.4, phoneUhOh:.55, phoneKnock:.7, phonePips:.4,
+  standBirds:.3, standMarimba:.55, standWhistle:.3};
 
 /* ---------- audio engine ---------- */
 const A = {ctx:null, master:null, cache:{}, sched:new Map(), keep:null};
@@ -1574,7 +1606,7 @@ document.querySelectorAll('[data-preview]').forEach(b => b.addEventListener('cli
 
 $('form').addEventListener('submit', (e) => e.preventDefault());
 $('form').addEventListener('change', (e) => {
-  if(['sVol', 'sDuck', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound', 'fPhoneSound'].includes(e.target.id)) return; // these have their own handlers
+  if(['sVol', 'sDuck', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound', 'fPhoneSound', 'fStand', 'fStandSound'].includes(e.target.id)) return; // these have their own handlers
   readForm(); fillForm(); save();
   renderAll();
   setKeepAlive(S.keepAlive && isRunning());
@@ -1660,7 +1692,7 @@ applySkin();
 const FKEY = 'dzvonyk.focus.v1';
 const F = loadFocus();
 function loadFocus(){
-  const base = {cam:false, preview:false, screens:[], posture:false, postureNotify:false, postureSound:'postureRise', phoneSound:'phoneUhOh', postureBase:null, days:{}};
+  const base = {cam:false, preview:false, screens:[], posture:false, postureNotify:false, postureSound:'postureRise', phoneSound:'phoneUhOh', stand:true, standSound:'standBirds', postureBase:null, days:{}};
   try{
     const o = JSON.parse(localStorage.getItem(FKEY) || 'null');
     if(o && typeof o === 'object') Object.assign(base, o);
@@ -1676,7 +1708,7 @@ function saveFocus(){ try{ localStorage.setItem(FKEY, JSON.stringify(F)); }catch
 
 const FS = {state:null, reason:'', last:0, savedAt:0, timer:0, n:0, stream:null, camReady:false,
   face:null, phone:null, loading:false, missSince:0, offSince:0, phoneAt:0, jaw:[], capture:null, err:'', renderAt:0,
-  slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, toast:''};
+  slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, sitSince:0, standAt:0, toast:''};
 const FLABEL = {focused:'Фокус', away:'Нема на місці'};
 const FREASON = {phone:'Телефон', talk:'Розмова'};
 const FBUCKET = {focused:'f', distracted:'d', away:'a'};
@@ -1831,8 +1863,11 @@ function setSlouch(on){
 function remindPosture(){
   showToast('posture', 'Сядь рівно: ти вже 20 секунд сидиш згорбившись.');
   try{ if(F.postureSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.postureSound || 'postureRise'); }catch(e){}
+  notify('Сядь рівно: ти вже 20 секунд сидиш згорбившись.', 'posture');
+}
+function notify(body, tag){
   if(F.postureNotify && document.hidden && 'Notification' in window && Notification.permission === 'granted'){
-    try{ new Notification('Дзвоник', {body:'Сядь рівно: ти вже 20 секунд сидиш згорбившись.', tag:'posture'}); }catch(e){}
+    try{ new Notification('Дзвоник', {body, tag}); }catch(e){}
   }
 }
 // Phone on a lesson: a signal a couple of seconds after "Телефон" shows up, then once a minute while it lasts.
@@ -1844,6 +1879,17 @@ function checkPhone(now){
   FS.phoneBeepAt = now;
   showToast('phone', 'Відклади телефон: зараз урок.');
   try{ if(F.phoneSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.phoneSound || 'phoneUhOh'); }catch(e){}
+}
+// Break: still at the desk (the camera sees you, phone or not) a minute into it -> time to get up; repeats every 3 min.
+function checkStand(now){
+  const sitting = F.stand && (FS.state === 'focused' || FS.state === 'distracted') && stateAt(now).mode === 'break';
+  if(!sitting){ FS.sitSince = 0; hideToast('stand'); return; }
+  if(!FS.sitSince) FS.sitSince = now;
+  if(now - FS.sitSince < 60000 || now - FS.standAt < 180000) return;
+  FS.standAt = now;
+  showToast('stand', 'Перерва: встань і розімнись хоча б на хвилинку.');
+  try{ if(F.standSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.standSound || 'standBirds'); }catch(e){}
+  notify('Перерва: встань і розімнись хоча б на хвилинку.', 'stand');
 }
 function sampleFocus(){
   const now = Date.now();
@@ -1872,6 +1918,7 @@ function sampleFocus(){
   }
   FS.last = now; FS.state = s;
   checkPhone(now);
+  checkStand(now);
   if(now - FS.savedAt > 10000){ saveFocus(); FS.savedAt = now; }
 }
 function focusLoop(){
@@ -1980,6 +2027,23 @@ function initFocus(){
     const o = document.createElement('option'); o.value = v; o.textContent = label; $('fPhoneSound').append(o);
   }
   $('fPhoneSound').value = F.phoneSound || 'phoneUhOh';
+  $('fStand').checked = F.stand;
+  $('fStand').addEventListener('change', () => {
+    F.stand = $('fStand').checked; saveFocus();
+    if(!F.stand) hideToast('stand');
+    // like posture, this needs the camera, so switching it on turns the camera on too
+    if(F.stand && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); startCam(); }
+  });
+  for(const [v, label] of [['standBirds', 'Пташки'], ['standMarimba', 'Маримба'], ['standWhistle', 'Свисток'], ['none', 'Без звуку']]){
+    const o = document.createElement('option'); o.value = v; o.textContent = label; $('fStandSound').append(o);
+  }
+  $('fStandSound').value = F.standSound || 'standBirds';
+  $('fStandSound').addEventListener('change', () => { F.standSound = $('fStandSound').value; saveFocus(); });
+  $('fStandSoundTry').addEventListener('click', async () => {
+    const v = $('fStandSound').value;
+    if(v === 'none') return;
+    try{ ensureCtx(); await A.ctx.resume(); playNow(v); }catch(e){}
+  });
   $('fPhoneSound').addEventListener('change', () => { F.phoneSound = $('fPhoneSound').value; saveFocus(); });
   $('fPhoneSoundTry').addEventListener('click', async () => {
     const v = $('fPhoneSound').value;
