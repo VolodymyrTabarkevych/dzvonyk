@@ -194,6 +194,8 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .focus-pill[data-state="focused"] .fdot{background:var(--ok)}
 .focus-pill[data-state="distracted"] .fdot,.focus-pill[data-state="idle"] .fdot{background:var(--mid)}
 .focus-pill[data-state="away"] .fdot{background:var(--bad)}
+.focus-pill[data-state="sit"] .fdot{background:var(--mid)}
+.focus-pill[data-state="rest"] .fdot{background:var(--ok)}
 .focus{display:flex;flex-direction:column;gap:10px}
 .focus-src{font-size:12px;color:var(--ink-3)}
 .focus-sum{margin:0;font-size:14px;color:var(--ink-2)}
@@ -1956,10 +1958,17 @@ function renderFocus(st){
   const day = F.days[dayKey(new Date(now))] || {};
   if(on && inDay && FS.state){
     const b = day[periodKey(st)];
-    $('focusPill').dataset.state = FS.state;
-    const label = FS.state === 'distracted' ? (FREASON[FS.reason] || 'Відволікся') : FLABEL[FS.state];
-    const pct = b && st.mode === 'lesson' && fTotal(b) > 20 ? ' · ' + Math.round((b.f + (b.i || 0)) / fTotal(b) * 100) + '%' : '';
-    $('focusText').textContent = label + pct;
+    if(st.mode === 'break'){
+      // on a break being away is the good outcome and sitting at the desk is what to fix
+      const away = FS.state === 'away';
+      $('focusPill').dataset.state = away ? 'rest' : 'sit';
+      $('focusText').textContent = away ? 'Відпочиваєш' : FS.standAt ? 'Пора встати' : 'За столом';
+    }else{
+      $('focusPill').dataset.state = FS.state;
+      const label = FS.state === 'distracted' ? (FREASON[FS.reason] || 'Відволікся') : FLABEL[FS.state];
+      const pct = b && fTotal(b) > 20 ? ' · ' + Math.round((b.f + (b.i || 0)) / fTotal(b) * 100) + '%' : '';
+      $('focusText').textContent = label + pct;
+    }
   }
   $('focusSrc').textContent = FS.loading ? 'завантажую розпізнавання…' : on ? 'камера' : '';
   const n = F.screens.length;
@@ -1983,6 +1992,7 @@ function renderFocus(st){
   $('focusSum').textContent = (fTotal(tot) > 20
     ? 'На уроках сьогодні: за роботою ' + fmtDur(tot.f + tot.i) + ', телефон і розмови ' + fmtDur(tot.d) + ', не було ' + fmtDur(tot.a) + '.'
     : 'Статистика з’явиться, щойно почнеться урок.')
+    + (fTotal(brk) > 20 ? ' На перервах за столом ' + fmtDur(brk.f + brk.d + brk.i) + ' із ' + fmtDur(fTotal(brk)) + '.' : '')
     + (pg + pb > 60 ? ' Постава: рівно ' + Math.round(pg / (pg + pb) * 100) + '% часу.' : '');
 }
 function initFocus(){
