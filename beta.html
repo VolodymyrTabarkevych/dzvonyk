@@ -689,6 +689,8 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <label class="check"><input type="checkbox" id="fPostureNotify"><span>Нагадування сповіщенням Windows, коли Дзвоник згорнутий</span></label>
         <label class="lbl" for="fPostureSound">Звук нагадування про поставу</label>
         <div class="row"><select id="fPostureSound"></select><button class="btn icon" type="button" id="fPostureSoundTry" aria-label="Прослухати звук нагадування про поставу"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
+        <label class="lbl" for="fPhoneSound">Звук, коли береш телефон на уроці</label>
+        <div class="row"><select id="fPhoneSound"></select><button class="btn icon" type="button" id="fPhoneSoundTry" aria-label="Прослухати звук про телефон"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
         <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
       </fieldset>
     </form>
@@ -896,9 +898,13 @@ const SYNTH = {
     return out;
   },
   postureSoft: seq([1174.66], 0, 1.8),
+  // phone in your hands during a lesson: short and a little insistent, falling ("put it down")
+  phoneUhOh: seq([783.99, 622.25], .2, 1.1, [[1,1,.3],[2,.25,.1],[3,.08,.05]]),
+  phoneKnock: seq([820, 820], .17, .6, [[1,1,.045],[2.6,.45,.02],[4.1,.2,.012]]),
+  phonePips: seq([1567.98, 1567.98, 1567.98], .13, .8, PIP),
 };
 const LEVEL = {japan:.85, japanShort:.85, school:.8, rise:.85, chime:.85, dingdong:.85, gong:.9, warn:.45,
-  postureRise:.5, postureGlide:.35, postureSoft:.4};
+  postureRise:.5, postureGlide:.35, postureSoft:.4, phoneUhOh:.55, phoneKnock:.7, phonePips:.4};
 
 /* ---------- audio engine ---------- */
 const A = {ctx:null, master:null, cache:{}, sched:new Map(), keep:null};
@@ -1568,7 +1574,7 @@ document.querySelectorAll('[data-preview]').forEach(b => b.addEventListener('cli
 
 $('form').addEventListener('submit', (e) => e.preventDefault());
 $('form').addEventListener('change', (e) => {
-  if(['sVol', 'sDuck', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound'].includes(e.target.id)) return; // these have their own handlers
+  if(['sVol', 'sDuck', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound', 'fPhoneSound'].includes(e.target.id)) return; // these have their own handlers
   readForm(); fillForm(); save();
   renderAll();
   setKeepAlive(S.keepAlive && isRunning());
@@ -1654,7 +1660,7 @@ applySkin();
 const FKEY = 'dzvonyk.focus.v1';
 const F = loadFocus();
 function loadFocus(){
-  const base = {cam:false, preview:false, screens:[], posture:false, postureNotify:false, postureSound:'postureRise', postureBase:null, days:{}};
+  const base = {cam:false, preview:false, screens:[], posture:false, postureNotify:false, postureSound:'postureRise', phoneSound:'phoneUhOh', postureBase:null, days:{}};
   try{
     const o = JSON.parse(localStorage.getItem(FKEY) || 'null');
     if(o && typeof o === 'object') Object.assign(base, o);
@@ -1670,7 +1676,7 @@ function saveFocus(){ try{ localStorage.setItem(FKEY, JSON.stringify(F)); }catch
 
 const FS = {state:null, reason:'', last:0, savedAt:0, timer:0, n:0, stream:null, camReady:false,
   face:null, phone:null, loading:false, missSince:0, offSince:0, phoneAt:0, jaw:[], capture:null, err:'', renderAt:0,
-  slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0};
+  slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, toast:''};
 const FLABEL = {focused:'Фокус', away:'Нема на місці'};
 const FREASON = {phone:'Телефон', talk:'Розмова'};
 const FBUCKET = {focused:'f', distracted:'d', away:'a'};
@@ -1815,18 +1821,29 @@ function checkPosture(face, now){
     if(now - FS.remindedAt > 180000){ FS.remindedAt = now; remindPosture(); }
   }
 }
+function showToast(kind, text){ FS.toast = kind; $('toastText').textContent = text; $('toast').hidden = false; }
+function hideToast(kind){ if(FS.toast === kind){ FS.toast = ''; $('toast').hidden = true; } }
 function setSlouch(on){
   if(FS.slouch === on) return;
   FS.slouch = on;
-  $('toast').hidden = !on;
+  if(!on) hideToast('posture');
 }
 function remindPosture(){
-  $('toastText').textContent = 'Сядь рівно: ти вже 20 секунд сидиш згорбившись.';
-  $('toast').hidden = false;
+  showToast('posture', 'Сядь рівно: ти вже 20 секунд сидиш згорбившись.');
   try{ if(F.postureSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.postureSound || 'postureRise'); }catch(e){}
   if(F.postureNotify && document.hidden && 'Notification' in window && Notification.permission === 'granted'){
     try{ new Notification('Дзвоник', {body:'Сядь рівно: ти вже 20 секунд сидиш згорбившись.', tag:'posture'}); }catch(e){}
   }
+}
+// Phone on a lesson: a signal a couple of seconds after "Телефон" shows up, then once a minute while it lasts.
+function checkPhone(now){
+  const on = FS.state === 'distracted' && FS.reason === 'phone' && stateAt(now).mode === 'lesson';
+  if(!on){ FS.phoneSince = 0; hideToast('phone'); return; }
+  if(!FS.phoneSince) FS.phoneSince = now;
+  if(now - FS.phoneSince < 2000 || now - FS.phoneBeepAt < 60000) return;
+  FS.phoneBeepAt = now;
+  showToast('phone', 'Відклади телефон: зараз урок.');
+  try{ if(F.phoneSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.phoneSound || 'phoneUhOh'); }catch(e){}
 }
 function sampleFocus(){
   const now = Date.now();
@@ -1854,6 +1871,7 @@ function sampleFocus(){
     }
   }
   FS.last = now; FS.state = s;
+  checkPhone(now);
   if(now - FS.savedAt > 10000){ saveFocus(); FS.savedAt = now; }
 }
 function focusLoop(){
@@ -1958,7 +1976,17 @@ function initFocus(){
     if(v === 'none') return;
     try{ ensureCtx(); await A.ctx.resume(); playNow(v); }catch(e){}
   });
-  $('toastOk').addEventListener('click', () => { $('toast').hidden = true; });
+  for(const [v, label] of [['phoneUhOh', 'Ой-ой'], ['phoneKnock', 'Стук-стук'], ['phonePips', 'Три писки'], ['none', 'Без звуку']]){
+    const o = document.createElement('option'); o.value = v; o.textContent = label; $('fPhoneSound').append(o);
+  }
+  $('fPhoneSound').value = F.phoneSound || 'phoneUhOh';
+  $('fPhoneSound').addEventListener('change', () => { F.phoneSound = $('fPhoneSound').value; saveFocus(); });
+  $('fPhoneSoundTry').addEventListener('click', async () => {
+    const v = $('fPhoneSound').value;
+    if(v === 'none') return;
+    try{ ensureCtx(); await A.ctx.resume(); playNow(v); }catch(e){}
+  });
+  $('toastOk').addEventListener('click', () => { FS.toast = ''; $('toast').hidden = true; });
   $('fScreensReset').addEventListener('click', () => { F.screens = []; saveFocus(); renderFocusNow(); });
   // after a reload the camera comes back on by itself once the browser remembers the permission
   if(F.cam) startCam();
