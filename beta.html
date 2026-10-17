@@ -210,6 +210,7 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .flegend i{width:8px;height:8px;border-radius:50%;display:inline-block}
 .focus-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .cam{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);padding:12px 14px 12px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--mid);box-shadow:0 10px 30px rgba(0,0,0,.45);color:var(--ink);font-weight:600}
 .cam.show{position:static;width:180px;height:auto;opacity:1;border-radius:10px;transform:scaleX(-1)}
 .now-head{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
 .chip{font-family:var(--font-display);font-weight:500;font-size:15px;text-transform:uppercase;letter-spacing:.08em;padding:3px 12px;border-radius:var(--chip-r);border:1px solid var(--line);color:var(--ink-2)}
@@ -506,6 +507,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 </style>
 </head>
 <body>
+<div class="toast" id="toast" role="status" hidden><span id="toastText">Сядь рівно</span><button class="btn sm" id="toastOk" type="button">Добре</button></div>
 <div class="scene" aria-hidden="true"><div class="sun"></div><div class="floor"><div class="plane"></div></div></div>
 <div class="wrap">
   <header class="top">
@@ -621,13 +623,21 @@ input[type=range]{accent-color:var(--accent);width:100%}
       </div>
       <p class="focus-sum" id="focusSum"></p>
       <div class="focus-rows" id="focusRows"></div>
-      <div class="flegend"><span><i class="f"></i>за роботою</span><span><i class="d"></i>відволікся</span><span><i class="a"></i>не було на місці</span></div>
+      <div class="flegend"><span><i class="f"></i>за роботою</span><span><i class="d"></i>телефон, розмова</span><span><i class="a"></i>не було на місці</span></div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
       <div class="focus-tools" id="camTools" hidden>
         <label class="check"><input type="checkbox" id="fPreview"><span>Показати камеру</span></label>
-        <button class="btn sm" id="fCalib" type="button" title="Сядь як зазвичай і дивись в екран">Я дивлюся в екран</button>
         <button class="link" id="fReset" type="button">Скинути сьогодні</button>
+      </div>
+      <div class="focus-tools" id="postureTools" hidden>
+        <button class="btn sm" id="fPostureSet" type="button" title="Сядь рівно, як треба, і натисни">Я сиджу рівно</button>
+        <span class="focus-src" id="fPostureNote"></span>
+      </div>
+      <div class="focus-tools" id="screenTools">
+        <button class="btn sm" id="fScreen" type="button" title="Подивись на екран і натисни; повтори для кожного екрана">Запам’ятати екран</button>
+        <button class="link" id="fScreensReset" type="button" hidden>Забути екрани</button>
+        <span class="focus-src" id="fScreensNote"></span>
       </div>
     </section>
 
@@ -677,8 +687,9 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <fieldset class="field wide">
         <legend class="lbl">Фокус (бета)</legend>
         <label class="check"><input type="checkbox" id="fCam"><span>Стежити через вебкамеру</span></label>
-        <label class="check"><input type="checkbox" id="fIdle"><span>Рахувати неактивність комп'ютера</span></label>
-        <p class="fine">Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини. Камера бачить, чи ти на місці й чи дивишся в екран; активність ПК показує, коли ти довго не торкався миші й клавіатури або заблокував екран.</p>
+        <label class="check"><input type="checkbox" id="fPosture"><span>Нагадувати сидіти рівно</span></label>
+        <label class="check"><input type="checkbox" id="fPostureNotify"><span>Нагадування сповіщенням Windows, коли Дзвоник згорнутий</span></label>
+        <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
       </fieldset>
     </form>
   </details>
@@ -1544,7 +1555,7 @@ document.querySelectorAll('[data-preview]').forEach(b => b.addEventListener('cli
 
 $('form').addEventListener('submit', (e) => e.preventDefault());
 $('form').addEventListener('change', (e) => {
-  if(['sVol', 'sDuck', 'fCam', 'fIdle'].includes(e.target.id)) return; // these have their own handlers
+  if(['sVol', 'sDuck', 'fCam', 'fPosture', 'fPostureNotify'].includes(e.target.id)) return; // these have their own handlers
   readForm(); fillForm(); save();
   renderAll();
   setKeepAlive(S.keepAlive && isRunning());
@@ -1624,36 +1635,52 @@ $('skins').addEventListener('click', (e) => {
 applySkin();
 
 /* ---------- focus tracking (opt-in beta) ---------- */
-// Everything stays in this browser: the webcam frames are analysed on the spot and only
-// seconds per state (focused / distracted / away / idle) are stored, per lesson and break.
+// Everything stays in this browser: webcam frames are analysed on the spot and only seconds per
+// state are stored, per lesson and break. Where you look does not matter (thinking is work);
+// "distracted" means a phone in your hands, or talking while turned away from your screens
+// (talking at a screen is a meeting).
 const FKEY = 'dzvonyk.focus.v1';
 const F = loadFocus();
 function loadFocus(){
-  const base = {cam:false, idle:false, preview:false, base:null, days:{}};
+  const base = {cam:false, preview:false, screens:[], posture:false, postureNotify:false, postureBase:null, days:{}};
   try{
     const o = JSON.parse(localStorage.getItem(FKEY) || 'null');
     if(o && typeof o === 'object') Object.assign(base, o);
   }catch(e){}
   if(!base.days || typeof base.days !== 'object') base.days = {};
+  if(!Array.isArray(base.screens)) base.screens = [];
   const keep = dayKey(new Date(Date.now() - 31 * 86400e3));
   for(const k of Object.keys(base.days)) if(k < keep) delete base.days[k];
+  delete base.idle; delete base.base; // options of the first beta, no longer used
   return base;
 }
 function saveFocus(){ try{ localStorage.setItem(FKEY, JSON.stringify(F)); }catch(e){} }
 
-const FS = {state:null, last:0, savedAt:0, timer:0, stream:null, camReady:false, landmarker:null, loading:false,
-  missSince:0, offSince:0, calibrating:false, calib:[], idleCtl:null, idleState:null, err:'', renderAt:0};
-const FLABEL = {focused:'Фокус', distracted:'Відволікся', away:'Нема на місці', idle:'Неактивний'};
-const FBUCKET = {focused:'f', distracted:'d', away:'a', idle:'i'};
+const FS = {state:null, reason:'', last:0, savedAt:0, timer:0, n:0, stream:null, camReady:false,
+  face:null, phone:null, loading:false, missSince:0, offSince:0, phoneAt:0, jaw:[], capture:null, err:'', renderAt:0,
+  slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0};
+const FLABEL = {focused:'Фокус', away:'Нема на місці'};
+const FREASON = {phone:'Телефон', talk:'Розмова'};
+const FBUCKET = {focused:'f', distracted:'d', away:'a'};
 const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
-const MP_MODEL = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+const MP_FACE = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+const MP_OBJ = 'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/int8/1/efficientdet_lite0.tflite';
 
-async function createLandmarker(){
+async function createModels(){
   const vision = await import(MP + '/vision_bundle.mjs');
   const files = await vision.FilesetResolver.forVisionTasks(MP + '/wasm');
-  const opts = (delegate) => ({baseOptions:{modelAssetPath:MP_MODEL, delegate}, runningMode:'VIDEO', numFaces:1, outputFaceBlendshapes:true});
-  try{ return await vision.FaceLandmarker.createFromOptions(files, opts('GPU')); }
-  catch(e){ return await vision.FaceLandmarker.createFromOptions(files, opts('CPU')); }
+  const make = async (Task, model, extra, gpu) => {
+    const opts = (delegate) => Object.assign({baseOptions:{modelAssetPath:model, delegate}, runningMode:'VIDEO'}, extra);
+    if(gpu){ try{ return await Task.createFromOptions(files, opts('GPU')); }catch(e){} }
+    return Task.createFromOptions(files, opts('CPU'));
+  };
+  const [face, phone] = await Promise.all([
+    make(vision.FaceLandmarker, MP_FACE, {numFaces:1, outputFaceBlendshapes:true}, true),
+    // the int8 phone model gives garbage on the GPU delegate, so it runs on the CPU (once a second);
+    // it often labels a phone held in a hand as "remote", so both count as a phone
+    make(vision.ObjectDetector, MP_OBJ, {scoreThreshold:.3, maxResults:3, categoryAllowlist:['cell phone', 'remote']}, false),
+  ]);
+  return {face, phone};
 }
 async function startCam(){
   FS.err = '';
@@ -1663,9 +1690,10 @@ async function startCam(){
       const v = $('cam'); v.srcObject = FS.stream; await v.play();
       FS.camReady = true;
     }
-    if(!FS.landmarker){
+    if(!FS.face){
       FS.loading = true; renderFocusNow();
-      FS.landmarker = await createLandmarker();
+      const m = await createModels();
+      FS.face = m.face; FS.phone = m.phone;
     }
   }catch(e){
     FS.err = e && e.name === 'NotAllowedError'
@@ -1679,80 +1707,130 @@ async function startCam(){
 function stopCam(){
   if(FS.stream) FS.stream.getTracks().forEach(t => t.stop());
   FS.stream = null; FS.camReady = false; $('cam').srcObject = null;
-  if(FS.landmarker){ try{ FS.landmarker.close(); }catch(e){} FS.landmarker = null; }
+  for(const k of ['face', 'phone']) if(FS[k]){ try{ FS[k].close(); }catch(e){} FS[k] = null; }
 }
-async function startIdle(fromClick){
-  FS.err = '';
-  try{
-    if(!('IdleDetector' in window)) throw new Error('цей браузер так не вміє, потрібен Chrome або Edge');
-    let perm = 'prompt';
-    try{ perm = (await navigator.permissions.query({name:'idle-detection'})).state; }catch(e){}
-    if(perm !== 'granted'){
-      if(!fromClick){ FS.err = 'Щоб рахувати активність ПК, вимкни й увімкни галочку в налаштуваннях.'; return; }
-      perm = await IdleDetector.requestPermission();
-    }
-    if(perm !== 'granted') throw new Error('браузер не дав дозволу');
-    const ctl = new AbortController(), det = new IdleDetector();
-    const read = () => { FS.idleState = det.screenState === 'locked' ? 'locked' : det.userState; };
-    det.addEventListener('change', read);
-    await det.start({threshold:60000, signal:ctl.signal});
-    read(); FS.idleCtl = ctl;
-  }catch(e){
-    FS.err = 'Активність ПК не ввімкнулась: ' + ((e && e.message) || e);
-    F.idle = false; $('fIdle').checked = false; saveFocus();
-  }
-  focusLoop(); renderFocusNow();
-}
-function stopIdle(){ if(FS.idleCtl) FS.idleCtl.abort(); FS.idleCtl = null; FS.idleState = null; }
 
-// Head pose from a few face landmarks: nose against the face edges (left/right) and forehead/chin (up/down).
-function readFace(res){
+function readFace(res, w, h){
   const lm = res && res.faceLandmarks && res.faceLandmarks[0];
   if(!lm) return null;
-  const L = lm[234], R = lm[454], N = lm[1], T = lm[10], C = lm[152];
   const bs = {};
   if(res.faceBlendshapes && res.faceBlendshapes[0]) for(const c of res.faceBlendshapes[0].categories) bs[c.categoryName] = c.score;
+  // head direction from the nose against the face edges (left/right) and forehead/chin (up/down)
+  const L = lm[234], R = lm[454], N = lm[1], T = lm[10], C = lm[152];
+  // posture: where the eyes sit in the frame, how big the face is (closer = leaning in), head tilt
+  const E1 = lm[33], E2 = lm[263], dx = (E2.x - E1.x) * (w || 1), dy = (E2.y - E1.y) * (h || 1);
   return {
+    jaw: bs.jawOpen || 0,
     yaw: (N.x - (L.x + R.x) / 2) / Math.max(1e-3, Math.abs(R.x - L.x)),
     pitch: (N.y - T.y) / Math.max(1e-3, C.y - T.y),
-    blink: ((bs.eyeBlinkLeft || 0) + (bs.eyeBlinkRight || 0)) / 2,
-    eyesDown: ((bs.eyeLookDownLeft || 0) + (bs.eyeLookDownRight || 0)) / 2,
+    eyeY: (E1.y + E2.y) / 2,
+    eyeDist: Math.hypot(dx, dy),
+    roll: Math.atan2(dy, dx),
   };
 }
 const median = (a) => { const s = a.slice().sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
+// facing one of the screens you showed the camera ("Запам'ятати екран")
+const atScreen = (face) => F.screens.some(z => Math.abs(face.yaw - z.yaw) < .18 && Math.abs(face.pitch - z.pitch) < .12);
+// Talking = the jaw keeps opening and closing for a few seconds; one yawn or a half-open mouth is not talking.
+function isTalking(now){
+  FS.jaw = FS.jaw.filter(j => now - j.t < 3000);
+  if(FS.jaw.length < 6) return false;
+  const v = FS.jaw.map(j => j.v);
+  const open = v.filter(x => x > .14).length, shut = v.filter(x => x < .08).length;
+  return open >= 3 && shut >= 2 && Math.max(...v) - Math.min(...v) > .15;
+}
 function classifyCam(face, now){
-  if(!face){
-    // brief misses happen; only call it "away" after a few seconds without a face
-    if(!FS.missSince) FS.missSince = now;
-    return now - FS.missSince > 4000 ? 'away' : (FS.state || 'away');
-  }
-  FS.missSince = 0;
-  if(!F.base || FS.calibrating){
-    // learn how "looking at the screen" looks from this camera angle
-    FS.calib.push(face);
-    if(FS.calib.length >= 8){
-      F.base = {yaw:median(FS.calib.map(f => f.yaw)), pitch:median(FS.calib.map(f => f.pitch))};
-      FS.calib = []; FS.calibrating = false; saveFocus();
+  const phone = now - FS.phoneAt < 2500;
+  let reason = '';
+  if(face){
+    FS.missSince = 0;
+    if(FS.capture){
+      // learning a screen direction: collect ~1.5 s of head pose, then keep the median
+      FS.capture.samples.push(face);
+      if(now > FS.capture.until && FS.capture.samples.length >= 3){
+        const sm = FS.capture.samples;
+        F.screens.push({yaw:median(sm.map(f => f.yaw)), pitch:median(sm.map(f => f.pitch))});
+        if(F.screens.length > 3) F.screens.shift();
+        FS.capture = null; saveFocus(); renderFocusNow();
+      }
     }
-    return 'focused';
+    FS.jaw.push({t:now, v:face.jaw});
+    // talking counts only when turned away from every known screen; until screens are set, never
+    const talkAway = F.screens.length > 0 && isTalking(now) && !atScreen(face);
+    reason = phone ? 'phone' : talkAway ? 'talk' : '';
+  }else{
+    FS.jaw = [];
+    if(phone) reason = 'phone'; // looking down at a phone often hides the face
+    else{
+      // brief misses happen; only call it "away" after a few seconds without a face
+      if(!FS.missSince) FS.missSince = now;
+      return now - FS.missSince > 4000 ? 'away' : (FS.state || 'away');
+    }
   }
-  const dy = Math.abs(face.yaw - F.base.yaw), dp = face.pitch - F.base.pitch;
-  const off = dy > .16 || dp > .07 || dp < -.12 || (face.eyesDown > .6 && dp > .03) || face.blink > .6;
-  if(!off){ FS.offSince = 0; return 'focused'; }
-  // short glances and blinks don't count; looking away for 2.5 s does
+  if(!reason){ FS.offSince = 0; return 'focused'; }
   if(!FS.offSince) FS.offSince = now;
-  return now - FS.offSince > 2500 || FS.state === 'distracted' ? 'distracted' : 'focused';
+  if(now - FS.offSince > 3000 || FS.state === 'distracted'){ FS.reason = reason; return 'distracted'; }
+  return FS.state || 'focused';
 }
 function periodKey(st){ return st.mode === 'lesson' ? 'L' + st.p.n : st.mode === 'break' ? 'B' + st.p.n : null; }
+
+// Posture: compared with the moment you pressed "Я сиджу рівно". Slouching = the head drops lower in
+// the frame, comes closer to the screen, or tilts to a side, and stays like that for 20 s (lessons only).
+function checkPosture(face, now){
+  const prev = FS.postureLast; FS.postureLast = now;
+  if(face && FS.postureCap){
+    FS.postureCap.samples.push(face);
+    if(now > FS.postureCap.until && FS.postureCap.samples.length >= 3){
+      const sm = FS.postureCap.samples;
+      F.postureBase = {eyeY:median(sm.map(f => f.eyeY)), eyeDist:median(sm.map(f => f.eyeDist)), roll:median(sm.map(f => f.roll))};
+      FS.postureCap = null; saveFocus(); renderFocusNow();
+    }
+    return;
+  }
+  const st = stateAt(now), b = F.postureBase;
+  if(!F.posture || !b || !face || st.mode !== 'lesson'){ FS.slouchSince = 0; setSlouch(false); return; }
+  const bad = face.eyeY - b.eyeY > .06 || face.eyeDist / b.eyeDist > 1.18 || Math.abs(face.roll - b.roll) > .17;
+  if(prev){
+    const day = F.days[dayKey(new Date(now))] || (F.days[dayKey(new Date(now))] = {});
+    const bucket = day[periodKey(st)] || (day[periodKey(st)] = {f:0, d:0, a:0, i:0});
+    const k = bad ? 'pb' : 'pg';
+    bucket[k] = (bucket[k] || 0) + Math.min(now - prev, 5000) / 1000;
+  }
+  if(!bad){ FS.slouchSince = 0; setSlouch(false); return; }
+  if(!FS.slouchSince) FS.slouchSince = now;
+  if(now - FS.slouchSince > 20000){
+    setSlouch(true);
+    if(now - FS.remindedAt > 180000){ FS.remindedAt = now; remindPosture(); }
+  }
+}
+function setSlouch(on){
+  if(FS.slouch === on) return;
+  FS.slouch = on;
+  $('toast').hidden = !on;
+}
+function remindPosture(){
+  $('toastText').textContent = 'Сядь рівно: ти вже 20 секунд сидиш згорбившись.';
+  $('toast').hidden = false;
+  try{ if(A.ctx && A.ctx.state === 'running') playNow('warn'); }catch(e){}
+  if(F.postureNotify && document.hidden && 'Notification' in window && Notification.permission === 'granted'){
+    try{ new Notification('Дзвоник', {body:'Сядь рівно: ти вже 20 секунд сидиш згорбившись.', tag:'posture'}); }catch(e){}
+  }
+}
 function sampleFocus(){
   const now = Date.now();
   let s = null;
-  if(F.cam && FS.landmarker && FS.camReady){
-    try{ s = classifyCam(readFace(FS.landmarker.detectForVideo($('cam'), performance.now())), now); }catch(e){}
-  }
-  if(F.idle && FS.idleState){
-    if(FS.idleState === 'locked') s = 'away';
-    else if(!s) s = FS.idleState === 'idle' ? 'idle' : 'focused';
+  if(F.cam && FS.face && FS.camReady){
+    const v = $('cam'), t = performance.now();
+    try{
+      // the phone detector is the heavier model, so it runs once a second
+      if(FS.phone && FS.n++ % 4 === 0){
+        const r = FS.phone.detectForVideo(v, t);
+        if(r && r.detections && r.detections.length) FS.phoneAt = now;
+      }
+      const face = readFace(FS.face.detectForVideo(v, t + 1), v.videoWidth, v.videoHeight);
+      s = classifyCam(face, now);
+      checkPosture(face, now);
+    }catch(e){}
   }
   // the time since the previous sample belongs to the previous state
   if(FS.last && FS.state){
@@ -1767,74 +1845,101 @@ function sampleFocus(){
   if(now - FS.savedAt > 10000){ saveFocus(); FS.savedAt = now; }
 }
 function focusLoop(){
-  const need = (F.cam && FS.camReady) || (F.idle && FS.idleCtl);
-  if(need && !FS.timer) FS.timer = setInterval(sampleFocus, 500);
+  const need = F.cam && FS.camReady && FS.face;
+  if(need && !FS.timer) FS.timer = setInterval(sampleFocus, 250);
   if(!need && FS.timer){ clearInterval(FS.timer); FS.timer = 0; FS.state = null; FS.last = 0; saveFocus(); }
 }
 
 const fmtDur = (s) => { const m = Math.round(s / 60); return m < 60 ? m + ' хв' : Math.floor(m / 60) + ' год ' + (m % 60) + ' хв'; };
-const fTotal = (b) => b.f + b.d + b.a + b.i;
+const fTotal = (b) => b.f + b.d + b.a + (b.i || 0);
 function focusRow(label, b, isBreak){
   const t = fTotal(b) || 1, row = document.createElement('div');
   row.className = 'frow';
   const name = document.createElement('span'); name.textContent = label;
   const bar = document.createElement('span'); bar.className = 'fbar';
-  for(const [cls, v] of [['f', b.f], ['d', b.d + b.i], ['a', b.a]]){
+  for(const [cls, v] of [['f', b.f + (b.i || 0)], ['d', b.d], ['a', b.a]]){
     const seg = document.createElement('i'); seg.className = cls; seg.style.width = (v / t * 100) + '%'; bar.append(seg);
   }
   const val = document.createElement('span'); val.className = 'fval';
-  val.textContent = isBreak ? 'відпочив ' + Math.round(b.a / t * 100) + '%' : Math.round(b.f / t * 100) + '%';
+  val.textContent = isBreak ? 'відпочив ' + Math.round(b.a / t * 100) + '%' : Math.round((b.f + (b.i || 0)) / t * 100) + '%';
   row.append(name, bar, val);
   return row;
 }
 function renderFocusNow(){ FS.renderAt = 0; renderFocus(stateAt(Date.now())); }
 function renderFocus(st){
-  const on = F.cam || F.idle, now = Date.now(), inDay = st.mode === 'lesson' || st.mode === 'break';
+  const on = F.cam, now = Date.now(), inDay = st.mode === 'lesson' || st.mode === 'break';
   $('focusCard').hidden = !on && !FS.err;
   $('focusPill').hidden = !on || !inDay || !FS.state;
-  $('camTools').hidden = !F.cam;
+  $('camTools').hidden = !on;
+  $('screenTools').hidden = !on;
+  $('postureTools').hidden = !on || !F.posture;
   if(now - FS.renderAt < 1000) return;
   FS.renderAt = now;
   const day = F.days[dayKey(new Date(now))] || {};
   if(on && inDay && FS.state){
     const b = day[periodKey(st)];
     $('focusPill').dataset.state = FS.state;
-    $('focusText').textContent = FLABEL[FS.state] + (b && st.mode === 'lesson' && fTotal(b) > 20 ? ' · ' + Math.round(b.f / fTotal(b) * 100) + '%' : '');
+    const label = FS.state === 'distracted' ? (FREASON[FS.reason] || 'Відволікся') : FLABEL[FS.state];
+    const pct = b && st.mode === 'lesson' && fTotal(b) > 20 ? ' · ' + Math.round((b.f + (b.i || 0)) / fTotal(b) * 100) + '%' : '';
+    $('focusText').textContent = label + pct;
   }
-  $('focusSrc').textContent = FS.loading ? 'завантажую розпізнавання обличчя…'
-    : FS.calibrating || (F.cam && !F.base && FS.camReady) ? 'запам’ятовую, як ти дивишся в екран…'
-    : [F.cam && 'камера', F.idle && 'активність ПК'].filter(Boolean).join(' + ');
+  $('focusSrc').textContent = FS.loading ? 'завантажую розпізнавання…' : on ? 'камера' : '';
+  const n = F.screens.length;
+  $('fScreen').textContent = FS.capture ? 'Дивись на екран…' : n ? 'Запам’ятати ще екран' : 'Запам’ятати екран';
+  $('fScreen').disabled = !!FS.capture || !FS.face;
+  $('fScreensNote').textContent = n ? 'Екранів: ' + n + '. Розмова перед ними — мітинг, не відволікання.' : 'Поки екрани не запам’ятовані, розмови не рахуються.';
+  $('fScreensReset').hidden = !n;
+  $('fPostureSet').textContent = FS.postureCap ? 'Сиди рівно…' : 'Я сиджу рівно';
+  $('fPostureSet').disabled = !!FS.postureCap || !FS.face;
+  $('fPostureNote').textContent = F.postureBase ? 'Правильну поставу запам’ятовано. Пересів? Натисни ще раз.' : 'Сядь рівно, як треба, і натисни, щоб я запам’ятав поставу.';
   $('focusErr').hidden = !FS.err;
   $('focusErr').textContent = FS.err;
   const rows = $('focusRows'); rows.textContent = '';
   const tot = {f:0, d:0, a:0, i:0}, brk = {f:0, d:0, a:0, i:0};
   const lessons = Object.keys(day).filter(k => k[0] === 'L').sort((x, y) => x.slice(1) - y.slice(1));
-  for(const k of lessons){ for(const x in tot) tot[x] += day[k][x]; if(fTotal(day[k]) > 20) rows.append(focusRow('Урок ' + k.slice(1), day[k])); }
-  for(const k of Object.keys(day)) if(k[0] === 'B') for(const x in brk) brk[x] += day[k][x];
+  for(const k of lessons){ for(const x in tot) tot[x] += day[k][x] || 0; if(fTotal(day[k]) > 20) rows.append(focusRow('Урок ' + k.slice(1), day[k])); }
+  for(const k of Object.keys(day)) if(k[0] === 'B') for(const x in brk) brk[x] += day[k][x] || 0;
   if(fTotal(brk) > 20) rows.append(focusRow('Перерви', brk, true));
-  $('focusSum').textContent = fTotal(tot) > 20
-    ? 'На уроках сьогодні: за роботою ' + fmtDur(tot.f) + ', відволікався ' + fmtDur(tot.d + tot.i) + ', не було ' + fmtDur(tot.a) + '.'
-    : 'Статистика з’явиться, щойно почнеться урок.';
+  let pg = 0, pb = 0;
+  for(const k of lessons){ pg += day[k].pg || 0; pb += day[k].pb || 0; }
+  $('focusSum').textContent = (fTotal(tot) > 20
+    ? 'На уроках сьогодні: за роботою ' + fmtDur(tot.f + tot.i) + ', телефон і розмови ' + fmtDur(tot.d) + ', не було ' + fmtDur(tot.a) + '.'
+    : 'Статистика з’явиться, щойно почнеться урок.')
+    + (pg + pb > 60 ? ' Постава: рівно ' + Math.round(pg / (pg + pb) * 100) + '% часу.' : '');
 }
 function initFocus(){
   $('fCam').checked = F.cam;
-  $('fIdle').checked = F.idle;
   $('fPreview').checked = F.preview;
   $('cam').classList.toggle('show', F.preview);
   $('fCam').addEventListener('change', () => {
     F.cam = $('fCam').checked; saveFocus();
     if(F.cam) startCam(); else { stopCam(); FS.err = ''; focusLoop(); renderFocusNow(); }
   });
-  $('fIdle').addEventListener('change', () => {
-    F.idle = $('fIdle').checked; saveFocus();
-    if(F.idle) startIdle(true); else { stopIdle(); FS.err = ''; focusLoop(); renderFocusNow(); }
-  });
   $('fPreview').addEventListener('change', () => { F.preview = $('fPreview').checked; $('cam').classList.toggle('show', F.preview); saveFocus(); });
-  $('fCalib').addEventListener('click', () => { FS.calibrating = true; FS.calib = []; renderFocusNow(); });
   $('fReset').addEventListener('click', () => { delete F.days[dayKey(new Date())]; saveFocus(); renderFocusNow(); });
-  // turn the sources back on after a reload (works without a click once the browser remembers the permission)
+  $('fScreen').addEventListener('click', () => { FS.capture = {until:Date.now() + 1500, samples:[]}; renderFocusNow(); });
+  $('fPosture').checked = F.posture;
+  $('fPostureNotify').checked = F.postureNotify;
+  $('fPosture').addEventListener('change', () => {
+    F.posture = $('fPosture').checked; saveFocus();
+    if(!F.posture) setSlouch(false);
+    // posture needs the camera, so switching it on turns the camera on too
+    if(F.posture && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); startCam(); }
+    renderFocusNow();
+  });
+  $('fPostureNotify').addEventListener('change', async () => {
+    F.postureNotify = $('fPostureNotify').checked;
+    if(F.postureNotify && 'Notification' in window && Notification.permission !== 'granted'){
+      const p = await Notification.requestPermission().catch(() => 'denied');
+      if(p !== 'granted'){ F.postureNotify = false; $('fPostureNotify').checked = false; FS.err = 'Браузер не дозволив сповіщення. Їх можна дозволити в налаштуваннях сайту (значок ліворуч від адреси).'; }
+    }
+    saveFocus(); renderFocusNow();
+  });
+  $('fPostureSet').addEventListener('click', () => { FS.postureCap = {until:Date.now() + 1500, samples:[]}; setSlouch(false); renderFocusNow(); });
+  $('toastOk').addEventListener('click', () => { $('toast').hidden = true; });
+  $('fScreensReset').addEventListener('click', () => { F.screens = []; saveFocus(); renderFocusNow(); });
+  // after a reload the camera comes back on by itself once the browser remembers the permission
   if(F.cam) startCam();
-  if(F.idle) startIdle(false);
   renderFocusNow();
 }
 
