@@ -35,7 +35,7 @@
   --font-body:"Golos Text","Segoe UI",system-ui,sans-serif;
   --font-hand:"Caveat","Segoe Print","Comic Sans MS",cursive;
   --r:10px;
-  --ok:#34d399; --mid:#fbbf24; --bad:#f87171; /* focus states, same in every skin */
+  --ok:#86d6a3; --mid:#f1cf5e; --bad:#f19a9a; /* focus states: at work, phone or talk, away; each skin retunes them */
   --bg-pattern:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   --bg-size:22px 22px;
   --card-shadow:none;
@@ -205,13 +205,37 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .frow{display:grid;grid-template-columns:5.4em minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px;color:var(--ink-2)}
 .fbar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--track)}
 .fbar i{display:block;height:100%}
-.fbar .f,.flegend .f{background:var(--ok)}
-.fbar .d,.flegend .d{background:var(--mid)}
-.fbar .a,.flegend .a{background:var(--bad)}
+.fbar .f,.fstat-l .f{--c:var(--ok)}
+.fbar .d,.fstat-l .d{--c:var(--mid)}
+.fbar .a,.fstat-l .a{--c:var(--bad)}
+.fbar i,.fstat-l i{background:var(--c)}
 .fval{font-variant-numeric:tabular-nums;color:var(--ink)}
-.flegend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-3)}
-.flegend span{display:inline-flex;align-items:center;gap:6px}
-.flegend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.fstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
+.fstat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:calc(var(--r) * .5)}
+.fstat-v{font-family:var(--font-display);font-size:24px;line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fstat-v small{font-family:var(--font-body);font-size:12px;color:var(--ink-3);margin:0 5px 0 3px}
+.fstat-l{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
+.fstat-l i{width:8px;height:8px;border-radius:50%;flex:none}
+/* focus bars in each skin's own look */
+:root:not([data-skin]) .fbar i{background-image:repeating-linear-gradient(100deg,rgba(20,32,27,.35) 0 1px,transparent 1px 4px),linear-gradient(rgba(255,255,255,.14),transparent)}
+:root[data-skin="cyber"]{--ok:#00ff9f;--mid:#fcee0a;--bad:#ff2a6d}
+:root[data-skin="cyber"] .fbar{height:8px;border-radius:0;overflow:visible}
+:root[data-skin="cyber"] .fbar i{box-shadow:0 0 2px var(--c),0 0 10px var(--c)}
+:root[data-skin="cyber"] .fbar i+i{border-left:3px solid var(--surface)}
+:root[data-skin="y2k"]{--ok:#d4ff1e;--mid:#ff5a1f;--bad:#ff2d7a}
+:root[data-skin="y2k"] .fbar{height:14px;border:2px solid var(--line)}
+:root[data-skin="y2k"] .fbar i{background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,.32) 0 6px,transparent 6px 12px)}
+:root[data-skin="aero"]{--ok:#e8f51c;--mid:#ffffff;--bad:#08132b}
+:root[data-skin="aero"] .fbar{height:10px;border-radius:0}
+:root[data-skin="aero"] .fbar i+i{border-left:2px solid var(--surface)}
+:root[data-skin="dots"]{--ok:#f2f2f2;--mid:#8c8c8c;--bad:#e8202a}
+:root[data-skin="dots"] .fbar{height:8px;border-radius:0;background:#333;-webkit-mask:radial-gradient(#000 1.6px,transparent 2.1px) 0 50%/8px 8px;mask:radial-gradient(#000 1.6px,transparent 2.1px) 0 50%/8px 8px}
+:root[data-skin="line"]{--ok:#ff4f00;--mid:#ededed;--bad:#666666}
+:root[data-skin="line"] .fbar{height:4px;border-radius:0}
+:root[data-skin="line"] .fbar i+i{border-left:2px solid var(--bg)}
+:root[data-skin="synth"]{--ok:#36e2f0;--mid:#ffd319;--bad:#ff3ea5}
+:root[data-skin="synth"] .fbar{box-shadow:0 0 14px -3px rgba(255,62,165,.55)}
+:root[data-skin="synth"] .fbar i{background-image:linear-gradient(rgba(255,255,255,.45),transparent 55%,rgba(13,2,33,.25))}
 .focus-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .cam{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);padding:12px 14px 12px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--mid);box-shadow:0 10px 30px rgba(0,0,0,.45);color:var(--ink);font-weight:600}
@@ -247,6 +271,10 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .btn.icon{padding:9px 11px}
 .fold{font:inherit;font-size:13px;font-weight:600;background:none;border:0;padding:4px 0;color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .fold:hover{color:var(--ink)}
+/* the schedule's fold stays beside the heading; in a narrow column the heading wraps instead */
+.sched .sec-head{flex-wrap:nowrap}
+.sched .sec-head h2{min-width:0}
+.fold{flex:none}
 .fold .chev{transition:transform .2s}
 .fold[aria-expanded="true"] .chev{transform:rotate(180deg)}
 .sec-right{display:inline-flex;align-items:center;gap:12px}
@@ -348,8 +376,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .check{display:flex;gap:10px;align-items:center;font-weight:600;font-size:14px;color:var(--ink);cursor:pointer}
 .check input{width:18px;height:18px;accent-color:var(--accent);margin:0}
 
-.tips{display:flex;flex-direction:column;gap:2px;color:var(--ink-2);font-size:14px}
-.tips p{margin:0;max-width:70ch}
 
 /* skin switcher */
 .skins{display:flex;gap:4px;flex-wrap:wrap}
@@ -406,7 +432,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="y2k"] td.end{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
 :root[data-skin="y2k"] .add input,:root[data-skin="y2k"] .brk{border-radius:999px}
 :root[data-skin="y2k"] .brk{padding-inline:10px}
-:root[data-skin="y2k"] .tips{background:var(--surface);border:2px solid #1f1f24;border-radius:22px;padding:12px 16px}
 :root[data-skin="aero"] .card{border:0}
 :root[data-skin="aero"] .logo{font-family:var(--font-hand);font-size:24px;text-transform:uppercase;letter-spacing:.02em}
 :root[data-skin="aero"] .logo svg{width:30px;height:30px;padding:4px;border-radius:2px;background:var(--accent);color:var(--accent-ink)}
@@ -498,7 +523,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="synth"] .bar-fill{background:linear-gradient(90deg,#ff2975,#ff8c42)}
 :root[data-skin="synth"] .now[data-kind="break"] .bar-fill{background:linear-gradient(90deg,#36e2f0,#7a5cff)}
 :root[data-skin="synth"] .btn.primary{background:linear-gradient(90deg,#ff2975,#ff8c42);border-color:transparent;color:#1a0526}
-:root[data-skin="synth"] .tips{background:var(--surface);border-radius:var(--r);padding:12px 16px}
 /* the timer card carries its own little sunset: a dim striped sun on the right and a neon grid floor */
 :root[data-skin="synth"] .now{position:relative;overflow:hidden;isolation:isolate;background:#16062c}
 :root[data-skin="synth"] .now::before{content:"";position:absolute;z-index:-1;right:2.5%;top:60%;width:min(28%,180px);aspect-ratio:1;transform:translateY(-50%);border-radius:50%;opacity:.42;background:linear-gradient(#ffd319 8%,#ff8c42 38%,#ff2975 72%,#b026ff);-webkit-mask-image:linear-gradient(#000 0 30%,transparent 30% 33%,#000 33% 38%,transparent 38% 42%,#000 42% 46%,transparent 46% 50%,#000 50%);mask-image:linear-gradient(#000 0 30%,transparent 30% 33%,#000 33% 38%,transparent 38% 42%,#000 42% 46%,transparent 46% 50%,#000 50%)}
@@ -620,7 +644,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
     <section class="card sched">
       <div class="sec-head">
         <h2>Розклад дзвінків</h2>
-        <button class="fold" id="schedFold" type="button" aria-expanded="false" aria-controls="rows"><span id="schedFoldText">Весь розклад</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="fold" id="schedFold" type="button" aria-expanded="false" aria-controls="rows"><span id="schedFoldText">Усі</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
       <div class="table-wrap">
         <table>
@@ -638,9 +662,9 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <button class="fold" id="focusFold" type="button" aria-expanded="false" aria-controls="focusSetup"><span id="focusFoldText">Налаштувати</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </span>
       </div>
+      <div class="fstats" id="focusStats"></div>
       <p class="focus-sum" id="focusSum"></p>
       <div class="focus-rows" id="focusRows"></div>
-      <div class="flegend"><span><i class="f"></i>за роботою</span><span><i class="d"></i>телефон, розмова</span><span><i class="a"></i>не було на місці</span></div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
       <div class="focus-setup" id="focusSetup" hidden>
@@ -702,6 +726,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <div class="field wide">
         <label class="check"><input type="checkbox" id="sKeep" checked><span>Не давати браузеру приспати вкладку</span></label>
         <p class="fine">Грає дуже тихий фоновий тон, якого не чути. Без нього Chrome або Edge можуть приспати фонову вкладку, і дзвінок спрацює із запізненням.</p>
+        <p class="fine">Вкладку можна згорнути, але не закривати, а комп'ютер не повинен засинати: у сні браузер не грає звук. Розклад, налаштування й музика зберігаються в цьому браузері.</p>
       </div>
       <fieldset class="field wide">
         <legend class="lbl">Фокус (бета)</legend>
@@ -720,11 +745,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
     </form>
   </details>
 
-  <footer class="tips">
-    <p>Тримай цю вкладку відкритою: її можна згорнути, але не закривати.</p>
-    <p>Комп'ютер не повинен засинати, бо в режимі сну браузер не грає звук.</p>
-    <p>Розклад, налаштування і список музики зберігаються в цьому браузері.</p>
-  </footer>
     </div>
   </main>
 </div>
@@ -1624,7 +1644,7 @@ function tick(){
 $('nowFold').addEventListener('click', () => { nowOpen = !nowOpen; applyNowFold(); });
 function applySchedFold(){
   $('schedFold').setAttribute('aria-expanded', String(S.schedFull));
-  $('schedFoldText').textContent = S.schedFull ? 'Згорнути' : 'Весь розклад';
+  $('schedFoldText').textContent = S.schedFull ? 'Менше' : 'Усі';
 }
 $('schedFold').addEventListener('click', () => { S.schedFull = !S.schedFull; save(); applySchedFold(); tick(); });
 applySchedFold();
@@ -1972,7 +1992,18 @@ function focusLoop(){
   if(!need && FS.timer){ clearInterval(FS.timer); FS.timer = 0; FS.state = null; FS.last = 0; saveFocus(); }
 }
 
-const fmtDur = (s) => { const m = Math.round(s / 60); return m < 60 ? m + ' хв' : Math.floor(m / 60) + ' год ' + (m % 60) + ' хв'; };
+// a duration as [number, unit] pairs for the stat tiles: 38 хв, 1 год 5 хв
+const durParts = (s) => { const m = Math.round(s / 60); return m < 60 ? [[m, 'хв']] : [[Math.floor(m / 60), 'год'], [m % 60, 'хв']]; };
+function statTile(dot, parts, label){
+  const tile = document.createElement('div'); tile.className = 'fstat';
+  const v = document.createElement('div'); v.className = 'fstat-v';
+  for(const [num, unit] of parts){ const u = document.createElement('small'); u.textContent = unit; v.append(String(num), u); }
+  const l = document.createElement('div'); l.className = 'fstat-l';
+  if(dot){ const i = document.createElement('i'); i.className = dot; l.append(i); }
+  l.append(label);
+  tile.append(v, l);
+  return tile;
+}
 const fTotal = (b) => b.f + b.d + b.a + (b.i || 0);
 function focusRow(label, b, isBreak){
   const t = fTotal(b) || 1, row = document.createElement('div');
@@ -1980,6 +2011,7 @@ function focusRow(label, b, isBreak){
   const name = document.createElement('span'); name.textContent = label;
   const bar = document.createElement('span'); bar.className = 'fbar';
   for(const [cls, v] of [['f', b.f + (b.i || 0)], ['d', b.d], ['a', b.a]]){
+    if(v <= 0) continue;
     const seg = document.createElement('i'); seg.className = cls; seg.style.width = (v / t * 100) + '%'; bar.append(seg);
   }
   const val = document.createElement('span'); val.className = 'fval';
@@ -2038,11 +2070,15 @@ function renderFocus(st){
   if(fTotal(brk) > 20) rows.append(focusRow('Перерви', brk, true));
   let pg = 0, pb = 0;
   for(const k of lessons){ pg += day[k].pg || 0; pb += day[k].pb || 0; }
-  $('focusSum').textContent = (fTotal(tot) > 20
-    ? 'На уроках сьогодні: за роботою ' + fmtDur(tot.f + tot.i) + ', телефон і розмови ' + fmtDur(tot.d) + ', не було ' + fmtDur(tot.a) + '.'
-    : 'Статистика з’явиться, щойно почнеться урок.')
-    + (fTotal(brk) > 20 ? ' На перервах за столом ' + fmtDur(brk.f + brk.d + brk.i) + ' із ' + fmtDur(fTotal(brk)) + '.' : '')
-    + (pg + pb > 60 ? ' Постава: рівно ' + Math.round(pg / (pg + pb) * 100) + '% часу.' : '');
+  const stats = $('focusStats'); stats.textContent = '';
+  if(fTotal(tot) > 20){
+    stats.append(statTile('f', durParts(tot.f + tot.i), 'за роботою'), statTile('d', durParts(tot.d), 'телефон, розмови'), statTile('a', durParts(tot.a), 'не було'));
+  }
+  if(fTotal(brk) > 20) stats.append(statTile('', [[Math.round((brk.f + brk.d + brk.i) / 60), 'із ' + Math.round(fTotal(brk) / 60) + ' хв']], 'перерви за столом'));
+  if(pg + pb > 60) stats.append(statTile('', [[Math.round(pg / (pg + pb) * 100), '%']], 'постава рівно'));
+  stats.hidden = !stats.childElementCount;
+  $('focusSum').hidden = !stats.hidden;
+  $('focusSum').textContent = 'Статистика з’явиться, щойно почнеться урок.';
 }
 function initFocus(){
   $('fCam').checked = F.cam;
