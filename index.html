@@ -243,6 +243,12 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .btn.sm{font-size:13px;padding:6px 10px}
 .btn.ghost{background:transparent}
 .btn.icon{padding:9px 11px}
+.fold{font:inherit;font-size:13px;font-weight:600;background:none;border:0;padding:4px 0;color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.fold:hover{color:var(--ink)}
+.fold .chev{transition:transform .2s}
+.fold[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.sec-right{display:inline-flex;align-items:center;gap:12px}
+.focus-setup{display:flex;flex-direction:column;gap:12px}
 .link{font:inherit;font-size:13px;background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 
 /* day ruler */
@@ -607,6 +613,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
     <section class="card sched">
       <div class="sec-head">
         <h2>Розклад дзвінків</h2>
+        <button class="fold" id="schedFold" type="button" aria-expanded="false" aria-controls="rows"><span id="schedFoldText">Весь розклад</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
       <div class="table-wrap">
         <table>
@@ -619,13 +626,17 @@ input[type=range]{accent-color:var(--accent);width:100%}
     <section class="card focus" id="focusCard" hidden>
       <div class="sec-head">
         <h2>Фокус</h2>
-        <span class="focus-src" id="focusSrc"></span>
+        <span class="sec-right">
+          <span class="focus-src" id="focusSrc"></span>
+          <button class="fold" id="focusFold" type="button" aria-expanded="false" aria-controls="focusSetup"><span id="focusFoldText">Налаштувати</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </span>
       </div>
       <p class="focus-sum" id="focusSum"></p>
       <div class="focus-rows" id="focusRows"></div>
       <div class="flegend"><span><i class="f"></i>за роботою</span><span><i class="d"></i>телефон, розмова</span><span><i class="a"></i>не було на місці</span></div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
+      <div class="focus-setup" id="focusSetup" hidden>
       <div class="focus-tools" id="camTools" hidden>
         <label class="check"><input type="checkbox" id="fPreview"><span>Показати камеру</span></label>
         <button class="link" id="fReset" type="button">Скинути сьогодні</button>
@@ -638,6 +649,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <button class="btn sm" id="fScreen" type="button" title="Подивись на екран і натисни; повтори для кожного екрана">Запам’ятати екран</button>
         <button class="link" id="fScreensReset" type="button" hidden>Забути екрани</button>
         <span class="focus-src" id="fScreensNote"></span>
+      </div>
       </div>
     </section>
 
@@ -716,7 +728,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 const $ = (id) => document.getElementById(id);
 const MIN = 60000;
 const KEY = 'dzvonyk.v1';
-const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', dayOn:{}};
+const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', dayOn:{}, schedFull:false};
 const SOUNDS = [['japan','Японська школа'],['japanShort','Японська школа, коротко'],['school','Шкільний дзвінок'],['rise','Три ноти вгору'],['chime','Три ноти вниз'],['dingdong','Дінь-дон'],['gong','Гонг']];
 const WARN = [[0,'Без попередження'],[1,'За 1 хв до уроку'],[2,'За 2 хв до уроку'],[3,'За 3 хв до уроку'],[5,'За 5 хв до уроку']];
 const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
@@ -1571,6 +1583,10 @@ function tick(){
     tr.classList.toggle('cur', cur);
     tr.lastElementChild.classList.toggle('cur', brkCur);
   }
+  // folded: only the current lesson (or the break after it) and the next one; outside the school day, the first two
+  const trs = [...$('rows').children];
+  const ci = trs.findIndex(tr => tr.classList.contains('cur') || tr.lastElementChild.classList.contains('cur'));
+  trs.forEach((tr, i) => { tr.hidden = !S.schedFull && !(ci < 0 ? i < 2 : i === ci || i === ci + 1); });
   // day ruler
   if(dayInfo){
     for(const {el, p} of dayInfo.blocks){
@@ -1586,6 +1602,12 @@ function tick(){
 }
 
 /* ---------- wiring ---------- */
+function applySchedFold(){
+  $('schedFold').setAttribute('aria-expanded', String(S.schedFull));
+  $('schedFoldText').textContent = S.schedFull ? 'Згорнути' : 'Весь розклад';
+}
+$('schedFold').addEventListener('click', () => { S.schedFull = !S.schedFull; save(); applySchedFold(); tick(); });
+applySchedFold();
 function fillSelect(el, items){ for(const [v, label] of items){ const o = document.createElement('option'); o.value = v; o.textContent = label; el.append(o); } }
 fillSelect($('sSoundLesson'), SOUNDS);
 fillSelect($('sSoundBreak'), SOUNDS);
@@ -1710,7 +1732,7 @@ function saveFocus(){ try{ localStorage.setItem(FKEY, JSON.stringify(F)); }catch
 
 const FS = {state:null, reason:'', last:0, savedAt:0, timer:0, n:0, stream:null, camReady:false,
   face:null, phone:null, loading:false, missSince:0, offSince:0, phoneAt:0, jaw:[], capture:null, err:'', renderAt:0,
-  slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, sitSince:0, standAt:0, toast:''};
+  setupOpen:false, slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, sitSince:0, standAt:0, toast:''};
 const FLABEL = {focused:'Фокус', away:'Нема на місці'};
 const FREASON = {phone:'Телефон', talk:'Розмова'};
 const FBUCKET = {focused:'f', distracted:'d', away:'a'};
@@ -1882,13 +1904,13 @@ function checkPhone(now){
   showToast('phone', 'Відклади телефон: зараз урок.');
   try{ if(F.phoneSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.phoneSound || 'phoneUhOh'); }catch(e){}
 }
-// Break: any time the camera sees you at the desk (phone or not) for 10 s, it is time to get up; repeats every
-// minute while you stay. Leaving resets it, so coming back before the break is over starts the reminders again.
+// Break: any time the camera sees you at the desk (phone or not) for a minute, it is time to get up; repeats every
+// 3 min while you stay. Leaving resets it, so coming back before the break is over starts the reminders again.
 function checkStand(now){
   const sitting = F.stand && (FS.state === 'focused' || FS.state === 'distracted') && stateAt(now).mode === 'break';
   if(!sitting){ FS.sitSince = 0; FS.standAt = 0; hideToast('stand'); return; }
   if(!FS.sitSince) FS.sitSince = now;
-  if(now - FS.sitSince < 10000 || now - FS.standAt < 60000) return;
+  if(now - FS.sitSince < 60000 || now - FS.standAt < 180000) return;
   FS.standAt = now;
   showToast('stand', 'Перерва: встань і розімнись хоча б на хвилинку.');
   try{ if(F.standSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.standSound || 'standBirds'); }catch(e){}
@@ -1945,6 +1967,13 @@ function focusRow(label, b, isBreak){
   row.append(name, bar, val);
   return row;
 }
+// the camera stays rendered (just invisible) when folded, otherwise its frames stop updating
+function applyFocusFold(){
+  $('focusSetup').hidden = !FS.setupOpen;
+  $('focusFold').setAttribute('aria-expanded', String(FS.setupOpen));
+  $('focusFoldText').textContent = FS.setupOpen ? 'Готово' : 'Налаштувати';
+  $('cam').classList.toggle('show', F.preview && FS.setupOpen);
+}
 function renderFocusNow(){ FS.renderAt = 0; renderFocus(stateAt(Date.now())); }
 function renderFocus(st){
   const on = F.cam, now = Date.now(), inDay = st.mode === 'lesson' || st.mode === 'break';
@@ -1998,12 +2027,13 @@ function renderFocus(st){
 function initFocus(){
   $('fCam').checked = F.cam;
   $('fPreview').checked = F.preview;
-  $('cam').classList.toggle('show', F.preview);
+  applyFocusFold();
+  $('focusFold').addEventListener('click', () => { FS.setupOpen = !FS.setupOpen; applyFocusFold(); renderFocusNow(); });
   $('fCam').addEventListener('change', () => {
     F.cam = $('fCam').checked; saveFocus();
     if(F.cam) startCam(); else { stopCam(); FS.err = ''; focusLoop(); renderFocusNow(); }
   });
-  $('fPreview').addEventListener('change', () => { F.preview = $('fPreview').checked; $('cam').classList.toggle('show', F.preview); saveFocus(); });
+  $('fPreview').addEventListener('change', () => { F.preview = $('fPreview').checked; applyFocusFold(); saveFocus(); });
   $('fReset').addEventListener('click', () => { delete F.days[dayKey(new Date())]; saveFocus(); renderFocusNow(); });
   $('fScreen').addEventListener('click', () => { FS.capture = {until:Date.now() + 1500, samples:[]}; renderFocusNow(); });
   $('fPosture').checked = F.posture;
@@ -2013,6 +2043,8 @@ function initFocus(){
     if(!F.posture) setSlouch(false);
     // posture needs the camera, so switching it on turns the camera on too
     if(F.posture && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); startCam(); }
+    // the "Я сиджу рівно" button lives in the card's setup, so open it when posture is not set yet
+    if(F.posture && !F.postureBase){ FS.setupOpen = true; applyFocusFold(); }
     renderFocusNow();
   });
   $('fPostureNotify').addEventListener('change', async () => {
