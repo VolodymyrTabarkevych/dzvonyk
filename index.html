@@ -2010,7 +2010,9 @@ function focusRow(label, b, isBreak){
   row.className = 'frow';
   const name = document.createElement('span'); name.textContent = label;
   const bar = document.createElement('span'); bar.className = 'fbar';
-  for(const [cls, v] of [['f', b.f + (b.i || 0)], ['d', b.d], ['a', b.a]]){
+  // on a break away is the good part: rested shows in the "good" colour first, time at the desk in the warning one
+  const segs = isBreak ? [['f', b.a], ['d', b.f + b.d + (b.i || 0)]] : [['f', b.f + (b.i || 0)], ['d', b.d], ['a', b.a]];
+  for(const [cls, v] of segs){
     if(v <= 0) continue;
     const seg = document.createElement('i'); seg.className = cls; seg.style.width = (v / t * 100) + '%'; bar.append(seg);
   }
@@ -2074,7 +2076,7 @@ function renderFocus(st){
   if(fTotal(tot) > 20){
     stats.append(statTile('f', durParts(tot.f + tot.i), 'за роботою'), statTile('d', durParts(tot.d), 'телефон, розмови'), statTile('a', durParts(tot.a), 'не було'));
   }
-  if(fTotal(brk) > 20) stats.append(statTile('', [[Math.round((brk.f + brk.d + brk.i) / 60), 'із ' + Math.round(fTotal(brk) / 60) + ' хв']], 'перерви за столом'));
+  if(fTotal(brk) > 20) stats.append(statTile('d', [[Math.round((brk.f + brk.d + brk.i) / 60), 'із ' + Math.round(fTotal(brk) / 60) + ' хв']], 'перерви за столом'));
   if(pg + pb > 60) stats.append(statTile('', [[Math.round(pg / (pg + pb) * 100), '%']], 'постава рівно'));
   stats.hidden = !stats.childElementCount;
   $('focusSum').hidden = !stats.hidden;
