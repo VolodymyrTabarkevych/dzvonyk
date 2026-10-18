@@ -187,6 +187,8 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .now-top{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
 .now-main{display:flex;align-items:flex-end;gap:4px 24px;flex-wrap:wrap}
 .now-info{display:flex;flex-direction:column;gap:2px;padding-bottom:8px;min-width:0}
+.now-right{display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap}
+.now-setup{display:flex;align-items:center;flex-wrap:wrap;gap:10px 24px}
 .today-ctl{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;font-size:14px;color:var(--ink-2)}
 /* focus tracking */
 .focus-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-2)}
@@ -539,13 +541,22 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <span class="now-range" id="range">10:00 – 10:45</span>
           <span class="focus-pill" id="focusPill" hidden><span class="fdot"></span><span id="focusText">Фокус</span></span>
         </div>
+        <div class="now-right">
         <div class="power" id="powerOff">
           <button class="btn primary" id="enableBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="enableLabel">Увімкнути дзвінки</span></button>
         </div>
+        <button class="fold" id="nowFold" type="button" aria-expanded="false" aria-controls="nowSetup" hidden><span id="nowFoldText">Налаштувати</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+      <div class="now-setup" id="nowSetup" hidden>
         <div class="power" id="powerOn" hidden>
           <span class="live"><span class="dot"></span>Дзвінки увімкнені</span>
           <button class="btn sm" id="testBtn" type="button">Тест</button>
           <button class="btn sm ghost" id="disableBtn" type="button">Вимкнути</button>
+        </div>
+        <div class="today-ctl" id="todayCtl" hidden>
+          <span id="todayNote"></span>
+          <button class="btn sm" id="todayBtn" type="button">Дзвінки сьогодні</button>
         </div>
       </div>
       <p class="hint" id="hint">Браузер вмикає звук лише після натискання. Потім вкладку можна згорнути або перейти на іншу: дзвінки гратимуть самі.</p>
@@ -556,10 +567,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <div class="count-sub" id="countSub">до перерви о 10:45</div>
           <div class="next" id="next">Далі перерва 15 хв, потім урок 4 об 11:00</div>
         </div>
-      </div>
-      <div class="today-ctl" id="todayCtl" hidden>
-        <span id="todayNote"></span>
-        <button class="btn sm" id="todayBtn" type="button">Дзвінки сьогодні</button>
       </div>
       <div class="bar" id="bar"><div class="bar-fill" id="barFill"></div></div>
       <div class="day" id="day">
@@ -1083,6 +1090,17 @@ function updatePower(){
   $('hint').hidden = on;
   $('enableLabel').textContent = S.enabled ? 'Відновити дзвінки' : 'Увімкнути дзвінки';
   $('banner').hidden = !(S.enabled && !on);
+  applyNowFold();
+}
+// The main card's own controls (status, test, off, bells on a day off) sit behind "Налаштувати", closed on every load;
+// the button only shows when there is something behind it.
+let nowOpen = false;
+function applyNowFold(){
+  const any = !$('powerOn').hidden || !$('todayCtl').hidden;
+  $('nowFold').hidden = !any;
+  $('nowSetup').hidden = !(any && nowOpen);
+  $('nowFold').setAttribute('aria-expanded', String(nowOpen));
+  $('nowFoldText').textContent = nowOpen ? 'Готово' : 'Налаштувати';
 }
 
 /* ---------- music (YouTube) ---------- */
@@ -1566,6 +1584,7 @@ function tick(){
   // a day off by the weekly schedule can still get bells, just for today
   const offToday = !S.days.includes(d.getDay()), onToday = S.dayOn[dayKey(d)] === true;
   $('todayCtl').hidden = !offToday;
+  applyNowFold();
   $('todayNote').textContent = onToday ? 'Сьогодні вихідний, але дзвінки ввімкнені.' : '';
   $('todayBtn').textContent = onToday ? 'Вимкнути на сьогодні' : 'Дзвінки сьогодні';
 
@@ -1602,6 +1621,7 @@ function tick(){
 }
 
 /* ---------- wiring ---------- */
+$('nowFold').addEventListener('click', () => { nowOpen = !nowOpen; applyNowFold(); });
 function applySchedFold(){
   $('schedFold').setAttribute('aria-expanded', String(S.schedFull));
   $('schedFoldText').textContent = S.schedFull ? 'Згорнути' : 'Весь розклад';
