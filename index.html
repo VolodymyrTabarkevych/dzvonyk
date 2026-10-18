@@ -1797,7 +1797,7 @@ async function createModels(){
   return {face, phone};
 }
 async function startCam(){
-  FS.err = '';
+  FS.err = ''; FS.starting = true;
   try{
     if(!FS.stream){
       FS.stream = await navigator.mediaDevices.getUserMedia({video:{width:{ideal:640}, height:{ideal:480}, frameRate:{max:15}}, audio:false});
@@ -1815,13 +1815,28 @@ async function startCam(){
       : 'Камера не запустилась: ' + ((e && e.message) || e);
     stopCam(); F.cam = false; $('fCam').checked = false; saveFocus();
   }
-  FS.loading = false;
+  FS.loading = false; FS.starting = false;
   focusLoop(); renderFocusNow();
 }
-function stopCam(){
+// Pausing only lets go of the webcam (its light goes off); the loaded models stay for the next lesson.
+function pauseCam(){
   if(FS.stream) FS.stream.getTracks().forEach(t => t.stop());
   FS.stream = null; FS.camReady = false; $('cam').srcObject = null;
+  focusLoop();
+  setSlouch(false);
+  for(const k of ['posture', 'phone', 'stand']) hideToast(k);
+}
+function stopCam(){
+  pauseCam();
   for(const k of ['face', 'phone']) if(FS[k]){ try{ FS[k].close(); }catch(e){} FS[k] = null; }
+}
+// The camera is only needed on lessons and breaks (a day off counts only with "Дзвінки сьогодні"),
+// or while its setup is open; the rest of the time it is off.
+function syncCam(st){
+  if(FS.starting) return;
+  const want = F.cam && (FS.setupOpen || st.mode === 'lesson' || st.mode === 'break');
+  if(want && (!FS.stream || !FS.face)) startCam();
+  else if(!want && FS.stream) pauseCam();
 }
 
 function readFace(res, w, h){
@@ -2030,6 +2045,7 @@ function applyFocusFold(){
 }
 function renderFocusNow(){ FS.renderAt = 0; renderFocus(stateAt(Date.now())); }
 function renderFocus(st){
+  syncCam(st);
   const on = F.cam, now = Date.now(), inDay = st.mode === 'lesson' || st.mode === 'break';
   $('focusCard').hidden = !on && !FS.err;
   $('focusPill').hidden = !on || !inDay || !FS.state;
@@ -2053,7 +2069,7 @@ function renderFocus(st){
       $('focusText').textContent = label + pct;
     }
   }
-  $('focusSrc').textContent = FS.loading ? 'завантажую розпізнавання…' : on ? 'камера' : '';
+  $('focusSrc').textContent = FS.loading ? 'завантажую розпізнавання…' : !on ? '' : FS.stream ? 'камера' : 'камера на паузі';
   const n = F.screens.length;
   $('fScreen').textContent = FS.capture ? 'Дивись на екран…' : n ? 'Запам’ятати ще екран' : 'Запам’ятати екран';
   $('fScreen').disabled = !!FS.capture || !FS.face;
@@ -2089,7 +2105,8 @@ function initFocus(){
   $('focusFold').addEventListener('click', () => { FS.setupOpen = !FS.setupOpen; applyFocusFold(); renderFocusNow(); });
   $('fCam').addEventListener('change', () => {
     F.cam = $('fCam').checked; saveFocus();
-    if(F.cam) startCam(); else { stopCam(); FS.err = ''; focusLoop(); renderFocusNow(); }
+    if(!F.cam){ stopCam(); FS.err = ''; }
+    renderFocusNow();
   });
   $('fPreview').addEventListener('change', () => { F.preview = $('fPreview').checked; applyFocusFold(); saveFocus(); });
   $('fReset').addEventListener('click', () => { delete F.days[dayKey(new Date())]; saveFocus(); renderFocusNow(); });
@@ -2100,7 +2117,7 @@ function initFocus(){
     F.posture = $('fPosture').checked; saveFocus();
     if(!F.posture) setSlouch(false);
     // posture needs the camera, so switching it on turns the camera on too
-    if(F.posture && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); startCam(); }
+    if(F.posture && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); renderFocusNow(); }
     // the "Я сиджу рівно" button lives in the card's setup, so open it when posture is not set yet
     if(F.posture && !F.postureBase){ FS.setupOpen = true; applyFocusFold(); }
     renderFocusNow();
@@ -2133,7 +2150,7 @@ function initFocus(){
     F.stand = $('fStand').checked; saveFocus();
     if(!F.stand) hideToast('stand');
     // like posture, this needs the camera, so switching it on turns the camera on too
-    if(F.stand && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); startCam(); }
+    if(F.stand && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); renderFocusNow(); }
   });
   for(const [v, label] of [['standBirds', 'Пташки'], ['standMarimba', 'Маримба'], ['standWhistle', 'Свисток'], ['none', 'Без звуку']]){
     const o = document.createElement('option'); o.value = v; o.textContent = label; $('fStandSound').append(o);
@@ -2153,8 +2170,7 @@ function initFocus(){
   });
   $('toastOk').addEventListener('click', () => { FS.toast = ''; $('toast').hidden = true; });
   $('fScreensReset').addEventListener('click', () => { F.screens = []; saveFocus(); renderFocusNow(); });
-  // after a reload the camera comes back on by itself once the browser remembers the permission
-  if(F.cam) startCam();
+  // after a reload the camera comes back on by itself (once the browser remembers the permission) when a lesson or break is on
   renderFocusNow();
 }
 
