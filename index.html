@@ -227,8 +227,9 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fbar i,.fstat-l i{background:var(--c)}
 .fval{font-variant-numeric:tabular-nums;color:var(--ink)}
 .fstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
-.fstat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:calc(var(--r) * .5)}
-.fstat-v{font-family:var(--font-display);font-size:24px;line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fstat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:calc(var(--r) * .5);container-type:inline-size}
+/* the number shrinks with its tile, so wide display fonts (Neon, Y2K) still fit */
+.fstat-v{font-family:var(--font-display);font-size:min(24px,19cqi);line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 .fstat-v small{font-family:var(--font-body);font-size:12px;color:var(--ink-3);margin:0 5px 0 3px}
 .fstat-l{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
 .fstat-l i{width:8px;height:8px;border-radius:50%;flex:none}
@@ -356,10 +357,18 @@ td.b.cur{background:var(--rest-soft);color:var(--rest)}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .btn.sm.icon{padding:6px 8px}
 .player-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--ink-2);font-size:14px}
-.playlist{display:flex;flex-direction:column;gap:10px;min-width:0}
+.player-wrap{position:relative}
+/* the track list opens over the player, so choosing a song never needs the page scrolled */
+.list-panel{position:absolute;z-index:5;left:0;right:0;top:0;min-height:100%;max-height:min(460px,72vh);display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(var(--surface),var(--surface)),var(--bg);box-shadow:0 18px 40px -14px rgba(0,0,0,.75)}
+.list-panel .tracks{flex:1;min-height:0;max-height:none}
+.lp-head{display:flex;align-items:center;gap:8px}
+.lp-head input{flex:1;min-width:0}
+.lp-head .btn{margin-left:auto}
+.lcount{min-width:1.7em;padding:1px 6px;border-radius:999px;background:var(--accent-soft);color:var(--ink);font-size:11px;font-weight:700;text-align:center}
+.player-empty{flex-direction:column;gap:12px}
 .add{display:flex;flex-direction:column;gap:6px;margin:0}
 .lbl{font-size:13px;font-weight:600;color:var(--ink-2);padding:0}
-.add input{flex:1;min-width:0;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.add input,.lp-head input{flex:1;min-width:0;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
 .tracks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);max-height:160px;overflow-y:auto}
 .trk{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
 .trk-play{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left;background:none;border:0;padding:8px 8px;font:inherit;color:var(--ink);cursor:pointer}
@@ -449,7 +458,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="y2k"] .skin[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#0a0a0a}
 :root[data-skin="y2k"] td.t{font-size:14px}
 :root[data-skin="y2k"] td.end{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
-:root[data-skin="y2k"] .add input,:root[data-skin="y2k"] .brk{border-radius:999px}
+:root[data-skin="y2k"] .add input,:root[data-skin="y2k"] .lp-head input,:root[data-skin="y2k"] .brk{border-radius:999px}
 :root[data-skin="y2k"] .brk{padding-inline:10px}
 :root[data-skin="aero"] .card{border:0}
 :root[data-skin="aero"] .logo{font-family:var(--font-hand);font-size:24px;text-transform:uppercase;letter-spacing:.02em}
@@ -471,7 +480,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="aero"] tr.cur td.t,:root[data-skin="aero"] tr.cur td.n{color:var(--accent)}
 :root[data-skin="aero"] td.b.cur{color:var(--rest)}
 :root[data-skin="aero"] td.end{font-size:13px;text-transform:uppercase;color:var(--accent)}
-:root[data-skin="aero"] .add input,:root[data-skin="aero"] .brk,:root[data-skin="aero"] .form input[type=time],:root[data-skin="aero"] .form input[type=number],:root[data-skin="aero"] .form select{background:var(--bg);border:1px solid rgba(255,255,255,.35);border-radius:0;color:var(--ink)}
+:root[data-skin="aero"] .add input,:root[data-skin="aero"] .lp-head input,:root[data-skin="aero"] .brk,:root[data-skin="aero"] .form input[type=time],:root[data-skin="aero"] .form input[type=number],:root[data-skin="aero"] .form select{background:var(--bg);border:1px solid rgba(255,255,255,.35);border-radius:0;color:var(--ink)}
 :root[data-skin="aero"] .player{border-radius:0;background:var(--bg)}
 :root[data-skin="aero"] .sched::after{content:"";display:block;height:34px;margin-top:14px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 9px,var(--ink) 9px 13px,transparent 13px 15px,var(--ink) 15px 16px,transparent 16px 21px)}
 :root[data-skin="dots"] .card{border:0}
@@ -500,7 +509,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="dots"] tr.cur{background:#1f1f1f}
 :root[data-skin="dots"] tr.cur td.n{color:var(--rest)}
 :root[data-skin="dots"] td.end{font-size:12px;text-transform:uppercase;letter-spacing:.1em}
-:root[data-skin="dots"] .add input,:root[data-skin="dots"] .brk,:root[data-skin="dots"] .form input[type=time],:root[data-skin="dots"] .form input[type=number],:root[data-skin="dots"] .form select{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:999px}
+:root[data-skin="dots"] .add input,:root[data-skin="dots"] .lp-head input,:root[data-skin="dots"] .brk,:root[data-skin="dots"] .form input[type=time],:root[data-skin="dots"] .form input[type=number],:root[data-skin="dots"] .form select{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:999px}
 :root[data-skin="dots"] .player{border-radius:16px;background:#0a0a0a}
 :root[data-skin="line"] .card{border:0;border-top:1px solid var(--line);border-radius:0;padding-inline:0}
 :root[data-skin="line"] .logo{font-family:var(--font-body);font-weight:600;font-size:20px;letter-spacing:-.01em}
@@ -524,7 +533,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="line"] td.b.cur{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
 :root[data-skin="line"] td.t{font-weight:300;font-size:18px}
 :root[data-skin="line"] td.end{font-size:12px;text-transform:uppercase;letter-spacing:.14em}
-:root[data-skin="line"] .add input,:root[data-skin="line"] .brk,:root[data-skin="line"] .form input[type=time],:root[data-skin="line"] .form input[type=number],:root[data-skin="line"] .form select{background:transparent;border:0;border-bottom:1px solid #3a3a3a;border-radius:0}
+:root[data-skin="line"] .add input,:root[data-skin="line"] .lp-head input,:root[data-skin="line"] .brk,:root[data-skin="line"] .form input[type=time],:root[data-skin="line"] .form input[type=number],:root[data-skin="line"] .form select{background:transparent;border:0;border-bottom:1px solid #3a3a3a;border-radius:0}
 :root[data-skin="line"] .player{border-radius:0;background:#161616}
 :root[data-skin="synth"] body{background-attachment:fixed}
 :root[data-skin="synth"] .scene{display:block}
@@ -660,32 +669,38 @@ input[type=range]{accent-color:var(--accent);width:100%}
           </div>
           <button class="btn sm icon" id="prevBtn" type="button" aria-label="Попереднє" title="Попереднє"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <button class="btn sm icon" id="nextBtn" type="button" aria-label="Наступне" title="Наступне"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn sm" id="listBtn" type="button" aria-expanded="false" aria-controls="listPanel"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M5.5 4h8M5.5 8h8M5.5 12h8M2.5 4h0M2.5 8h0M2.5 12h0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Список<span class="lcount" id="listCount">0</span></button>
         </div>
       </div>
       <div class="music-grid">
-        <div>
+        <div class="player-wrap">
           <div class="player" id="playerBox">
             <div id="yt"></div>
-            <div class="player-empty" id="playerEmpty">Додай посилання з YouTube, і відео з'явиться тут.</div>
+            <div class="player-empty" id="playerEmpty"><span>Додай посилання з YouTube, і відео з'явиться тут.</span><button class="btn sm" id="emptyAdd" type="button">Додати посилання</button></div>
             <div class="cover" id="cover" hidden>
               <canvas id="viz" aria-hidden="true"></canvas>
               <div class="viz-src"><span id="vizSrcText"></span><button class="link" id="vizConnect" type="button">Підключити звук</button></div>
               <div class="cover-info"><span class="cover-title" id="coverTitle">Нічого не вибрано</span><button class="btn sm" id="coverPlay" type="button">Грати</button></div>
             </div>
           </div>
-          <p class="err" id="ytErr" hidden></p>
-        </div>
-        <div class="playlist">
-          <form class="add" id="addForm" novalidate>
-            <label class="sr-only" for="ytUrl">Посилання на відео або плейлист YouTube</label>
-            <div class="row">
-              <input type="text" id="ytUrl" inputmode="url" autocomplete="off" placeholder="Встав посилання на відео або плейлист YouTube">
-              <button class="btn primary" type="submit">Додати</button>
+          <div class="list-panel" id="listPanel" hidden>
+            <div class="lp-head">
+              <input type="search" id="listFind" placeholder="Знайти в списку" autocomplete="off" aria-label="Знайти в списку">
+              <button class="btn sm icon" id="listClose" type="button" aria-label="Закрити список"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             </div>
-            <p class="err" id="addErr" hidden></p>
-          </form>
-          <ol class="tracks" id="tracks"></ol>
-          <p class="empty" id="tracksEmpty" hidden>Список порожній. Встав вище посилання на відео або плейлист: його можна скопіювати з адресного рядка чи кнопкою «Поділитися».</p>
+            <ol class="tracks" id="tracks"></ol>
+            <p class="empty" id="tracksEmpty" hidden>Список порожній. Встав нижче посилання на відео або плейлист: його можна скопіювати з адресного рядка чи кнопкою «Поділитися».</p>
+            <p class="empty" id="tracksNone" hidden>Нічого не знайдено.</p>
+            <form class="add" id="addForm" novalidate>
+              <label class="sr-only" for="ytUrl">Посилання на відео або плейлист YouTube</label>
+              <div class="row">
+                <input type="text" id="ytUrl" inputmode="url" autocomplete="off" placeholder="Встав посилання на відео або плейлист YouTube">
+                <button class="btn primary" type="submit">Додати</button>
+              </div>
+              <p class="err" id="addErr" hidden></p>
+            </form>
+          </div>
+          <p class="err" id="ytErr" hidden></p>
         </div>
       </div>
     </section>
@@ -1281,6 +1296,7 @@ function onYtError(e){
 function renderTracks(){
   const ol = $('tracks'); ol.textContent = '';
   $('tracksEmpty').hidden = M.items.length > 0;
+  $('listCount').textContent = M.items.length;
   M.items.forEach((it, i) => {
     const li = document.createElement('li');
     li.className = 'trk' + (i === M.cur ? ' cur' : '');
@@ -1296,7 +1312,30 @@ function renderTracks(){
     del.setAttribute('aria-label', 'Видалити зі списку');
     li.append(b, del); ol.append(li);
   });
+  filterTracks();
   updateCover();
+}
+// the search box only shows on a longer list; Enter plays the first match
+function filterTracks(){
+  const q = $('listFind').value.trim().toLowerCase();
+  let shown = 0;
+  for(const li of $('tracks').children){
+    li.hidden = !!q && !li.textContent.toLowerCase().includes(q);
+    if(!li.hidden) shown++;
+  }
+  $('tracksNone').hidden = !q || shown > 0;
+}
+function setListOpen(open){
+  if(open === !$('listPanel').hidden) return;
+  $('listPanel').hidden = !open;
+  $('listBtn').setAttribute('aria-expanded', String(open));
+  if(!open) return;
+  const long = M.items.length >= 7;
+  $('listFind').value = ''; $('listFind').hidden = !long; filterTracks();
+  const cur = $('tracks').querySelector('.cur');
+  if(cur) cur.scrollIntoView({block:'nearest'});
+  const target = !M.items.length ? $('ytUrl') : long ? $('listFind') : (cur || $('tracks').firstElementChild).querySelector('.trk-play');
+  target.focus({preventScroll:true});
 }
 
 /* ---------- music view: video, visualiser, or hidden ---------- */
@@ -1932,11 +1971,11 @@ $('addForm').addEventListener('submit', (e) => {
   let i = M.items.findIndex(x => sameItem(x, item));
   if(i < 0){ M.items.push(item); i = M.items.length - 1; saveMusic(); }
   const playing = yt.ready && yt.player.getPlayerState && yt.player.getPlayerState() === 1;
-  if(playing) renderTracks(); else playItem(i, true);
+  if(playing) renderTracks(); else { playItem(i, true); setListOpen(false); }
 });
 $('tracks').addEventListener('click', (e) => {
   const play = e.target.closest('[data-play]'), del = e.target.closest('[data-del]');
-  if(play) playItem(+play.dataset.play, true);
+  if(play){ playItem(+play.dataset.play, true); setListOpen(false); }
   if(del){
     const i = +del.dataset.del;
     M.items.splice(i, 1);
@@ -1944,6 +1983,17 @@ $('tracks').addEventListener('click', (e) => {
     saveMusic(); renderTracks();
   }
 });
+$('listBtn').addEventListener('click', () => setListOpen($('listPanel').hidden));
+$('listClose').addEventListener('click', () => { setListOpen(false); $('listBtn').focus(); });
+$('emptyAdd').addEventListener('click', () => setListOpen(true));
+$('listFind').addEventListener('input', filterTracks);
+$('listFind').addEventListener('keydown', (e) => {
+  if(e.key !== 'Enter') return;
+  const li = [...$('tracks').children].find(x => !x.hidden);
+  if(li){ playItem(+li.querySelector('[data-play]').dataset.play, true); setListOpen(false); }
+});
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && !$('listPanel').hidden){ setListOpen(false); $('listBtn').focus(); } });
+document.addEventListener('pointerdown', (e) => { if(!$('listPanel').hidden && !e.target.closest('#listPanel, #listBtn')) setListOpen(false); });
 $('prevBtn').addEventListener('click', () => playItem(M.cur - 1, true));
 $('nextBtn').addEventListener('click', () => playItem(M.cur + 1, true));
 $('sDuck').checked = M.duck;
@@ -2281,8 +2331,8 @@ function focusLoop(){
   if(!need && FS.timer){ clearInterval(FS.timer); FS.timer = 0; FS.state = null; FS.last = 0; saveFocus(); }
 }
 
-// a duration as [number, unit] pairs for the stat tiles: 38 хв, 1 год 5 хв
-const durParts = (s) => { const m = Math.round(s / 60); return m < 60 ? [[m, 'хв']] : [[Math.floor(m / 60), 'год'], [m % 60, 'хв']]; };
+// a duration as [number, unit] pairs for the stat tiles: 38 хв, 1:05 год
+const durParts = (s) => { const m = Math.round(s / 60); return m < 60 ? [[m, 'хв']] : [[Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0'), 'год']]; };
 function statTile(dot, parts, label){
   const tile = document.createElement('div'); tile.className = 'fstat';
   const v = document.createElement('div'); v.className = 'fstat-v';
