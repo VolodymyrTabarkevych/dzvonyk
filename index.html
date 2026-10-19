@@ -226,6 +226,25 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fbar .a,.fstat-l .a{--c:var(--bad)}
 .fbar i,.fstat-l i{background:var(--c)}
 .fval{font-variant-numeric:tabular-nums;color:var(--ink)}
+.fday{display:flex;align-items:center;gap:14px;padding:10px 12px;border:1px solid var(--line);border-radius:calc(var(--r) * .5)}
+.fday-main{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.fday-pct{font-family:var(--font-display);font-size:34px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums tabular-nums}
+.fday-pct small{font-size:16px;color:var(--ink-3);margin-left:2px}
+.fday-l{font-size:12px;color:var(--ink-3)}
+/* the grade looks like a teacher's mark in the margin */
+.fday-grade{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:2px solid var(--c);color:var(--c);font-family:var(--font-display);font-size:24px;font-weight:600;font-variant-numeric:lining-nums;transform:rotate(-8deg)}
+[data-tone="ok"]{--c:var(--ok)}
+[data-tone="mid"]{--c:var(--mid)}
+[data-tone="bad"]{--c:var(--bad)}
+.fweek-box{display:flex;flex-direction:column;gap:6px}
+.fweek-h{font-size:12px;color:var(--ink-3)}
+.fweek{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.fwd{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--ink-3)}
+.fwd b{height:15px;font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--ink-2);font-variant-numeric:lining-nums}
+.fwd-bar{display:flex;align-items:flex-end;justify-content:center;width:100%;height:44px;border-bottom:1px solid var(--line)}
+.fwd-bar i{display:block;width:min(22px,70%);border-radius:3px 3px 0 0;background:var(--c)}
+.fwd.empty .fwd-bar i{height:2px;background:var(--track)}
+.fwd.today span{color:var(--ink);font-weight:700}
 .fstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
 .fstat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:calc(var(--r) * .5);container-type:inline-size}
 /* the number shrinks with its tile, so wide display fonts (Neon, Y2K) still fit */
@@ -727,9 +746,20 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <button class="fold" id="focusFold" type="button" aria-expanded="false" aria-controls="focusSetup"><span id="focusFoldText">Налаштувати</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </span>
       </div>
+      <div class="fday" id="focusDay" hidden>
+        <div class="fday-main">
+          <span class="fday-pct"><span id="fdayPct">0</span><small>%</small></span>
+          <span class="fday-l">підсумок дня: <span id="fdayParts"></span></span>
+        </div>
+        <span class="fday-grade" id="fdayGrade" title="Оцінка за день за 12-бальною шкалою">0</span>
+      </div>
       <div class="fstats" id="focusStats"></div>
       <p class="focus-sum" id="focusSum"></p>
       <div class="focus-rows" id="focusRows"></div>
+      <div class="fweek-box" id="focusWeekBox" hidden>
+        <span class="fweek-h">Останні 7 днів</span>
+        <div class="fweek" id="focusWeek"></div>
+      </div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
       <div class="focus-setup" id="focusSetup" hidden>
@@ -2344,6 +2374,50 @@ function statTile(dot, parts, label){
   return tile;
 }
 const fTotal = (b) => b.f + b.d + b.a + (b.i || 0);
+// The day's result: focus on lessons weighs most; posture and resting on breaks count when there is data for them.
+// Grade on the 12-point school scale.
+function dayScore(day){
+  if(!day) return null;
+  const tot = {f:0, d:0, a:0, i:0}, brk = {f:0, d:0, a:0, i:0};
+  let pg = 0, pb = 0;
+  for(const [k, b] of Object.entries(day)){
+    const into = k[0] === 'L' ? tot : k[0] === 'B' ? brk : null;
+    if(!into) continue;
+    for(const x in into) into[x] += b[x] || 0;
+    if(k[0] === 'L'){ pg += b.pg || 0; pb += b.pb || 0; }
+  }
+  if(fTotal(tot) < 60) return null;
+  const parts = [{name:'фокус', w:.6, v:(tot.f + tot.i) / fTotal(tot)}];
+  if(pg + pb > 60) parts.push({name:'постава', w:.2, v:pg / (pg + pb)});
+  if(fTotal(brk) > 60) parts.push({name:'перерви', w:.2, v:brk.a / fTotal(brk)});
+  const score = parts.reduce((t, q) => t + q.w * q.v, 0) / parts.reduce((t, q) => t + q.w, 0);
+  return {score, parts, grade:Math.max(1, Math.min(12, Math.round(score * 12))), tone:score >= .8 ? 'ok' : score >= .6 ? 'mid' : 'bad'};
+}
+function renderWeek(now){
+  // the last seven days up to today, so a Monday still shows last week
+  const first = new Date(now); first.setHours(12, 0, 0, 0); first.setDate(first.getDate() - 6);
+  const today = dayKey(new Date(now)), wk = $('focusWeek');
+  wk.textContent = '';
+  let any = false;
+  for(let k = 0; k < 7; k++){
+    const d = new Date(first); d.setDate(first.getDate() + k);
+    const name = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][d.getDay()];
+    const key = dayKey(d), ds = dayScore(F.days[key]);
+    if(ds) any = true;
+    const col = document.createElement('div');
+    col.className = 'fwd' + (key === today ? ' today' : '') + (ds ? '' : ' empty');
+    col.title = ds ? name + ': ' + Math.round(ds.score * 100) + '%, оцінка ' + ds.grade : name + ': немає даних';
+    const g = document.createElement('b'); g.textContent = ds ? ds.grade : '';
+    const bar = document.createElement('span'); bar.className = 'fwd-bar';
+    const fill = document.createElement('i');
+    if(ds){ fill.style.height = Math.max(8, ds.score * 100) + '%'; fill.dataset.tone = ds.tone; }
+    bar.append(fill);
+    const lab = document.createElement('span'); lab.textContent = name;
+    col.append(g, bar, lab);
+    wk.append(col);
+  }
+  $('focusWeekBox').hidden = !any;
+}
 function focusRow(label, b, isBreak){
   const t = fTotal(b) || 1, row = document.createElement('div');
   row.className = 'frow';
@@ -2420,6 +2494,16 @@ function renderFocus(st){
   if(fTotal(brk) > 20) stats.append(statTile('d', [[Math.round((brk.f + brk.d + brk.i) / 60), 'із ' + Math.round(fTotal(brk) / 60) + ' хв']], 'перерви за столом'));
   if(pg + pb > 60) stats.append(statTile('', [[Math.round(pg / (pg + pb) * 100), '%']], 'постава рівно'));
   stats.hidden = !stats.childElementCount;
+  const ds = dayScore(day);
+  $('focusDay').hidden = !ds;
+  if(ds){
+    $('fdayPct').textContent = Math.round(ds.score * 100);
+    $('fdayParts').textContent = ds.parts.map(q => q.name + ' ' + Math.round(q.v * 100) + '%').join(' · ');
+    $('fdayGrade').textContent = ds.grade;
+    $('fdayGrade').dataset.tone = ds.tone;
+    $('fdayGrade').setAttribute('aria-label', 'Оцінка за день: ' + ds.grade + ' з 12');
+  }
+  renderWeek(now);
   $('focusSum').hidden = !stats.hidden;
   $('focusSum').textContent = 'Статистика з’явиться, щойно почнеться урок.';
 }
