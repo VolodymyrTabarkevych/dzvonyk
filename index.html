@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%23f1cf5e'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23f1cf5e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=Unbounded:wght@500;600;700;800&family=Russo+One&family=Onest:wght@400;500;700&family=Doto:ROND,wght@100,600;100,800&family=JetBrains+Mono:wght@400;500;700&family=Geologica:wght@200;300;400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=Unbounded:wght@500;600;700;800&family=Russo+One&family=Onest:wght@400;500;700&family=Doto:ROND,wght@100,600;100,800&family=JetBrains+Mono:wght@400;500;700&family=Geologica:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap">
 <style>
 /* Layout: dark-only page; live "now" card left with music under it, bell schedule right. Skins only swap tokens. */
 /* Chalkboard (default): school slate green, chalk yellow for lessons, chalk green for breaks */
@@ -127,6 +127,22 @@
   --glow:none;
   color-scheme:dark;
 }
+/* Autumn: a warm evening in October. Dark bark-brown ground with fallen maple leaves, amber lessons, sage breaks, serif numerals; optional rain */
+:root[data-skin="autumn"]{
+  --bg:#140d09; --grid:transparent; --margin-line:transparent; --surface:rgba(33,22,15,.92); --line:#3b2a1e; --track:#2e2018;
+  --ink:#f5e9da; --ink-2:#cdb8a2; --ink-3:#8f7a66; --accent:#f0a23b; --accent-ink:#1d120a; --accent-soft:#3d2a14;
+  --rest:#b7c48a; --rest-soft:#262c19; --now:#e2683c; --warn:#e2683c; --warn-soft:#3a1d12;
+  --font-display:"Playfair Display","Georgia",serif;
+  --font-body:"Golos Text","Segoe UI",sans-serif;
+  --font-hand:"Playfair Display","Georgia",serif;
+  --bg-pattern:radial-gradient(120% 80% at 15% -10%,rgba(240,162,59,.13),transparent 60%),radial-gradient(90% 70% at 100% 110%,rgba(196,81,43,.15),transparent 60%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 1000' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3Cpath id='m' stroke-linejoin='round' d='M0-50L8-30L22-38L18-18L44-22L34-6L40 4L18 6L24 22L6 14L2 30L2 48L-2 48L-2 30L-6 14L-24 22L-18 6L-40 4L-34-6L-44-22L-18-18L-22-38L-8-30Z'/%3E%3Cpath id='o' d='M0-60C34-36 40 10 0 60C-40 10-34-36 0-60Z'/%3E%3C/defs%3E%3Cg opacity='.5'%3E%3Cuse href='%23m' fill='%237a3612' transform='translate(110 140) rotate(-24) scale(2.2)'/%3E%3Cuse href='%23o' fill='%235e2a17' transform='translate(300 60) rotate(40) scale(1.1)'/%3E%3Cuse href='%23m' fill='%238c5a16' transform='translate(1480 120) rotate(30) scale(1.8)'/%3E%3Cuse href='%23o' fill='%236e3a12' transform='translate(1330 260) rotate(-70) scale(.9)'/%3E%3Cuse href='%23m' fill='%236b2a14' transform='translate(1500 860) rotate(160) scale(2.4)'/%3E%3Cuse href='%23o' fill='%237a4a14' transform='translate(1250 940) rotate(100) scale(1.2)'/%3E%3Cuse href='%23m' fill='%237d3a13' transform='translate(120 880) rotate(-150) scale(2)'/%3E%3Cuse href='%23o' fill='%235a3a16' transform='translate(360 960) rotate(20) scale(1)'/%3E%3Cuse href='%23m' fill='%236e4214' transform='translate(40 520) rotate(80) scale(1.3)'/%3E%3Cuse href='%23o' fill='%236b2a14' transform='translate(1580 560) rotate(-20) scale(1.1)'/%3E%3C/g%3E%3C/svg%3E");
+  --bg-size:100% 100%,100% 100%,cover;
+  --r:16px; --chip-r:999px; --btn-r:999px;
+  --card-shadow:0 14px 34px -20px rgba(0,0,0,.9);
+  --count-size:clamp(60px,10vw,100px); --count-weight:600; --digit-w:.62em; --colon-w:.28em;
+  --glow:none;
+  color-scheme:dark;
+}
 /* Retro: 80s synthwave night. Starry purple sky, striped sunset sun, neon grid rolling toward you, chrome-sunset numerals */
 :root[data-skin="synth"]{
   --bg:#0d0221; --grid:transparent; --margin-line:transparent; --surface:rgba(22,6,44,.86); --line:#3b1d5e; --track:#2a1048;
@@ -234,6 +250,8 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 :root[data-skin="line"] .fbar{height:4px;border-radius:0}
 :root[data-skin="line"] .fbar i+i{border-left:2px solid var(--bg)}
 :root[data-skin="synth"]{--ok:#36e2f0;--mid:#ffd319;--bad:#ff3ea5}
+:root[data-skin="autumn"]{--ok:#b7c48a;--mid:#f0c04a;--bad:#e2683c}
+:root[data-skin="autumn"] .fbar i{background-image:linear-gradient(rgba(255,255,255,.18),transparent 70%)}
 :root[data-skin="synth"] .fbar{box-shadow:0 0 14px -3px rgba(255,62,165,.55)}
 :root[data-skin="synth"] .fbar i{background-image:linear-gradient(rgba(255,255,255,.45),transparent 55%,rgba(13,2,33,.25))}
 .focus-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
@@ -390,6 +408,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .sw-dots{background:radial-gradient(circle,#e8202a 0 24%,#141414 28%)}
 .sw-line{background:linear-gradient(135deg,#0f0f0f 0 44%,#ff4f00 44% 56%,#0f0f0f 56%)}
 .sw-synth{background:linear-gradient(#ffd319 0 28%,#ff2975 28% 52%,#2a0a4a 52%)}
+.sw-autumn{background:conic-gradient(#f0a23b 0 33%,#c4512b 0 66%,#3b2a1e 0)}
 
 /* skin-specific type and effects */
 :root[data-skin="cyber"] .logo{font-family:var(--font-body);font-style:italic;font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.08em;text-shadow:-1.5px 0 var(--rest),1.5px 0 var(--accent)}
@@ -523,6 +542,26 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="synth"] .bar-fill{background:linear-gradient(90deg,#ff2975,#ff8c42)}
 :root[data-skin="synth"] .now[data-kind="break"] .bar-fill{background:linear-gradient(90deg,#36e2f0,#7a5cff)}
 :root[data-skin="synth"] .btn.primary{background:linear-gradient(90deg,#ff2975,#ff8c42);border-color:transparent;color:#1a0526}
+:root[data-skin="autumn"] body{background-attachment:fixed}
+:root[data-skin="autumn"] .wrap{z-index:1}
+:root[data-skin="autumn"] .logo{font-family:var(--font-hand);font-style:italic;font-weight:600;font-size:32px}
+:root[data-skin="autumn"] .clock{font-weight:500;font-variant-numeric:lining-nums tabular-nums;color:var(--accent)}
+:root[data-skin="autumn"] h2,:root[data-skin="autumn"] .settings summary{font-family:var(--font-hand);font-style:italic;font-weight:600;font-size:26px}
+:root[data-skin="autumn"] h2::before,:root[data-skin="autumn"] .settings summary::before{content:"";display:inline-block;width:.4em;height:.4em;margin-right:.4em;vertical-align:.06em;border-radius:0 70% 0 70%;background:var(--now);transform:rotate(-12deg)}
+:root[data-skin="autumn"] .chip{font-weight:600;font-size:12px;letter-spacing:.1em;padding:4px 12px}
+:root[data-skin="autumn"] .now[data-kind="lesson"] .chip{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+:root[data-skin="autumn"] .now[data-kind="break"] .chip{background:var(--rest);border-color:var(--rest);color:var(--accent-ink)}
+/* Playfair defaults to old-style figures; numbers here should stand straight */
+:root[data-skin="autumn"] .count,:root[data-skin="autumn"] .now-range,:root[data-skin="autumn"] td.t,:root[data-skin="autumn"] td.n,:root[data-skin="autumn"] .chip,:root[data-skin="autumn"] .ticks,:root[data-skin="autumn"] .fstat-v{font-variant-numeric:lining-nums tabular-nums}
+:root[data-skin="autumn"] .now[data-kind="lesson"] .count{color:var(--accent)}
+:root[data-skin="autumn"] .bar-fill{background:linear-gradient(90deg,#c4512b,#f0a23b)}
+:root[data-skin="autumn"] .now[data-kind="break"] .bar-fill{background:linear-gradient(90deg,#6f7a45,#b7c48a)}
+:root[data-skin="autumn"] .blk.lesson.cur{background:linear-gradient(90deg,#c4512b,#f0a23b)}
+:root[data-skin="autumn"] .btn.primary{background:linear-gradient(135deg,#f0a23b,#e2683c);border-color:transparent;color:var(--accent-ink)}
+:root[data-skin="autumn"] .skin[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+:root[data-skin="autumn"] tr.cur td.t,:root[data-skin="autumn"] tr.cur td.n{color:var(--accent)}
+:root[data-skin="autumn"] td.end{font-style:italic}
+:root[data-skin="autumn"] .player{background:#0e0906;border-radius:12px}
 /* the timer card carries its own little sunset: a dim striped sun on the right and a neon grid floor */
 :root[data-skin="synth"] .now{position:relative;overflow:hidden;isolation:isolate;background:#16062c}
 :root[data-skin="synth"] .now::before{content:"";position:absolute;z-index:-1;right:2.5%;top:60%;width:min(28%,180px);aspect-ratio:1;transform:translateY(-50%);border-radius:50%;opacity:.42;background:linear-gradient(#ffd319 8%,#ff8c42 38%,#ff2975 72%,#b026ff);-webkit-mask-image:linear-gradient(#000 0 30%,transparent 30% 33%,#000 33% 38%,transparent 38% 42%,#000 42% 46%,transparent 46% 50%,#000 50%);mask-image:linear-gradient(#000 0 30%,transparent 30% 33%,#000 33% 38%,transparent 38% 42%,#000 42% 46%,transparent 46% 50%,#000 50%)}
@@ -530,6 +569,13 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="synth"] .now-info,:root[data-skin="synth"] .now-range,:root[data-skin="synth"] .hint{text-shadow:0 1px 8px rgba(13,2,33,.95)}
 :root[data-skin="synth"] .sun{display:none}
 .scene{display:none;position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.rain{position:fixed;inset:0;z-index:0;width:100%;height:100%;pointer-events:none}
+.top-right{display:flex;align-items:center;gap:12px}
+.rain-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink-3);cursor:pointer}
+:root[data-skin="autumn"] .rain-btn{display:inline-flex}
+.rain-btn:hover{color:var(--ink)}
+.rain-btn[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+.rain-btn[aria-pressed="false"] .drops{opacity:.25}
 .sun{position:absolute;left:50%;top:64%;width:min(46vmin,440px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(#ffd319 8%,#ff8c42 38%,#ff2975 72%,#b026ff);-webkit-mask-image:linear-gradient(#000 0 30%,transparent 30% 32%,#000 32% 38%,transparent 38% 41%,#000 41% 45%,transparent 45% 49%,#000 49%);mask-image:linear-gradient(#000 0 30%,transparent 30% 32%,#000 32% 38%,transparent 38% 41%,#000 41% 45%,transparent 45% 49%,#000 49%);filter:drop-shadow(0 0 40px rgba(255,41,117,.55))}
 .floor{position:absolute;left:0;right:0;top:64%;bottom:0;overflow:hidden;perspective:260px;perspective-origin:50% 0;background:#0d0221}
 .floor::after{content:"";position:absolute;inset:0;background:linear-gradient(#0d0221 0%,transparent 40%)}
@@ -543,13 +589,17 @@ input[type=range]{accent-color:var(--accent);width:100%}
 <body>
 <div class="toast" id="toast" role="status" hidden><span id="toastText">Сядь рівно</span><button class="btn sm" id="toastOk" type="button">Добре</button></div>
 <div class="scene" aria-hidden="true"><div class="sun"></div><div class="floor"><div class="plane"></div></div></div>
+<canvas class="rain" id="rain" aria-hidden="true" hidden></canvas>
 <div class="wrap">
   <header class="top">
     <div class="brand">
       <span class="logo"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Дзвоник</span>
       <span class="today" id="today">вівторок, 13 жовтня</span>
     </div>
-    <div class="clock" id="clock">10:21:07</div>
+    <div class="top-right">
+      <button class="rain-btn" id="rainBtn" type="button" aria-pressed="true" aria-label="Дощ"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M7 15a4 4 0 0 1-.6-7.95A5.5 5.5 0 0 1 17 8a3.5 3.5 0 0 1 .5 7H7Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path class="drops" d="M8.5 18l-1 2.5M12.5 18l-1 2.5M16.5 18l-1 2.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+      <div class="clock" id="clock">10:21:07</div>
+    </div>
   </header>
 
   <div class="banner" id="banner" hidden>
@@ -697,6 +747,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <button class="skin" type="button" data-skin="dots" aria-pressed="false"><span class="sw sw-dots"></span>Точки</button>
           <button class="skin" type="button" data-skin="line" aria-pressed="false"><span class="sw sw-line"></span>Лінія</button>
           <button class="skin" type="button" data-skin="synth" aria-pressed="false"><span class="sw sw-synth"></span>Ретро</button>
+          <button class="skin" type="button" data-skin="autumn" aria-pressed="false"><span class="sw sw-autumn"></span>Осінь</button>
         </div>
       </fieldset>
       <div class="field"><label for="sStart">Початок першого уроку</label><input type="time" id="sStart" value="08:00"></div>
@@ -755,7 +806,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 const $ = (id) => document.getElementById(id);
 const MIN = 60000;
 const KEY = 'dzvonyk.v1';
-const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', dayOn:{}, schedFull:false};
+const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', dayOn:{}, schedFull:false, rain:true};
 const SOUNDS = [['japan','Японська школа'],['japanShort','Японська школа, коротко'],['school','Шкільний дзвінок'],['rise','Три ноти вгору'],['chime','Три ноти вниз'],['dingdong','Дінь-дон'],['gong','Гонг']];
 const WARN = [[0,'Без попередження'],[1,'За 1 хв до уроку'],[2,'За 2 хв до уроку'],[3,'За 3 хв до уроку'],[5,'За 5 хв до уроку']];
 const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
@@ -1252,7 +1303,7 @@ function renderTracks(){
 // YouTube audio lives in a cross-origin frame, so the page cannot hear it directly.
 // The visualiser moves on its own until the viewer shares this tab's audio.
 if(!['video', 'viz', 'hide'].includes(M.view)) M.view = 'video';
-const V = {analyser:null, data:null, stream:null, src:null, raf:0, levels:new Float32Array(48), target:new Float32Array(48), colors:null};
+const V = {analyser:null, data:null, stream:null, src:null, raf:0, levels:new Float32Array(48), target:new Float32Array(48), peaks:new Float32Array(48), colors:null};
 
 function applyView(){
   const v = M.view;
@@ -1294,8 +1345,210 @@ function makeBands(){
 }
 function vizColors(){
   const cs = getComputedStyle(document.documentElement), get = (n) => cs.getPropertyValue(n).trim();
-  return {a:get('--accent'), r:get('--rest'), i:get('--ink-3'), skin:document.documentElement.dataset.skin || 'chalk'};
+  return {a:get('--accent'), r:get('--rest'), i:get('--ink-3'), ink:get('--ink'), now:get('--now'),
+    fd:get('--font-display'), fb:get('--font-body'), skin:document.documentElement.dataset.skin || 'chalk'};
 }
+const rrect = (g, x, y, w, h, r) => { if(g.roundRect) g.roundRect(x, y, w, h, r); else g.rect(x, y, w, h); };
+const bandHz = (i, N) => 40 * Math.pow(9000 / 40, (i + .5) / N);
+// Chalk grain: a speckled alpha mask the strokes are rubbed through.
+function chalkGrain(g, dpr){
+  if(!V.grain){
+    const c = document.createElement('canvas'); c.width = c.height = 96;
+    const x = c.getContext('2d'), img = x.createImageData(96, 96);
+    for(let k = 3; k < img.data.length; k += 4){ const r = Math.random(); img.data[k] = r < .24 ? 0 : 120 + r * 135; }
+    x.putImageData(img, 0, 0);
+    V.grain = g.createPattern(c, 'repeat');
+  }
+  if(V.grain.setTransform) V.grain.setTransform(new DOMMatrix().scale(dpr * 1.3));
+  return V.grain;
+}
+function vizBuffer(W, H){
+  if(!V.buf) V.buf = document.createElement('canvas');
+  if(V.buf.width !== W || V.buf.height !== H){ V.buf.width = W; V.buf.height = H; }
+  const b = V.buf.getContext('2d'); b.clearRect(0, 0, W, H);
+  return b;
+}
+function sparkle(g, x, y, s){
+  g.beginPath(); g.moveTo(x, y - s);
+  g.quadraticCurveTo(x, y, x + s, y); g.quadraticCurveTo(x, y, x, y + s);
+  g.quadraticCurveTo(x, y, x - s, y); g.quadraticCurveTo(x, y, x, y - s);
+  g.fill();
+}
+
+// One look per skin. G: canvas geometry, C: skin colours, L: band levels 0..1, t: seconds, dt: frame time.
+const VIZ = {
+  // Chalkboard: chalk strokes, yellow through white to green, slightly crooked and rubbed through a grain
+  chalk(g, G, C, L){
+    const bw = G.step * .5, grad = g.createLinearGradient(G.padX, 0, G.W - G.padX, 0);
+    grad.addColorStop(0, C.a); grad.addColorStop(.5, C.ink); grad.addColorStop(1, C.r);
+    g.strokeStyle = grad; g.lineCap = 'round';
+    for(let i = 0; i < G.N; i++){
+      const h = Math.max(.02, L[i]) * G.area * .9, x = G.padX + G.step * (i + .5) + Math.sin(i * 12.9898) * G.step * .07;
+      const tilt = Math.sin(i * 78.233) * bw * .12;
+      g.globalAlpha = .25; g.lineWidth = bw * 1.6;
+      g.beginPath(); g.moveTo(x - tilt, G.mid + h / 2); g.lineTo(x + tilt, G.mid - h / 2); g.stroke();
+      g.globalAlpha = .95; g.lineWidth = bw;
+      g.beginPath(); g.moveTo(x - tilt, G.mid + h / 2); g.lineTo(x + tilt, G.mid - h / 2); g.stroke();
+    }
+    g.globalAlpha = 1;
+    g.globalCompositeOperation = 'destination-in';
+    g.fillStyle = chalkGrain(g, G.dpr); g.fillRect(0, 0, G.W, G.H);
+  },
+  // Neon: LED meter on a glowing floor with a dim reflection, peak caps and scanlines
+  cyber(g, G, C, L){
+    const b = vizBuffer(G.W, G.H), base = G.top + G.area * .8, hMax = G.area * .8;
+    const seg = Math.max(3, 4 * G.dpr), gap = Math.max(1, 2 * G.dpr), rows = Math.max(4, Math.floor(hMax / (seg + gap))), bw = G.step * .72;
+    for(let i = 0; i < G.N; i++){
+      const lit = Math.round(L[i] * rows), x = G.padX + G.step * (i + .5) - bw / 2;
+      for(let k = 0; k < lit; k++){
+        const f = k / rows;
+        b.fillStyle = f > .8 ? C.now : f > .4 ? C.a : C.r;
+        b.fillRect(x, base - (k + 1) * (seg + gap) + gap, bw, seg);
+      }
+      const pk = Math.round(V.peaks[i] * rows);
+      if(pk > lit){ b.fillStyle = C.now; b.fillRect(x, base - pk * (seg + gap) + gap, bw, Math.max(1, seg * .5)); }
+    }
+    b.fillStyle = C.a; b.fillRect(G.padX * .6, base + gap, G.W - G.padX * 1.2, Math.max(1, G.dpr));
+    // glow, sharp copy, reflection
+    g.save(); g.filter = 'blur(' + Math.round(7 * G.dpr) + 'px)'; g.globalAlpha = .85; g.drawImage(V.buf, 0, 0); g.restore();
+    g.drawImage(V.buf, 0, 0);
+    g.save(); g.globalAlpha = .16; g.setTransform(1, 0, 0, -1, 0, base * 2 + gap * 3); g.drawImage(V.buf, 0, 0, G.W, base, 0, 0, G.W, base); g.restore();
+    g.globalCompositeOperation = 'source-atop'; g.fillStyle = 'rgba(0,0,0,.28)';
+    for(let y = 0; y < G.H; y += 3 * G.dpr) g.fillRect(0, y, G.W, Math.max(1, G.dpr));
+  },
+  // Y2K: fat glossy capsules in the poster colours, black outlines, sparkles on the loudest
+  y2k(g, G, C, L, t){
+    const cols = ['#ff2d7a', '#d4ff1e', '#b65cff', '#ff5a1f'], bw = G.step * .74;
+    g.lineWidth = 2 * G.dpr; g.strokeStyle = '#0a0a0a';
+    const top3 = [...L.keys()].sort((p, q) => L[q] - L[p]).slice(0, 3);
+    for(let i = 0; i < G.N; i++){
+      const h = Math.max(bw, L[i] * G.area), x = G.padX + G.step * (i + .5) - bw / 2, y = G.mid - h / 2;
+      g.fillStyle = cols[i % 4]; g.beginPath(); rrect(g, x, y, bw, h, bw / 2); g.fill(); g.stroke();
+      g.fillStyle = 'rgba(255,255,255,.5)';
+      if(h > bw * 1.4){ g.beginPath(); rrect(g, x + bw * .24, y + bw * .32, bw * .18, h - bw * .64, bw * .09); g.fill(); }
+    }
+    g.fillStyle = '#ffffff';
+    for(const i of top3){
+      if(L[i] < .4) continue;
+      const s = G.step * (.55 + .2 * Math.sin(t * 6 + i)), h = Math.max(bw, L[i] * G.area);
+      sparkle(g, G.padX + G.step * (i + .5), G.mid - h / 2 - s * 1.2, s);
+    }
+  },
+  // Aero GP: telemetry chart. Square white bars on a ruler, yellow peak flags, a faint grid and Hz marks
+  aero(g, G, C, L){
+    const base = G.top + G.area * .84, hMax = G.area * .8, bw = G.step * .62, px = Math.max(1, G.dpr);
+    g.fillStyle = 'rgba(255,255,255,.12)';
+    for(let k = 1; k <= 4; k++) g.fillRect(G.padX, base - hMax * k / 4, G.W - G.padX * 2, px);
+    for(let i = 0; i < G.N; i++){
+      const h = Math.max(2 * px, L[i] * hMax), x = G.padX + G.step * (i + .5) - bw / 2;
+      g.fillStyle = C.ink; g.fillRect(x, base - h, bw, h);
+      g.fillStyle = C.a; g.fillRect(x, base - V.peaks[i] * hMax - 4 * px, bw, 3 * px);
+    }
+    g.fillStyle = C.ink; g.fillRect(G.padX, base + 3 * px, G.W - G.padX * 2, 2 * px);
+    g.font = 10 * G.dpr + 'px ' + C.fd; g.textAlign = 'center'; g.textBaseline = 'top';
+    for(let i = 0; i < G.N; i++){
+      const x = G.padX + G.step * (i + .5), major = i % 8 === 0;
+      g.fillStyle = major ? C.ink : C.i; g.fillRect(x - px / 2, base + 5 * px, px, (major ? 7 : 3) * px);
+      if(major){ const hz = bandHz(i, G.N); g.fillText(hz >= 1000 ? (hz / 1000).toFixed(1) + 'K' : String(Math.round(hz)), x, base + 14 * px); }
+    }
+  },
+  // Dots: dot matrix with a red peak dot riding above each column
+  dots(g, G, C, L){
+    let rows = Math.floor(G.area / G.step);
+    if(rows % 2 === 0) rows--;
+    rows = Math.max(5, rows);
+    const pitch = Math.min(G.step, G.area / rows), rad = pitch * .32, c = (rows - 1) / 2;
+    for(let i = 0; i < G.N; i++){
+      const lit = Math.round(L[i] * rows), pk = Math.round(V.peaks[i] * rows), x = G.padX + G.step * (i + .5);
+      for(let k = 0; k < rows; k++){
+        const d = Math.abs(k - c), on = d <= lit / 2, peak = !on && pk > lit && Math.abs(d - Math.ceil(pk / 2)) < .6;
+        g.globalAlpha = on || peak ? 1 : .18;
+        g.fillStyle = peak ? C.r : on ? C.a : C.i;
+        g.beginPath(); g.arc(x, G.mid + (k - c) * pitch, rad, 0, Math.PI * 2); g.fill();
+      }
+    }
+  },
+  // Line: hairlines on an axis; the loudest band in orange with its frequency, Swiss-poster style
+  line(g, G, C, L){
+    const lw = Math.max(1, G.step * .1);
+    g.fillStyle = C.i; g.fillRect(G.padX, G.mid - G.dpr / 2, G.W - G.padX * 2, Math.max(1, G.dpr));
+    let best = 0;
+    for(let i = 1; i < G.N; i++) if(L[i] > L[best]) best = i;
+    for(let i = 0; i < G.N; i++){
+      const h = Math.max(lw, L[i] * G.area);
+      g.fillStyle = i === best ? C.a : C.ink;
+      g.fillRect(G.padX + G.step * (i + .5) - lw / 2, G.mid - h / 2, lw, h);
+    }
+    if(L[best] > .08){
+      const hz = bandHz(best, G.N), x = G.padX + G.step * (best + .5), right = x > G.W * .75;
+      g.font = 11 * G.dpr + 'px ' + C.fb; g.fillStyle = C.a; g.textBaseline = 'bottom'; g.textAlign = right ? 'right' : 'left';
+      g.fillText((hz >= 1000 ? (hz / 1000).toFixed(1).replace('.', ',') + ' кГц' : Math.round(hz) + ' Гц'), x + (right ? -6 : 6) * G.dpr, G.mid - L[best] * G.area / 2);
+    }
+  },
+  // Retro: striped sunset sun that swells with the bass, the spectrum as a neon mountain range, a rolling grid floor
+  synth(g, G, C, L, t, dt){
+    const hz = G.top + G.area * .64, cx = G.W / 2;
+    let bass = 0;
+    for(let i = 0; i < 6; i++) bass += L[i] / 6;
+    const R = G.area * (.4 + bass * .08), sg = g.createLinearGradient(0, hz - R, 0, hz);
+    sg.addColorStop(0, '#ffd319'); sg.addColorStop(.45, '#ff8c42'); sg.addColorStop(.8, '#ff2975'); sg.addColorStop(1, '#b026ff');
+    g.save();
+    g.beginPath(); g.rect(0, 0, G.W, hz); g.clip();
+    g.shadowColor = '#ff2975'; g.shadowBlur = 30 * G.dpr;
+    g.fillStyle = sg; g.beginPath(); g.arc(cx, hz, R, 0, Math.PI * 2); g.fill();
+    g.shadowBlur = 0; g.globalCompositeOperation = 'destination-out';
+    for(let k = 0; k < 6; k++) g.fillRect(cx - R, hz - R * .5 + k * R * .09, R * 2, R * (.014 + k * .011));
+    g.restore();
+    // mountains: bass in the middle, mirrored out to both sides
+    const w2 = G.W / 2 - G.padX * .5;
+    g.beginPath(); g.moveTo(cx - w2, hz);
+    for(let j = -(G.N - 1); j <= G.N - 1; j++) g.lineTo(cx + j / (G.N - 1) * w2, hz - L[Math.abs(j)] * G.area * .5);
+    g.lineTo(cx + w2, hz); g.closePath();
+    g.fillStyle = 'rgba(22,6,44,.9)'; g.fill();
+    g.save(); g.shadowColor = '#36e2f0'; g.shadowBlur = 10 * G.dpr; g.strokeStyle = '#36e2f0'; g.lineWidth = 1.6 * G.dpr; g.lineJoin = 'round'; g.stroke(); g.restore();
+    // floor
+    V.ph = ((V.ph || 0) + dt * (.45 + bass * 1.4)) % 1;
+    g.save(); g.beginPath(); g.rect(0, hz, G.W, G.H - hz); g.clip();
+    g.strokeStyle = 'rgba(255,62,165,.65)'; g.lineWidth = Math.max(1, G.dpr);
+    const depth = G.H - hz;
+    g.beginPath();
+    for(let k = 0; k < 10; k++){ const y = hz + depth * Math.pow((k + V.ph) / 10, 2.2); g.moveTo(0, y); g.lineTo(G.W, y); }
+    for(let k = -14; k <= 14; k++){ g.moveTo(cx + k * G.W / 60, hz); g.lineTo(cx + k * G.W / 6, G.H); }
+    g.stroke();
+    g.restore();
+    g.fillStyle = '#ff3ea5'; g.fillRect(0, hz - G.dpr, G.W, Math.max(1, G.dpr * 1.5));
+  },
+  // Autumn: warm stalks rising from the ground and leaves that fall faster when the music gets loud
+  autumn(g, G, C, L, t, dt){
+    const base = G.top + G.area * .95, bw = G.step * .5, grad = g.createLinearGradient(0, base - G.area, 0, base);
+    grad.addColorStop(0, C.a); grad.addColorStop(.55, '#c4512b'); grad.addColorStop(1, '#4a1c0e');
+    g.fillStyle = grad;
+    let energy = 0;
+    for(let i = 0; i < G.N; i++){
+      energy += L[i] / G.N;
+      const h = Math.max(bw, L[i] * G.area * .92), x = G.padX + G.step * (i + .5) - bw / 2;
+      g.beginPath(); rrect(g, x, base - h, bw, h, [bw / 2, bw / 2, 0, 0]); g.fill();
+    }
+    const cols = ['#f0a23b', '#e2683c', '#c9a227', '#9c3b25', '#b7c48a'];
+    if(!V.leaves || V.leavesW !== G.W || V.leavesH !== G.H){
+      V.leavesW = G.W; V.leavesH = G.H;
+      V.leaves = Array.from({length:16}, (_, k) => ({x:Math.random() * G.W, y:Math.random() * G.H, s:(5 + Math.random() * 6) * G.dpr,
+        rot:Math.random() * 6.3, vr:(Math.random() - .5) * 3, ph:Math.random() * 6.3, k:.6 + Math.random() * .8, c:cols[k % cols.length]}));
+    }
+    for(const f of V.leaves){
+      f.y += dt * (18 + energy * 170) * G.dpr * f.k;
+      f.x += dt * (10 + Math.sin(t * 1.3 + f.ph) * 26) * G.dpr;
+      f.rot += dt * f.vr * (1 + energy * 3);
+      if(f.y > G.H + f.s * 2 || f.x > G.W + f.s * 2){ f.y = -f.s * 2; f.x = Math.random() * G.W * 1.1 - G.W * .1; }
+      g.save(); g.translate(f.x, f.y); g.rotate(f.rot);
+      g.fillStyle = f.c; g.beginPath(); g.moveTo(0, -f.s);
+      g.quadraticCurveTo(f.s * .95, -f.s * .15, 0, f.s); g.quadraticCurveTo(-f.s * .95, -f.s * .15, 0, -f.s); g.fill();
+      g.strokeStyle = 'rgba(40,18,8,.55)'; g.lineWidth = Math.max(1, G.dpr * .8);
+      g.beginPath(); g.moveTo(0, -f.s * .8); g.lineTo(0, f.s * 1.25); g.stroke();
+      g.restore();
+    }
+  },
+};
 function vizFrame(ts){
   V.raf = 0;
   if(M.view !== 'viz') return;
@@ -1321,47 +1574,18 @@ function vizFrame(ts){
   for(let i = 0; i < N; i++){
     const d = T[i] - V.levels[i];
     V.levels[i] += d * (d > 0 ? .45 : .1);
+    // peak markers hold the top and then sink slowly
+    V.peaks[i] = V.levels[i] > V.peaks[i] ? V.levels[i] : Math.max(0, V.peaks[i] - .006);
   }
+  const dt = V.lastTs ? Math.min(.1, (ts - V.lastTs) / 1000) : 0;
+  V.lastTs = ts;
   g.clearRect(0, 0, W, H);
   // draw between the "connect" link on top and the title bar at the bottom
-  const dpr = V.dpr || 1, top = 36 * dpr, bottom = 58 * dpr, area = Math.max(10, H - top - bottom), mid = top + area / 2;
-  const padX = W * .05, step = (W - padX * 2) / N;
-  if(C.skin === 'dots'){
-    // dot-matrix display: as many rows as fit, always an odd count so there is a centre row
-    let rows = Math.floor(area / step);
-    if(rows % 2 === 0) rows--;
-    rows = Math.max(5, rows);
-    const pitch = Math.min(step, area / rows), rad = pitch * .32, c = (rows - 1) / 2;
-    for(let i = 0; i < N; i++){
-      const lit = Math.round(V.levels[i] * rows), x = padX + step * (i + .5);
-      for(let k = 0; k < rows; k++){
-        const on = Math.abs(k - c) <= lit / 2;
-        g.globalAlpha = on ? 1 : .18;
-        g.fillStyle = on ? C.a : C.i;
-        g.beginPath(); g.arc(x, mid + (k - c) * pitch, rad, 0, Math.PI * 2); g.fill();
-      }
-    }
-    g.globalAlpha = 1;
-  }else if(C.skin === 'line'){
-    // hairlines
-    const lw = Math.max(1, step * .12);
-    g.fillStyle = C.a;
-    for(let i = 0; i < N; i++){
-      const h = Math.max(lw, V.levels[i] * area);
-      g.fillRect(padX + step * (i + .5) - lw / 2, mid - h / 2, lw, h);
-    }
-  }else{
-    // rounded bars, accent to break colour
-    const grad = g.createLinearGradient(0, 0, W, 0), bw = step * .56;
-    grad.addColorStop(0, C.a); grad.addColorStop(1, C.r);
-    g.fillStyle = grad;
-    for(let i = 0; i < N; i++){
-      const h = Math.max(bw, V.levels[i] * area), x = padX + step * (i + .5) - bw / 2;
-      g.beginPath();
-      if(g.roundRect) g.roundRect(x, mid - h / 2, bw, h, bw / 2); else g.rect(x, mid - h / 2, bw, h);
-      g.fill();
-    }
-  }
+  const dpr = V.dpr || 1, top = 36 * dpr, area = Math.max(10, H - top - 58 * dpr), padX = W * .05;
+  const G = {W, H, dpr, N, top, area, mid:top + area / 2, padX, step:(W - padX * 2) / N};
+  g.save();
+  (VIZ[C.skin] || VIZ.chalk)(g, G, C, V.levels, ts / 1000, dt);
+  g.restore();
   V.raf = requestAnimationFrame(vizFrame);
 }
 async function vizConnect(){
@@ -1733,12 +1957,62 @@ new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerB
 applyView();
 
 // skins
-const SKINS = ['chalk', 'cyber', 'y2k', 'aero', 'dots', 'line', 'synth'];
+/* ---------- autumn rain ---------- */
+// A light rain behind the cards, about 30 frames a second; with reduced motion it is drawn once and stays still.
+const RAIN = {raf:0, drops:[], last:0};
+const stillRain = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+function newDrop(W, H, anywhere){
+  const far = Math.random() < .6;
+  return {x:Math.random() * (W + 200) - 150, y:anywhere ? Math.random() * H : -20 - Math.random() * 140,
+    len:far ? 10 + Math.random() * 8 : 18 + Math.random() * 14, v:far ? 650 + Math.random() * 200 : 950 + Math.random() * 300,
+    a:far ? .1 + Math.random() * .08 : .18 + Math.random() * .14, w:far ? 1 : 1.4};
+}
+function sizeRain(){
+  const c = $('rain'), W = innerWidth, H = innerHeight;
+  if(c.width !== W || c.height !== H){ c.width = W; c.height = H; }
+  const n = Math.min(260, Math.round(W * H / 7000));
+  while(RAIN.drops.length < n) RAIN.drops.push(newDrop(W, H, true));
+  RAIN.drops.length = n;
+}
+function drawRain(dt){
+  const c = $('rain'), g = c.getContext('2d'), W = c.width, H = c.height, wind = .16;
+  g.clearRect(0, 0, W, H);
+  g.lineCap = 'round';
+  for(const d of RAIN.drops){
+    d.y += d.v * dt; d.x += d.v * wind * dt;
+    if(d.y - d.len > H){ Object.assign(d, newDrop(W, H, false)); continue; }
+    g.strokeStyle = 'rgba(206,220,235,' + d.a + ')'; g.lineWidth = d.w;
+    g.beginPath(); g.moveTo(d.x, d.y); g.lineTo(d.x - d.len * wind, d.y - d.len); g.stroke();
+  }
+}
+function rainFrame(ts){
+  RAIN.raf = requestAnimationFrame(rainFrame);
+  if(ts - RAIN.last < 33) return;
+  const dt = RAIN.last ? Math.min(.1, (ts - RAIN.last) / 1000) : 0;
+  RAIN.last = ts;
+  drawRain(dt);
+}
+function syncRain(){
+  const on = document.documentElement.dataset.skin === 'autumn' && S.rain !== false;
+  $('rain').hidden = !on;
+  $('rainBtn').setAttribute('aria-pressed', String(S.rain !== false));
+  $('rainBtn').title = S.rain !== false ? 'Вимкнути дощ' : 'Увімкнути дощ';
+  if(on){
+    sizeRain();
+    if(stillRain) drawRain(0);
+    else if(!RAIN.raf){ RAIN.last = 0; RAIN.raf = requestAnimationFrame(rainFrame); }
+  }else if(RAIN.raf){ cancelAnimationFrame(RAIN.raf); RAIN.raf = 0; }
+}
+$('rainBtn').addEventListener('click', () => { S.rain = S.rain === false; save(); syncRain(); });
+window.addEventListener('resize', () => { if(!$('rain').hidden){ sizeRain(); if(stillRain) drawRain(0); } });
+
+const SKINS = ['chalk', 'cyber', 'y2k', 'aero', 'dots', 'line', 'synth', 'autumn'];
 function applySkin(){
   const s = SKINS.includes(S.skin) ? S.skin : 'chalk';
   if(s === 'chalk') delete document.documentElement.dataset.skin;
   else document.documentElement.dataset.skin = s;
   document.querySelectorAll('.skin').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.skin === s)));
+  syncRain();
 }
 $('skins').addEventListener('click', (e) => {
   const b = e.target.closest('.skin');
