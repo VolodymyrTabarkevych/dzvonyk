@@ -2253,7 +2253,7 @@ function checkPosture(face, now){
   if(!FS.slouchSince) FS.slouchSince = now;
   if(now - FS.slouchSince > 20000){
     setSlouch(true);
-    if(now - FS.remindedAt > 180000){ FS.remindedAt = now; remindPosture(); }
+    if(now - FS.remindedAt > 30000){ FS.remindedAt = now; remindPosture(); }
   }
 }
 function showToast(kind, text){ FS.toast = kind; $('toastText').textContent = text; $('toast').hidden = false; }
