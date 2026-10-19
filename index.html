@@ -2414,7 +2414,8 @@ function renderFocus(st){
   for(const k of lessons){ pg += day[k].pg || 0; pb += day[k].pb || 0; }
   const stats = $('focusStats'); stats.textContent = '';
   if(fTotal(tot) > 20){
-    stats.append(statTile('f', durParts(tot.f + tot.i), 'за роботою'), statTile('d', durParts(tot.d), 'телефон, розмови'), statTile('a', durParts(tot.a), 'не було'));
+    // at work = lessons at the desk plus breaks spent at the desk (minus phone time, which never counts as work)
+    stats.append(statTile('f', durParts(tot.f + tot.i + brk.f + brk.i), 'за роботою'), statTile('d', durParts(tot.d), 'телефон, розмови'), statTile('a', durParts(tot.a), 'не було'));
   }
   if(fTotal(brk) > 20) stats.append(statTile('d', [[Math.round((brk.f + brk.d + brk.i) / 60), 'із ' + Math.round(fTotal(brk) / 60) + ' хв']], 'перерви за столом'));
   if(pg + pb > 60) stats.append(statTile('', [[Math.round(pg / (pg + pb) * 100), '%']], 'постава рівно'));
