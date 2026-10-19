@@ -217,35 +217,32 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .focus{display:flex;flex-direction:column;gap:10px}
 .focus-src{font-size:12px;color:var(--ink-3)}
 .focus-sum{margin:0;font-size:14px;color:var(--ink-2)}
-.focus-rows{display:flex;flex-direction:column;gap:6px}
-.frow{display:grid;grid-template-columns:5.4em minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px;color:var(--ink-2)}
-.fbar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--track)}
-.fbar i{display:block;height:100%}
-.fbar .f,.fstat-l .f{--c:var(--ok)}
-.fbar .d,.fstat-l .d{--c:var(--mid)}
-.fbar .a,.fstat-l .a{--c:var(--bad)}
-.fbar i,.fstat-l i{background:var(--c)}
-.fval{font-variant-numeric:tabular-nums;color:var(--ink)}
-.fday{display:flex;align-items:center;gap:14px;padding:10px 12px;border:1px solid var(--line);border-radius:calc(var(--r) * .5)}
+.fstack .f,.fstat-l .f{--c:var(--ok)}
+.fstack .d,.fstat-l .d{--c:var(--mid)}
+.fstack .a,.fstat-l .a{--c:var(--bad)}
+.fstack i,.fstat-l i{background:var(--c)}
+.fday{display:flex;align-items:center;gap:14px;padding:8px 12px;border:1px solid var(--line);border-radius:calc(var(--r) * .5)}
 .fday-main{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
-.fday-pct{font-family:var(--font-display);font-size:34px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums tabular-nums}
+.fday-pct{font-family:var(--font-display);font-size:30px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums tabular-nums}
 .fday-pct small{font-size:16px;color:var(--ink-3);margin-left:2px}
 .fday-l{font-size:12px;color:var(--ink-3)}
 /* the grade looks like a teacher's mark in the margin */
-.fday-grade{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:2px solid var(--c);color:var(--c);font-family:var(--font-display);font-size:24px;font-weight:600;font-variant-numeric:lining-nums;transform:rotate(-8deg)}
+.fday-grade{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:2px solid var(--c);color:var(--c);font-family:var(--font-display);font-size:21px;font-weight:600;font-variant-numeric:lining-nums;transform:rotate(-8deg)}
 [data-tone="ok"]{--c:var(--ok)}
 [data-tone="mid"]{--c:var(--mid)}
 [data-tone="bad"]{--c:var(--bad)}
-.fweek-box{display:flex;flex-direction:column;gap:6px}
-.fweek-h{font-size:12px;color:var(--ink-3)}
-.fweek{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
-.fwd{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--ink-3)}
-.fwd b{height:15px;font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--ink-2);font-variant-numeric:lining-nums}
-.fwd-bar{display:flex;align-items:flex-end;justify-content:center;width:100%;height:44px;border-bottom:1px solid var(--line)}
-.fwd-bar i{display:block;width:min(22px,70%);border-radius:3px 3px 0 0;background:var(--c)}
-.fwd.empty .fwd-bar i{height:2px;background:var(--track)}
+/* two small column charts: today's lessons and the last seven days; side by side only when there is room */
+.fcharts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px 20px}
+.fchart{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fchart-h{font-size:12px;color:var(--ink-3)}
+.fcols{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.fwd{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;font-size:11px;color:var(--ink-3)}
+.fwd b{height:14px;font-size:11px;font-weight:600;color:var(--ink-2);font-variant-numeric:lining-nums tabular-nums}
+.fwd-bar{display:flex;align-items:flex-end;justify-content:center;width:100%;height:40px;border-bottom:1px solid var(--line)}
+.fstack{display:flex;flex-direction:column-reverse;width:min(18px,70%);border-radius:3px 3px 0 0;overflow:hidden;background:var(--track)}
+.fstack i{display:block;flex:none;width:100%}
 .fwd.today span{color:var(--ink);font-weight:700}
-.fstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
+.fstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .fstat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:calc(var(--r) * .5);container-type:inline-size}
 /* the number shrinks with its tile, so wide display fonts (Neon, Y2K) still fit */
 .fstat-v{font-family:var(--font-display);font-size:min(24px,19cqi);line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -253,27 +250,27 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fstat-l{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
 .fstat-l i{width:8px;height:8px;border-radius:50%;flex:none}
 /* focus bars in each skin's own look */
-:root:not([data-skin]) .fbar i{background-image:repeating-linear-gradient(100deg,rgba(20,32,27,.35) 0 1px,transparent 1px 4px),linear-gradient(rgba(255,255,255,.14),transparent)}
+:root:not([data-skin]) .fstack i{background-image:repeating-linear-gradient(10deg,rgba(20,32,27,.35) 0 1px,transparent 1px 4px),linear-gradient(90deg,rgba(255,255,255,.14),transparent)}
 :root[data-skin="cyber"]{--ok:#00ff9f;--mid:#fcee0a;--bad:#ff2a6d}
-:root[data-skin="cyber"] .fbar{height:8px;border-radius:0;overflow:visible}
-:root[data-skin="cyber"] .fbar i{box-shadow:0 0 2px var(--c),0 0 10px var(--c)}
-:root[data-skin="cyber"] .fbar i+i{border-left:3px solid var(--surface)}
+:root[data-skin="cyber"] .fstack{width:min(12px,60%);border-radius:0;overflow:visible}
+:root[data-skin="cyber"] .fstack i{box-shadow:0 0 2px var(--c),0 0 10px var(--c)}
+:root[data-skin="cyber"] .fstack i+i{border-bottom:2px solid var(--surface)}
 :root[data-skin="y2k"]{--ok:#d4ff1e;--mid:#ff5a1f;--bad:#ff2d7a}
-:root[data-skin="y2k"] .fbar{height:14px;border:2px solid var(--line)}
-:root[data-skin="y2k"] .fbar i{background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,.32) 0 6px,transparent 6px 12px)}
+:root[data-skin="y2k"] .fstack{width:min(16px,70%);border:2px solid var(--line);border-radius:999px 999px 0 0}
+:root[data-skin="y2k"] .fstack i{background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,.32) 0 5px,transparent 5px 10px)}
 :root[data-skin="aero"]{--ok:#e8f51c;--mid:#ffffff;--bad:#08132b}
-:root[data-skin="aero"] .fbar{height:10px;border-radius:0}
-:root[data-skin="aero"] .fbar i+i{border-left:2px solid var(--surface)}
+:root[data-skin="aero"] .fstack{border-radius:0}
+:root[data-skin="aero"] .fstack i+i{border-bottom:2px solid var(--surface)}
 :root[data-skin="dots"]{--ok:#f2f2f2;--mid:#8c8c8c;--bad:#e8202a}
-:root[data-skin="dots"] .fbar{height:8px;border-radius:0;background:#333;-webkit-mask:radial-gradient(#000 1.6px,transparent 2.1px) 0 50%/8px 8px;mask:radial-gradient(#000 1.6px,transparent 2.1px) 0 50%/8px 8px}
+:root[data-skin="dots"] .fstack{width:8px;border-radius:0;background:#333;-webkit-mask:radial-gradient(#000 1.6px,transparent 2.1px) 50% 100%/8px 8px;mask:radial-gradient(#000 1.6px,transparent 2.1px) 50% 100%/8px 8px}
 :root[data-skin="line"]{--ok:#ff4f00;--mid:#ededed;--bad:#666666}
-:root[data-skin="line"] .fbar{height:4px;border-radius:0}
-:root[data-skin="line"] .fbar i+i{border-left:2px solid var(--bg)}
+:root[data-skin="line"] .fstack{width:3px;border-radius:0}
+:root[data-skin="line"] .fstack i+i{border-bottom:2px solid var(--bg)}
 :root[data-skin="synth"]{--ok:#36e2f0;--mid:#ffd319;--bad:#ff3ea5}
 :root[data-skin="autumn"]{--ok:#b7c48a;--mid:#f0c04a;--bad:#e2683c}
-:root[data-skin="autumn"] .fbar i{background-image:linear-gradient(rgba(255,255,255,.18),transparent 70%)}
-:root[data-skin="synth"] .fbar{box-shadow:0 0 14px -3px rgba(255,62,165,.55)}
-:root[data-skin="synth"] .fbar i{background-image:linear-gradient(rgba(255,255,255,.45),transparent 55%,rgba(13,2,33,.25))}
+:root[data-skin="autumn"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.18),transparent 70%)}
+:root[data-skin="synth"] .fstack{box-shadow:0 0 12px -3px rgba(255,62,165,.55)}
+:root[data-skin="synth"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.45),transparent 55%,rgba(13,2,33,.25))}
 .focus-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .cam{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);padding:12px 14px 12px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--mid);box-shadow:0 10px 30px rgba(0,0,0,.45);color:var(--ink);font-weight:600}
@@ -755,10 +752,9 @@ input[type=range]{accent-color:var(--accent);width:100%}
       </div>
       <div class="fstats" id="focusStats"></div>
       <p class="focus-sum" id="focusSum"></p>
-      <div class="focus-rows" id="focusRows"></div>
-      <div class="fweek-box" id="focusWeekBox" hidden>
-        <span class="fweek-h">Останні 7 днів</span>
-        <div class="fweek" id="focusWeek"></div>
+      <div class="fcharts" id="focusCharts" hidden>
+        <div class="fchart" id="focusLessonsBox"><span class="fchart-h">Сьогодні</span><div class="fcols" id="focusLessons"></div></div>
+        <div class="fchart" id="focusWeekBox"><span class="fchart-h">Останні 7 днів</span><div class="fcols" id="focusWeek"></div></div>
       </div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
@@ -2393,6 +2389,25 @@ function dayScore(day){
   const score = parts.reduce((t, q) => t + q.w * q.v, 0) / parts.reduce((t, q) => t + q.w, 0);
   return {score, parts, grade:Math.max(1, Math.min(12, Math.round(score * 12))), tone:score >= .8 ? 'ok' : score >= .6 ? 'mid' : 'bad'};
 }
+// One column of a mini chart: a number on top, a stacked bar (fractions of its height), a label underneath.
+function chartCol(label, top, segs, o){
+  const col = document.createElement('div');
+  col.className = 'fwd' + (o.cls || '');
+  col.title = o.title;
+  const g = document.createElement('b'); g.textContent = top;
+  const bar = document.createElement('span'); bar.className = 'fwd-bar';
+  const stack = document.createElement('span'); stack.className = 'fstack';
+  stack.style.height = (o.h === undefined ? 100 : o.h) + '%';
+  for(const [cls, v] of segs){
+    if(v <= 0) continue;
+    const seg = document.createElement('i'); seg.className = cls; seg.style.height = (v * 100) + '%'; stack.append(seg);
+  }
+  bar.append(stack);
+  const lab = document.createElement('span'); lab.textContent = label;
+  col.append(g, bar, lab);
+  return col;
+}
+const pctTxt = (v) => Math.round(v * 100) + '%';
 function renderWeek(now){
   // the last seven days up to today, so a Monday still shows last week
   const first = new Date(now); first.setHours(12, 0, 0, 0); first.setDate(first.getDate() - 6);
@@ -2402,37 +2417,13 @@ function renderWeek(now){
   for(let k = 0; k < 7; k++){
     const d = new Date(first); d.setDate(first.getDate() + k);
     const name = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][d.getDay()];
-    const key = dayKey(d), ds = dayScore(F.days[key]);
+    const key = dayKey(d), ds = dayScore(F.days[key]), cls = key === today ? ' today' : '';
     if(ds) any = true;
-    const col = document.createElement('div');
-    col.className = 'fwd' + (key === today ? ' today' : '') + (ds ? '' : ' empty');
-    col.title = ds ? name + ': ' + Math.round(ds.score * 100) + '%, оцінка ' + ds.grade : name + ': немає даних';
-    const g = document.createElement('b'); g.textContent = ds ? ds.grade : '';
-    const bar = document.createElement('span'); bar.className = 'fwd-bar';
-    const fill = document.createElement('i');
-    if(ds){ fill.style.height = Math.max(8, ds.score * 100) + '%'; fill.dataset.tone = ds.tone; }
-    bar.append(fill);
-    const lab = document.createElement('span'); lab.textContent = name;
-    col.append(g, bar, lab);
-    wk.append(col);
+    wk.append(ds
+      ? chartCol(name, ds.grade, [[{ok:'f', mid:'d', bad:'a'}[ds.tone], 1]], {cls, h:Math.max(8, ds.score * 100), title:name + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade})
+      : chartCol(name, '', [], {cls:cls + ' empty', h:4, title:name + ': немає даних'}));
   }
   $('focusWeekBox').hidden = !any;
-}
-function focusRow(label, b, isBreak){
-  const t = fTotal(b) || 1, row = document.createElement('div');
-  row.className = 'frow';
-  const name = document.createElement('span'); name.textContent = label;
-  const bar = document.createElement('span'); bar.className = 'fbar';
-  // on a break away is the good part: rested shows in the "good" colour first, time at the desk in the warning one
-  const segs = isBreak ? [['f', b.a], ['d', b.f + b.d + (b.i || 0)]] : [['f', b.f + (b.i || 0)], ['d', b.d], ['a', b.a]];
-  for(const [cls, v] of segs){
-    if(v <= 0) continue;
-    const seg = document.createElement('i'); seg.className = cls; seg.style.width = (v / t * 100) + '%'; bar.append(seg);
-  }
-  const val = document.createElement('span'); val.className = 'fval';
-  val.textContent = isBreak ? 'відпочив ' + Math.round(b.a / t * 100) + '%' : Math.round((b.f + (b.i || 0)) / t * 100) + '%';
-  row.append(name, bar, val);
-  return row;
 }
 // the camera stays rendered (just invisible) when folded, otherwise its frames stop updating
 function applyFocusFold(){
@@ -2478,21 +2469,30 @@ function renderFocus(st){
   $('fPostureNote').textContent = F.postureBase ? 'Правильну поставу запам’ятовано. Пересів? Натисни ще раз.' : 'Сядь рівно, як треба, і натисни, щоб я запам’ятав поставу.';
   $('focusErr').hidden = !FS.err;
   $('focusErr').textContent = FS.err;
-  const rows = $('focusRows'); rows.textContent = '';
-  const tot = {f:0, d:0, a:0, i:0}, brk = {f:0, d:0, a:0, i:0};
+  const lc = $('focusLessons'); lc.textContent = '';
+  const tot = {f:0, d:0, a:0, i:0}, brk = {f:0, d:0, a:0, i:0}, curKey = st.mode === 'lesson' ? 'L' + st.p.n : '';
   const lessons = Object.keys(day).filter(k => k[0] === 'L').sort((x, y) => x.slice(1) - y.slice(1));
-  for(const k of lessons){ for(const x in tot) tot[x] += day[k][x] || 0; if(fTotal(day[k]) > 20) rows.append(focusRow('Урок ' + k.slice(1), day[k])); }
+  for(const k of lessons){
+    const b = day[k], t = fTotal(b);
+    for(const x in tot) tot[x] += b[x] || 0;
+    if(t <= 20) continue;
+    const f = (b.f + (b.i || 0)) / t;
+    lc.append(chartCol(k.slice(1), Math.round(f * 100), [['f', f], ['d', b.d / t], ['a', b.a / t]],
+      {cls:k === curKey ? ' today' : '', title:'Урок ' + k.slice(1) + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(b.d / t) + ', не було ' + pctTxt(b.a / t)}));
+  }
   for(const k of Object.keys(day)) if(k[0] === 'B') for(const x in brk) brk[x] += day[k][x] || 0;
-  if(fTotal(brk) > 20) rows.append(focusRow('Перерви', brk, true));
-  let pg = 0, pb = 0;
-  for(const k of lessons){ pg += day[k].pg || 0; pb += day[k].pb || 0; }
+  if(fTotal(brk) > 20){
+    // on a break away is the good part: rested in the "good" colour at the bottom, time at the desk above it
+    const r = brk.a / fTotal(brk);
+    lc.append(chartCol('пер.', Math.round(r * 100), [['f', r], ['d', 1 - r]], {cls:st.mode === 'break' ? ' today' : '', title:'Перерви: відпочив ' + pctTxt(r) + ', за столом ' + pctTxt(1 - r)}));
+  }
+  $('focusLessonsBox').hidden = !lc.childElementCount;
+  lc.style.gridTemplateColumns = 'repeat(' + Math.max(7, lc.childElementCount) + ',minmax(0,1fr))';
   const stats = $('focusStats'); stats.textContent = '';
   if(fTotal(tot) > 20){
     // at work = lessons at the desk plus breaks spent at the desk (minus phone time, which never counts as work)
     stats.append(statTile('f', durParts(tot.f + tot.i + brk.f + brk.i), 'за роботою'), statTile('d', durParts(tot.d), 'телефон, розмови'), statTile('a', durParts(tot.a), 'не було'));
   }
-  if(fTotal(brk) > 20) stats.append(statTile('d', [[Math.round((brk.f + brk.d + brk.i) / 60), 'із ' + Math.round(fTotal(brk) / 60) + ' хв']], 'перерви за столом'));
-  if(pg + pb > 60) stats.append(statTile('', [[Math.round(pg / (pg + pb) * 100), '%']], 'постава рівно'));
   stats.hidden = !stats.childElementCount;
   const ds = dayScore(day);
   $('focusDay').hidden = !ds;
@@ -2504,6 +2504,7 @@ function renderFocus(st){
     $('fdayGrade').setAttribute('aria-label', 'Оцінка за день: ' + ds.grade + ' з 12');
   }
   renderWeek(now);
+  $('focusCharts').hidden = $('focusLessonsBox').hidden && $('focusWeekBox').hidden;
   $('focusSum').hidden = !stats.hidden;
   $('focusSum').textContent = 'Статистика з’явиться, щойно почнеться урок.';
 }
