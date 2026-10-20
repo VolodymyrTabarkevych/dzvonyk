@@ -127,16 +127,16 @@
   color-scheme:dark;
 }
 
-/* Pixel: an 8-bit game screen at night. Deep indigo with pixel stars and a blocky moon, chunky notched frames, orange lessons, sky-blue breaks, PICO-8 colours */
+/* Pixel: a synthwave sunset in 8-bit. A low-res pixel-art sky, striped sun, mountains and grid floor (drawn by pixelScene), notched frames, hot-pink lessons, cyan breaks */
 :root[data-skin="pixel"]{
-  --bg:#0d0b1e; --grid:transparent; --margin-line:transparent; --surface:#1a1832; --line:#3b3768; --track:#2a2650;
-  --ink:#fff1e8; --ink-2:#c2c3c7; --ink-3:#8f8cb8; --accent:#ffa300; --accent-ink:#1a1020; --accent-soft:#4a2c12;
-  --rest:#29adff; --rest-soft:#12304a; --now:#ff004d; --warn:#ff004d; --warn-soft:#3d0c1d;
+  --bg:#0f0524; --grid:transparent; --margin-line:transparent; --surface:#1a0a33; --line:#4b1f78; --track:#2a1150;
+  --ink:#fdeaff; --ink-2:#d6b8ec; --ink-3:#a487c6; --accent:#ff4fa3; --accent-ink:#1a0526; --accent-soft:#4a1340;
+  --rest:#3be8ff; --rest-soft:#0f3a4a; --now:#ffd319; --warn:#ffd319; --warn-soft:#3a3010;
   --font-display:"Press Start 2P",monospace;
   --font-body:"Tiny5","Golos Text",sans-serif;
   --font-hand:"Press Start 2P",monospace;
-  --bg-pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cg fill='%23fff1e8'%3E%3Crect x='5' y='1' width='5' height='1'/%3E%3Crect x='3' y='2' width='4' height='1'/%3E%3Crect x='2' y='3' width='3' height='1'/%3E%3Crect x='1' y='4' width='3' height='3'/%3E%3Crect x='1' y='7' width='3' height='2'/%3E%3Crect x='1' y='9' width='3' height='2'/%3E%3Crect x='2' y='11' width='3' height='1'/%3E%3Crect x='3' y='12' width='4' height='1'/%3E%3Crect x='5' y='13' width='6' height='1'/%3E%3Crect x='10' y='12' width='3' height='1'/%3E%3C/g%3E%3Cg fill='%23c2c3c7'%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='3' y='9' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' shape-rendering='crispEdges'%3E%3Cg fill='%23fff1e8' opacity='.55'%3E%3Crect x='12' y='18' width='2' height='2'/%3E%3Crect x='96' y='9' width='2' height='2'/%3E%3Crect x='140' y='64' width='2' height='2'/%3E%3Crect x='51' y='120' width='2' height='2'/%3E%3Crect x='118' y='141' width='2' height='2'/%3E%3C/g%3E%3Cg fill='%2329adff' opacity='.5'%3E%3Crect x='70' y='52' width='2' height='2'/%3E%3Crect x='22' y='86' width='2' height='2'/%3E%3C/g%3E%3Cg fill='%23ffec27' opacity='.55'%3E%3Crect x='104' y='98' width='2' height='2'/%3E%3Crect x='150' y='22' width='2' height='2'/%3E%3Crect x='148' y='20' width='6' height='2' opacity='.5'/%3E%3Crect x='150' y='18' width='2' height='6' opacity='.5'/%3E%3C/g%3E%3C/svg%3E"),linear-gradient(#0d0b1e,#171338);
-  --bg-size:clamp(64px,7vw,112px) auto,160px 160px,100% 100%;
+  --bg-pattern:var(--pixel-scene,linear-gradient(#0f0524,#2a0b4a));
+  --bg-size:cover;
   --r:0px; --chip-r:0px; --btn-r:0px;
   --card-shadow:0 -4px 0 0 var(--line),0 4px 0 0 var(--line),-4px 0 0 0 var(--line),4px 0 0 0 var(--line),8px 10px 0 0 rgba(0,0,0,.45);
   --count-size:clamp(40px,6.4vw,68px); --count-weight:400; --digit-w:1em; --colon-w:.7em;
@@ -249,9 +249,9 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 :root[data-skin="synth"]{--ok:#36e2f0;--mid:#ffd319;--bad:#ff3ea5}
 :root[data-skin="synth"] .fstack{box-shadow:0 0 12px -3px rgba(255,62,165,.55)}
 :root[data-skin="synth"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.45),transparent 55%,rgba(13,2,33,.25))}
-:root[data-skin="pixel"]{--ok:#00e436;--mid:#ffec27;--bad:#ff004d}
+:root[data-skin="pixel"]{--ok:#3be8ff;--mid:#ffd319;--bad:#ff4fa3}
 :root[data-skin="pixel"] .fstack{width:12px;border-radius:0}
-:root[data-skin="pixel"] .fstack i{background-image:repeating-linear-gradient(0deg,transparent 0 6px,rgba(13,11,30,.6) 6px 8px)}
+:root[data-skin="pixel"] .fstack i{background-image:repeating-linear-gradient(0deg,transparent 0 6px,rgba(15,5,36,.6) 6px 8px)}
 .focus-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .cam{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);padding:12px 14px 12px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--mid);box-shadow:0 10px 30px rgba(0,0,0,.45);color:var(--ink);font-weight:600}
@@ -413,7 +413,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .sw-dots{background:radial-gradient(circle,#e8202a 0 24%,#141414 28%)}
 .sw-line{background:linear-gradient(135deg,#0f0f0f 0 44%,#ff4f00 44% 56%,#0f0f0f 56%)}
 .sw-synth{background:linear-gradient(#ffd319 0 28%,#ff2975 28% 52%,#2a0a4a 52%)}
-.sw-pixel{border-radius:0;background:conic-gradient(#ffa300 0 25%,#29adff 0 50%,#ffa300 0 75%,#29adff 0) 0 0/6px 6px}
+.sw-pixel{border-radius:0;background:conic-gradient(#ff4fa3 0 25%,#3be8ff 0 50%,#ff4fa3 0 75%,#3be8ff 0) 0 0/6px 6px}
 
 /* skin-specific type and effects */
 :root[data-skin="cyber"] .logo{font-family:var(--font-body);font-style:italic;font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.08em;text-shadow:-1.5px 0 var(--rest),1.5px 0 var(--accent)}
@@ -525,18 +525,19 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="synth"] .now::after{content:"";position:absolute;z-index:-1;left:-50%;right:-50%;top:60%;height:200%;transform-origin:50% 0;transform:perspective(220px) rotateX(58deg);background:linear-gradient(#16062c,rgba(22,6,44,0) 30%),repeating-linear-gradient(90deg,rgba(255,62,165,.4) 0 1px,transparent 1px 44px),repeating-linear-gradient(0deg,rgba(255,62,165,.4) 0 1px,transparent 1px 30px),#16062c}
 :root[data-skin="synth"] .now-info,:root[data-skin="synth"] .now-range,:root[data-skin="synth"] .hint{text-shadow:0 1px 8px rgba(13,2,33,.95)}
 :root[data-skin="synth"] .sun{display:none}
-:root[data-skin="pixel"] body{background-attachment:fixed;background-position:right 4% top 120px,0 0,0 0;background-repeat:no-repeat,repeat,no-repeat;image-rendering:pixelated}
+:root[data-skin="pixel"] body{background-attachment:fixed;background-position:center bottom;background-repeat:no-repeat;image-rendering:pixelated}
 :root[data-skin="pixel"] .card{border:0}
 :root[data-skin="pixel"] .logo{font-family:var(--font-hand);font-size:18px;line-height:1.3}
 :root[data-skin="pixel"] .logo svg{color:var(--accent)}
-:root[data-skin="pixel"] .clock{font-size:16px;color:var(--accent);letter-spacing:0}
+:root[data-skin="pixel"] .clock{font-size:16px;color:var(--now);letter-spacing:0;text-shadow:2px 2px 0 #a01e6a}
 :root[data-skin="pixel"] h2,:root[data-skin="pixel"] .settings summary{font-family:var(--font-hand);font-size:13px;line-height:1.5;text-transform:uppercase;color:var(--rest)}
-:root[data-skin="pixel"] h2::before,:root[data-skin="pixel"] .settings summary::before{content:"";display:inline-block;width:8px;height:8px;margin-right:10px;vertical-align:1px;background:var(--accent);box-shadow:2px 2px 0 0 #ab5236}
+:root[data-skin="pixel"] h2::before,:root[data-skin="pixel"] .settings summary::before{content:"";display:inline-block;width:8px;height:8px;margin-right:10px;vertical-align:1px;background:var(--accent);box-shadow:2px 2px 0 0 #a01e6a}
 :root[data-skin="pixel"] .chip{font-family:var(--font-hand);font-size:10px;line-height:1.4;padding:6px 8px;text-transform:uppercase}
 :root[data-skin="pixel"] .now[data-kind="lesson"] .chip{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-:root[data-skin="pixel"] .now[data-kind="break"] .chip{background:var(--rest);border-color:var(--rest);color:#0d0b1e}
+:root[data-skin="pixel"] .now[data-kind="break"] .chip{background:var(--rest);border-color:var(--rest);color:#0f0524}
 :root[data-skin="pixel"] .now-range{font-family:var(--font-body);font-size:18px}
-:root[data-skin="pixel"] .count{text-shadow:4px 4px 0 rgba(0,0,0,.55);line-height:1.1}
+:root[data-skin="pixel"] .count{text-shadow:4px 4px 0 #5b1fa8;line-height:1.1}
+:root[data-skin="pixel"] .now[data-kind="break"] .count{color:var(--rest);text-shadow:4px 4px 0 #1d4f8a}
 :root[data-skin="pixel"] .now[data-kind="lesson"] .count{color:var(--accent)}
 :root[data-skin="pixel"] .count-sub{font-size:17px}
 /* progress as a game health bar: square blocks with gaps */
@@ -547,19 +548,19 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="pixel"] .nowmark{width:4px;margin-left:-2px}
 :root[data-skin="pixel"] .ticks{font-size:9px}
 :root[data-skin="pixel"] .btn{border:0;background:var(--track);color:var(--ink);box-shadow:0 -2px 0 0 var(--line),0 2px 0 0 var(--line),-2px 0 0 0 var(--line),2px 0 0 0 var(--line),inset -2px -3px 0 0 rgba(0,0,0,.35)}
-:root[data-skin="pixel"] .btn:hover{background:#3b3768}
+:root[data-skin="pixel"] .btn:hover{background:#3a1a66}
 :root[data-skin="pixel"] .btn:active{transform:translateY(2px)}
-:root[data-skin="pixel"] .btn.primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 -2px 0 0 #ab5236,0 2px 0 0 #ab5236,-2px 0 0 0 #ab5236,2px 0 0 0 #ab5236,inset -2px -3px 0 0 rgba(0,0,0,.25)}
+:root[data-skin="pixel"] .btn.primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 -2px 0 0 #a01e6a,0 2px 0 0 #a01e6a,-2px 0 0 0 #a01e6a,2px 0 0 0 #a01e6a,inset -2px -3px 0 0 rgba(0,0,0,.25)}
 :root[data-skin="pixel"] .btn.ghost{background:transparent}
 :root[data-skin="pixel"] .seg{border:0;box-shadow:0 -2px 0 0 var(--line),0 2px 0 0 var(--line),-2px 0 0 0 var(--line),2px 0 0 0 var(--line)}
 :root[data-skin="pixel"] .skin[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
 :root[data-skin="pixel"] .dt span,:root[data-skin="pixel"] .lcount,:root[data-skin="pixel"] .focus-pill,:root[data-skin="pixel"] .fdot,:root[data-skin="pixel"] .fstat-l i{border-radius:0}
-:root[data-skin="pixel"] .add input,:root[data-skin="pixel"] .lp-head input,:root[data-skin="pixel"] .brk,:root[data-skin="pixel"] .form input[type=time],:root[data-skin="pixel"] .form input[type=number],:root[data-skin="pixel"] .form select{border-radius:0;border:2px solid var(--line);background:#0d0b1e}
+:root[data-skin="pixel"] .add input,:root[data-skin="pixel"] .lp-head input,:root[data-skin="pixel"] .brk,:root[data-skin="pixel"] .form input[type=time],:root[data-skin="pixel"] .form input[type=number],:root[data-skin="pixel"] .form select{border-radius:0;border:2px solid var(--line);background:#0f0524}
 :root[data-skin="pixel"] .brk.custom{border-color:var(--rest)}
 :root[data-skin="pixel"] td.t,:root[data-skin="pixel"] td.n{font-size:11px}
 :root[data-skin="pixel"] tr.cur td.t,:root[data-skin="pixel"] tr.cur td.n{color:var(--accent)}
 :root[data-skin="pixel"] td.end{font-family:var(--font-hand);font-size:9px;text-transform:uppercase;color:var(--now)}
-:root[data-skin="pixel"] .player{border-radius:0;background:#07061a}
+:root[data-skin="pixel"] .player{border-radius:0;background:#0b0320}
 :root[data-skin="pixel"] .list-panel{border:0;border-radius:0;box-shadow:0 -4px 0 0 var(--line),0 4px 0 0 var(--line),-4px 0 0 0 var(--line),4px 0 0 0 var(--line),8px 10px 0 0 rgba(0,0,0,.5)}
 :root[data-skin="pixel"] .fday-pct{font-size:24px}
 :root[data-skin="pixel"] .fday-grade{border-radius:0;transform:none;font-size:16px;width:44px;height:44px;border-width:3px}
@@ -1494,18 +1495,31 @@ const VIZ = {
       g.fillText((hz >= 1000 ? (hz / 1000).toFixed(1).replace('.', ',') + ' кГц' : Math.round(hz) + ' Гц'), x + (right ? -6 : 6) * G.dpr, G.mid - L[best] * G.area / 2);
     }
   },
-  // Pixel: a chunky 8-bit equaliser on a coarse block grid, colours stepping up like a game meter, white peak blocks, blinking pixel stars
+  // Pixel: a chunky 8-bit equaliser in synthwave colours over a stepped, striped pixel sun, with blinking pixel stars
   pixel(g, G, C, L, t){
     const bs = Math.max(4, Math.floor(G.step)), gap = Math.max(1, Math.round(bs * .2)), inner = bs - gap;
     const rows = Math.max(4, Math.floor(G.area * .9 / bs)), base = Math.round(G.top + G.area * .96);
-    const ramp = ['#29adff', '#00e436', '#ffec27', '#ffa300', '#ff004d'], px = Math.max(2, Math.round(G.dpr * 2));
+    const ramp = ['#3be8ff', '#7a5cff', '#ff4fa3', '#ff8c42', '#ffd319'], px = Math.max(2, Math.round(G.dpr * 2));
     for(let k = 0; k < 26; k++){
       if(Math.sin(t * 1.7 + k * 2.3) < -.2) continue;
       const x = Math.round((Math.sin(k * 91.7) * .5 + .5) * G.W), y = Math.round((Math.sin(k * 47.3) * .5 + .5) * (base - bs * 3));
-      g.fillStyle = k % 3 === 0 ? '#29adff' : k % 3 === 1 ? '#ffec27' : '#fff1e8';
+      g.fillStyle = k % 3 === 0 ? '#3be8ff' : k % 3 === 1 ? '#ffd319' : '#fdeaff';
       g.fillRect(x, y, px, px);
     }
-    g.fillStyle = '#3b3768';
+    let bass = 0;
+    for(let i = 0; i < 6; i++) bass += L[i] / 6;
+    const q = Math.max(2, Math.round(bs / 2)), R = Math.round(G.area * (.42 + bass * .06) / q) * q, cx = Math.round(G.W / 2 / q) * q;
+    const sunCols = ['#ffe46e', '#ffc14d', '#ff8c42', '#ff5a5f', '#ff2975'];
+    g.globalAlpha = .85;
+    for(let up = q; up <= R; up += q){
+      const k = up / q;
+      if(up < R * .5 && (k % 3 === 1)) continue;
+      const hw = Math.round(Math.sqrt(R * R - (up - q / 2) * (up - q / 2)) / q) * q;
+      g.fillStyle = sunCols[Math.min(4, Math.floor((1 - up / R) * 5))];
+      g.fillRect(cx - hw, base - up, hw * 2, q);
+    }
+    g.globalAlpha = 1;
+    g.fillStyle = '#4b1f78';
     for(let x = Math.round(G.padX); x < G.W - G.padX; x += bs) g.fillRect(x, base + gap, inner, Math.max(2, Math.round(inner / 3)));
     for(let i = 0; i < G.N; i++){
       const x = Math.round(G.padX + i * G.step), lit = Math.round(L[i] * rows), pk = Math.round(V.peaks[i] * rows);
@@ -1514,7 +1528,7 @@ const VIZ = {
         g.fillStyle = ramp[f < .2 ? 0 : f < .45 ? 1 : f < .65 ? 2 : f < .82 ? 3 : 4];
         g.fillRect(x, base - (k + 1) * bs, inner, inner);
       }
-      if(pk > lit){ g.fillStyle = '#fff1e8'; g.fillRect(x, base - pk * bs, inner, inner); }
+      if(pk > lit){ g.fillStyle = '#fdeaff'; g.fillRect(x, base - pk * bs, inner, inner); }
     }
   },
   // Retro: striped sunset sun that swells with the bass, the spectrum as a neon mountain range, a rolling grid floor
@@ -1970,12 +1984,53 @@ new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerB
 applyView();
 
 // skins
+// Pixel-art synthwave sunset for the Pixel skin, computed pixel by pixel at 320x200 and shown upscaled (image-rendering: pixelated).
+let pixelSceneUrl = '';
+function pixelScene(){
+  if(pixelSceneUrl) return pixelSceneUrl;
+  const W = 320, H = 200, HZ = 158, c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const g = c.getContext('2d'), img = g.createImageData(W, H), d = img.data;
+  const hex = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const sky = [[0, '#0f0524'], [38, '#160832'], [70, '#200b42'], [97, '#2f0f52'], [117, '#461461'], [134, '#631a6c'], [148, '#8a2275']].map(([y, h]) => [y, hex(h)]);
+  const sunCols = ['#ffe46e', '#ffc14d', '#ff8c42', '#ff5a5f', '#ff2975'].map(hex);
+  const peaks = [[18, 22, 34], [62, 34, 44], [112, 20, 36], [168, 14, 30], [206, 26, 40], [262, 18, 30], [304, 30, 42]];
+  const ridge = (x) => { let h = 0; for(const [px, ph, pw] of peaks) h = Math.max(h, ph - Math.abs(x - px) * ph / pw); return HZ - Math.round(h); };
+  const hash = (x, y) => { const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return v - Math.floor(v); };
+  const grid = new Set(); for(let k = 1; k <= 9; k++) grid.add(HZ + Math.round((H - HZ) * Math.pow(k / 9, 1.7)));
+  const put = (i, rgb) => { d[i] = rgb[0]; d[i + 1] = rgb[1]; d[i + 2] = rgb[2]; d[i + 3] = 255; };
+  const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const ground = hex('#140629'), line = hex('#ff4fa3'), mount = hex('#241046'), edge = hex('#3be8ff');
+  const stars = [hex('#fdeaff'), hex('#3be8ff'), hex('#ffd319')];
+  for(let y = 0; y < H; y++) for(let x = 0; x < W; x++){
+    const i = (y * W + x) * 4;
+    if(y < HZ){
+      let col = sky[0][1];
+      for(const [sy, sc] of sky) if(y >= sy) col = sc;
+      if(y < 126 && hash(x, y) > .993) col = stars[Math.floor(hash(y, x) * 3)];
+      const dx = x - 240 + .5, dy = y - HZ + .5, up = HZ - y;
+      // striped sun: gaps get thicker towards the horizon
+      if(dx * dx + dy * dy < 34 * 34 && !(up < 18 && (up % 6 === 1 || (up < 9 && up % 6 === 2)))) col = sunCols[Math.min(4, Math.floor((34 - up) / 7))];
+      const r = ridge(x);
+      if(y === r && r < HZ) col = edge; else if(y > r) col = mount;
+      put(i, col);
+    }else{
+      const t = (y - HZ) / (H - HZ), span = 3 + 44 * t, j = (x - 160) / span;
+      const onV = Math.abs(j - Math.round(j)) * span < .5, onH = grid.has(y);
+      put(i, onV || onH ? mix(ground, line, .25 + .55 * t) : ground);
+    }
+  }
+  g.putImageData(img, 0, 0);
+  return (pixelSceneUrl = c.toDataURL('image/png'));
+}
+
 const SKINS = ['chalk', 'cyber', 'aero', 'dots', 'line', 'synth', 'pixel'];
 function applySkin(){
   const s = SKINS.includes(S.skin) ? S.skin : 'chalk';
   if(s === 'chalk') delete document.documentElement.dataset.skin;
   else document.documentElement.dataset.skin = s;
   document.querySelectorAll('.skin').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.skin === s)));
+  if(s === 'pixel') document.documentElement.style.setProperty('--pixel-scene', 'url(' + pixelScene() + ')');
 }
 $('skins').addEventListener('click', (e) => {
   const b = e.target.closest('.skin');
