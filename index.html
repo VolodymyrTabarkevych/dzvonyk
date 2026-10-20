@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Дзвоник</title>
-<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','aero','dots','line','synth','pixel','keep'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
+<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','aero','dots','line','synth','pixel','orbit'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
 <meta name="description" content="Особистий розклад дзвінків: уроки й перерви у фіксований час, дзвінки та музика з YouTube.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%23f1cf5e'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23f1cf5e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=Russo+One&family=Onest:wght@400;500;700&family=Doto:ROND,wght@100,600;100,800&family=JetBrains+Mono:wght@400;500;700&family=Geologica:wght@200;300;400;600&family=Press+Start+2P&family=Tiny5&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=Russo+One&family=Onest:wght@400;500;700&family=Doto:ROND,wght@100,600;100,800&family=JetBrains+Mono:wght@400;500;700&family=Geologica:wght@200;300;400;600&family=Press+Start+2P&family=Tiny5&family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap">
 <style>
 /* Layout: dark-only page; live "now" card left with music under it, bell schedule right. Skins only swap tokens. */
 /* Chalkboard (default): school slate green, chalk yellow for lessons, chalk green for breaks */
@@ -143,19 +143,20 @@
   --glow:none;
   color-scheme:dark;
 }
-/* Fortress: a medieval castle at night in 8-bit. Pixel-art stone keep with lit windows, red banners and torches under a pixel moon (drawn by keepScene); torch-amber lessons, moon-blue breaks */
-:root[data-skin="keep"]{
-  --bg:#0b0d1a; --grid:transparent; --margin-line:transparent; --surface:#181a2b; --line:#4a4f6e; --track:#262a40;
-  --ink:#f3ead6; --ink-2:#cdc3ab; --ink-3:#9d9580; --accent:#f0a03a; --accent-ink:#1c1208; --accent-soft:#45301a;
-  --rest:#7fb2ff; --rest-soft:#1a2a48; --now:#e2443b; --warn:#e2443b; --warn-soft:#3d1614;
-  --font-display:"Press Start 2P",monospace;
-  --font-body:"Tiny5","Golos Text",sans-serif;
-  --font-hand:"Press Start 2P",monospace;
-  --bg-pattern:var(--keep-scene,linear-gradient(#0b0d1a,#252f55));
-  --bg-size:cover;
-  --r:0px; --chip-r:0px; --btn-r:0px;
-  --card-shadow:0 -4px 0 0 var(--line),0 4px 0 0 var(--line),-4px 0 0 0 var(--line),4px 0 0 0 var(--line),8px 10px 0 0 rgba(0,0,0,.45);
-  --count-size:clamp(40px,6.4vw,68px); --count-weight:400; --digit-w:1em; --colon-w:.7em;
+/* Orbit: 80s/90s space anime (in the spirit of Orbitals). Hyperspace speed lines, a red cross sparkle, CRT scanlines; cel-shaded cards with thick dark outlines
+   and hard offset shadows; title-card numerals; hot-orange lessons, sky-blue breaks */
+:root[data-skin="orbit"]{
+  --bg:#070b22; --grid:transparent; --margin-line:transparent; --surface:rgba(16,22,56,.95); --line:#2e3a7a; --track:#1f2858;
+  --ink:#fff3dc; --ink-2:#cdd3f2; --ink-3:#99a3d6; --accent:#ff7a2f; --accent-ink:#1a0a04; --accent-soft:#4a2414;
+  --rest:#4cc2ff; --rest-soft:#123a5a; --now:#ff3b4e; --warn:#ff3b4e; --warn-soft:#3f1220;
+  --font-display:"Dela Gothic One","Russo One",sans-serif;
+  --font-body:"M PLUS Rounded 1c","Golos Text",sans-serif;
+  --font-hand:"Dela Gothic One","Russo One",sans-serif;
+  --bg-pattern:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.14) 2px 3px),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23ff3b4e'%3E%3Cpath d='M100 0L104 96L200 100L104 104L100 200L96 104L0 100L96 96Z'/%3E%3C/g%3E%3Ccircle cx='100' cy='100' r='7' fill='%23fff3dc'/%3E%3Ccircle cx='100' cy='100' r='22' fill='%23ff3b4e' opacity='.25'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='b' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23081033'/%3E%3Cstop offset='.5' stop-color='%231a1240'/%3E%3Cstop offset='1' stop-color='%230a1a44'/%3E%3C/linearGradient%3E%3ClinearGradient id='v' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23070b22'/%3E%3Cstop offset='.25' stop-color='%23070b22' stop-opacity='0'/%3E%3Cstop offset='.75' stop-color='%23070b22' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23070b22'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1600' height='1000' fill='url(%23b)'/%3E%3Crect x='518' y='-176' width='2' height='1075' fill='%23ff8a3d' opacity='0.16'/%3E%3Crect x='585' y='-93' width='1' height='560' fill='%23ff8a3d' opacity='0.3'/%3E%3Crect x='112' y='-170' width='1' height='896' fill='%2359b8ff' opacity='0.2'/%3E%3Crect x='1009' y='-2' width='1' height='1183' fill='%23ff4a3a' opacity='0.21'/%3E%3Crect x='891' y='-128' width='2' height='582' fill='%23ff8a3d' opacity='0.14'/%3E%3Crect x='896' y='86' width='2' height='632' fill='%23ff4a3a' opacity='0.09'/%3E%3Crect x='876' y='110' width='1' height='847' fill='%23ffb36b' opacity='0.21'/%3E%3Crect x='684' y='262' width='5' height='753' fill='%23ff4a3a' opacity='0.18'/%3E%3Crect x='1271' y='-50' width='2' height='847' fill='%239fd8ff' opacity='0.08'/%3E%3Crect x='1167' y='-163' width='3' height='858' fill='%23ff8a3d' opacity='0.22'/%3E%3Crect x='1211' y='11' width='2' height='1173' fill='%23ff8a3d' opacity='0.3'/%3E%3Crect x='1223' y='-25' width='5' height='848' fill='%2359b8ff' opacity='0.15'/%3E%3Crect x='110' y='37' width='1' height='965' fill='%233a6cff' opacity='0.31'/%3E%3Crect x='1170' y='297' width='3' height='1075' fill='%2359b8ff' opacity='0.23'/%3E%3Crect x='1147' y='31' width='5' height='618' fill='%23ff8a3d' opacity='0.07'/%3E%3Crect x='790' y='-135' width='2' height='673' fill='%23ff8a3d' opacity='0.26'/%3E%3Crect x='1467' y='25' width='14' height='885' fill='%2359b8ff' opacity='0.05'/%3E%3Crect x='1311' y='293' width='3' height='978' fill='%236f7dff' opacity='0.24'/%3E%3Crect x='1532' y='-124' width='2' height='961' fill='%233a6cff' opacity='0.08'/%3E%3Crect x='776' y='-198' width='2' height='793' fill='%23ff8a3d' opacity='0.13'/%3E%3Crect x='976' y='145' width='5' height='861' fill='%23ffb36b' opacity='0.31'/%3E%3Crect x='1048' y='235' width='1' height='1166' fill='%239fd8ff' opacity='0.18'/%3E%3Crect x='1277' y='-3' width='8' height='837' fill='%236f7dff' opacity='0.1'/%3E%3Crect x='100' y='20' width='1' height='577' fill='%233a6cff' opacity='0.32'/%3E%3Crect x='164' y='274' width='2' height='930' fill='%233a6cff' opacity='0.2'/%3E%3Crect x='1399' y='-74' width='8' height='743' fill='%239fd8ff' opacity='0.06'/%3E%3Crect x='759' y='297' width='1' height='826' fill='%23ff8a3d' opacity='0.28'/%3E%3Crect x='499' y='-29' width='2' height='685' fill='%239fd8ff' opacity='0.09'/%3E%3Crect x='258' y='276' width='1' height='753' fill='%233a6cff' opacity='0.11'/%3E%3Crect x='1213' y='232' width='3' height='987' fill='%2359b8ff' opacity='0.31'/%3E%3Crect x='829' y='-89' width='2' height='879' fill='%23ffb36b' opacity='0.15'/%3E%3Crect x='527' y='194' width='2' height='1031' fill='%23ff8a3d' opacity='0.22'/%3E%3Crect x='1290' y='-87' width='8' height='862' fill='%239fd8ff' opacity='0.15'/%3E%3Crect x='1170' y='36' width='1' height='636' fill='%239fd8ff' opacity='0.27'/%3E%3Crect x='1530' y='162' width='14' height='745' fill='%239fd8ff' opacity='0.16'/%3E%3Crect x='129' y='-102' width='1' height='643' fill='%233a6cff' opacity='0.12'/%3E%3Crect x='767' y='-158' width='5' height='962' fill='%23ff8a3d' opacity='0.27'/%3E%3Crect x='1252' y='-111' width='2' height='1052' fill='%239fd8ff' opacity='0.18'/%3E%3Crect x='139' y='172' width='8' height='559' fill='%2359b8ff' opacity='0.11'/%3E%3Crect x='272' y='95' width='2' height='826' fill='%2359b8ff' opacity='0.07'/%3E%3Crect x='979' y='-25' width='14' height='884' fill='%23ff4a3a' opacity='0.14'/%3E%3Crect x='34' y='267' width='1' height='804' fill='%2359b8ff' opacity='0.2'/%3E%3Crect x='1322' y='-94' width='2' height='851' fill='%239fd8ff' opacity='0.07'/%3E%3Crect x='415' y='-170' width='8' height='1018' fill='%2359b8ff' opacity='0.17'/%3E%3Crect x='1060' y='239' width='8' height='592' fill='%23ff8a3d' opacity='0.17'/%3E%3Crect x='838' y='188' width='1' height='926' fill='%23ff4a3a' opacity='0.29'/%3E%3Crect x='276' y='-140' width='14' height='543' fill='%236f7dff' opacity='0.13'/%3E%3Crect x='1255' y='-172' width='1' height='634' fill='%233a6cff' opacity='0.29'/%3E%3Crect x='1236' y='180' width='14' height='1139' fill='%2359b8ff' opacity='0.12'/%3E%3Crect x='521' y='26' width='2' height='873' fill='%2359b8ff' opacity='0.24'/%3E%3Crect x='812' y='238' width='2' height='1160' fill='%23ff8a3d' opacity='0.24'/%3E%3Crect x='1476' y='-131' width='2' height='585' fill='%236f7dff' opacity='0.28'/%3E%3Crect x='506' y='-94' width='2' height='712' fill='%23ff8a3d' opacity='0.17'/%3E%3Crect x='1435' y='122' width='2' height='756' fill='%239fd8ff' opacity='0.3'/%3E%3Crect x='1413' y='276' width='14' height='779' fill='%236f7dff' opacity='0.07'/%3E%3Crect x='260' y='16' width='2' height='861' fill='%239fd8ff' opacity='0.1'/%3E%3Crect x='674' y='161' width='5' height='514' fill='%23ffb36b' opacity='0.14'/%3E%3Crect x='734' y='59' width='1' height='707' fill='%23ff4a3a' opacity='0.16'/%3E%3Crect x='181' y='-148' width='2' height='686' fill='%233a6cff' opacity='0.31'/%3E%3Crect x='1449' y='-135' width='2' height='796' fill='%239fd8ff' opacity='0.13'/%3E%3Crect x='650' y='-155' width='14' height='540' fill='%23ffb36b' opacity='0.15'/%3E%3Crect x='293' y='-192' width='1' height='562' fill='%239fd8ff' opacity='0.13'/%3E%3Crect x='134' y='231' width='2' height='818' fill='%239fd8ff' opacity='0.08'/%3E%3Crect x='1591' y='-66' width='8' height='590' fill='%2359b8ff' opacity='0.18'/%3E%3Crect x='1501' y='-109' width='2' height='1153' fill='%239fd8ff' opacity='0.13'/%3E%3Crect x='850' y='50' width='2' height='625' fill='%23ff8a3d' opacity='0.14'/%3E%3Crect x='1286' y='-191' width='3' height='854' fill='%2359b8ff' opacity='0.07'/%3E%3Crect x='823' y='-147' width='2' height='1073' fill='%23ff8a3d' opacity='0.3'/%3E%3Crect x='1050' y='-46' width='8' height='651' fill='%23ff8a3d' opacity='0.19'/%3E%3Crect x='548' y='-26' width='2' height='538' fill='%23ff8a3d' opacity='0.17'/%3E%3Crect x='23' y='-172' width='3' height='966' fill='%236f7dff' opacity='0.17'/%3E%3Crect x='1393' y='146' width='3' height='532' fill='%2359b8ff' opacity='0.22'/%3E%3Crect x='252' y='-18' width='14' height='730' fill='%239fd8ff' opacity='0.04'/%3E%3Crect x='391' y='-109' width='3' height='735' fill='%23ff8a3d' opacity='0.12'/%3E%3Crect x='759' y='188' width='2' height='564' fill='%23ff4a3a' opacity='0.12'/%3E%3Crect x='230' y='-50' width='1' height='941' fill='%233a6cff' opacity='0.16'/%3E%3Crect x='937' y='158' width='2' height='1115' fill='%23ff8a3d' opacity='0.23'/%3E%3Crect x='1223' y='162' width='14' height='950' fill='%23ff8a3d' opacity='0.06'/%3E%3Crect x='1320' y='206' width='8' height='598' fill='%233a6cff' opacity='0.15'/%3E%3Crect x='1322' y='-179' width='2' height='946' fill='%233a6cff' opacity='0.08'/%3E%3Crect x='603' y='114' width='14' height='938' fill='%23ffb36b' opacity='0.12'/%3E%3Crect x='391' y='199' width='3' height='1024' fill='%239fd8ff' opacity='0.06'/%3E%3Crect x='1437' y='-167' width='1' height='1016' fill='%239fd8ff' opacity='0.23'/%3E%3Crect x='1295' y='178' width='3' height='662' fill='%236f7dff' opacity='0.12'/%3E%3Crect x='790' y='255' width='8' height='701' fill='%23ff4a3a' opacity='0.05'/%3E%3Crect x='987' y='-126' width='2' height='678' fill='%23ffb36b' opacity='0.08'/%3E%3Crect x='1109' y='-170' width='2' height='688' fill='%239fd8ff' opacity='0.06'/%3E%3Crect x='159' y='-55' width='2' height='862' fill='%236f7dff' opacity='0.24'/%3E%3Crect x='745' y='75' width='1' height='718' fill='%23ff4a3a' opacity='0.32'/%3E%3Crect x='1498' y='-162' width='1' height='855' fill='%236f7dff' opacity='0.14'/%3E%3Crect x='1590' y='273' width='8' height='647' fill='%233a6cff' opacity='0.07'/%3E%3Crect x='227' y='-134' width='3' height='1074' fill='%239fd8ff' opacity='0.31'/%3E%3Crect x='1419' y='249' width='5' height='840' fill='%233a6cff' opacity='0.12'/%3E%3Crect x='255' y='3' width='14' height='1009' fill='%236f7dff' opacity='0.14'/%3E%3Crect x='550' y='-34' width='5' height='727' fill='%2359b8ff' opacity='0.09'/%3E%3Crect x='1343' y='-102' width='1' height='508' fill='%239fd8ff' opacity='0.3'/%3E%3Crect x='405' y='299' width='1' height='912' fill='%2359b8ff' opacity='0.16'/%3E%3Crect x='1481' y='-60' width='3' height='536' fill='%239fd8ff' opacity='0.28'/%3E%3Crect x='1016' y='-67' width='2' height='858' fill='%23ff4a3a' opacity='0.12'/%3E%3Crect x='1237' y='206' width='8' height='942' fill='%239fd8ff' opacity='0.17'/%3E%3Crect x='879' y='166' width='1' height='816' fill='%23ff4a3a' opacity='0.07'/%3E%3Crect x='1031' y='256' width='3' height='885' fill='%23ff4a3a' opacity='0.19'/%3E%3Crect x='755' y='-72' width='5' height='1017' fill='%23ffb36b' opacity='0.13'/%3E%3Crect x='416' y='79' width='2' height='776' fill='%23ff8a3d' opacity='0.14'/%3E%3Crect x='1029' y='253' width='1' height='848' fill='%23ff4a3a' opacity='0.11'/%3E%3Crect x='725' y='25' width='5' height='598' fill='%23ff4a3a' opacity='0.32'/%3E%3Crect x='391' y='-154' width='2' height='667' fill='%2359b8ff' opacity='0.15'/%3E%3Crect x='1295' y='175' width='2' height='789' fill='%236f7dff' opacity='0.29'/%3E%3Crect x='1193' y='-31' width='2' height='543' fill='%2359b8ff' opacity='0.16'/%3E%3Crect x='919' y='52' width='5' height='941' fill='%23ff4a3a' opacity='0.09'/%3E%3Crect x='148' y='123' width='2' height='802' fill='%239fd8ff' opacity='0.16'/%3E%3Crect x='1358' y='13' width='1' height='1035' fill='%236f7dff' opacity='0.09'/%3E%3Crect x='1549' y='-4' width='14' height='1149' fill='%236f7dff' opacity='0.04'/%3E%3Crect x='1556' y='-88' width='2' height='606' fill='%233a6cff' opacity='0.26'/%3E%3Crect x='1506' y='188' width='14' height='501' fill='%2359b8ff' opacity='0.05'/%3E%3Crect x='372' y='-48' width='1' height='590' fill='%2359b8ff' opacity='0.23'/%3E%3Crect x='845' y='-144' width='8' height='549' fill='%23ffb36b' opacity='0.14'/%3E%3Crect x='1510' y='-88' width='2' height='921' fill='%233a6cff' opacity='0.16'/%3E%3Crect x='860' y='-42' width='14' height='1088' fill='%23ff4a3a' opacity='0.08'/%3E%3Crect x='760' y='-185' width='2' height='788' fill='%23ffb36b' opacity='0.2'/%3E%3Crect x='492' y='242' width='1' height='953' fill='%23ff8a3d' opacity='0.11'/%3E%3Crect x='412' y='-87' width='8' height='524' fill='%2359b8ff' opacity='0.18'/%3E%3Crect x='1149' y='-101' width='5' height='1058' fill='%239fd8ff' opacity='0.24'/%3E%3Crect x='1352' y='285' width='1' height='718' fill='%2359b8ff' opacity='0.11'/%3E%3Crect x='369' y='245' width='2' height='576' fill='%239fd8ff' opacity='0.13'/%3E%3Crect x='793' y='43' width='2' height='1137' fill='%23ff4a3a' opacity='0.29'/%3E%3Crect x='1518' y='-173' width='2' height='517' fill='%2359b8ff' opacity='0.3'/%3E%3Crect x='665' y='25' width='1' height='998' fill='%23ff8a3d' opacity='0.11'/%3E%3Crect x='1172' y='-35' width='1' height='630' fill='%239fd8ff' opacity='0.3'/%3E%3Crect x='1194' y='163' width='1' height='1087' fill='%2359b8ff' opacity='0.14'/%3E%3Crect x='708' y='-60' width='1' height='746' fill='%23ff4a3a' opacity='0.06'/%3E%3Crect x='898' y='184' width='2' height='716' fill='%23ff8a3d' opacity='0.16'/%3E%3Crect x='140' y='71' width='14' height='812' fill='%239fd8ff' opacity='0.07'/%3E%3Crect x='583' y='5' width='14' height='1068' fill='%23ff8a3d' opacity='0.04'/%3E%3Crect x='65' y='202' width='1' height='543' fill='%2359b8ff' opacity='0.18'/%3E%3Crect x='1196' y='-33' width='5' height='1168' fill='%23ff8a3d' opacity='0.15'/%3E%3Crect x='419' y='-51' width='5' height='1005' fill='%239fd8ff' opacity='0.3'/%3E%3Crect x='1466' y='-83' width='1' height='833' fill='%236f7dff' opacity='0.07'/%3E%3Crect x='1526' y='257' width='8' height='1070' fill='%2359b8ff' opacity='0.16'/%3E%3Crect x='1485' y='266' width='2' height='712' fill='%2359b8ff' opacity='0.06'/%3E%3Crect x='972' y='30' width='5' height='1049' fill='%23ffb36b' opacity='0.28'/%3E%3Crect x='126' y='-120' width='2' height='785' fill='%233a6cff' opacity='0.16'/%3E%3Crect x='771' y='13' width='5' height='574' fill='%23ff4a3a' opacity='0.1'/%3E%3Crect x='424' y='11' width='1' height='1192' fill='%2359b8ff' opacity='0.11'/%3E%3Crect x='277' y='110' width='2' height='972' fill='%233a6cff' opacity='0.17'/%3E%3Crect x='1248' y='83' width='3' height='761' fill='%239fd8ff' opacity='0.14'/%3E%3Crect x='319' y='-82' width='2' height='697' fill='%2359b8ff' opacity='0.11'/%3E%3Crect x='522' y='-77' width='8' height='868' fill='%239fd8ff' opacity='0.08'/%3E%3Crect x='1294' y='-149' width='14' height='832' fill='%2359b8ff' opacity='0.19'/%3E%3Crect x='1345' y='-53' width='5' height='583' fill='%2359b8ff' opacity='0.07'/%3E%3Crect x='961' y='828' width='2' height='2' fill='%23fff3dc' opacity='0.40'/%3E%3Crect x='120' y='513' width='2' height='2' fill='%23fff3dc' opacity='0.39'/%3E%3Crect x='965' y='775' width='2' height='2' fill='%23fff3dc' opacity='0.63'/%3E%3Crect x='10' y='637' width='2' height='2' fill='%23fff3dc' opacity='0.65'/%3E%3Crect x='560' y='37' width='2' height='2' fill='%23fff3dc' opacity='0.47'/%3E%3Crect x='71' y='1000' width='2' height='2' fill='%23fff3dc' opacity='0.32'/%3E%3Crect x='1172' y='914' width='2' height='2' fill='%23fff3dc' opacity='0.71'/%3E%3Crect x='1310' y='409' width='2' height='2' fill='%23fff3dc' opacity='0.49'/%3E%3Crect x='994' y='78' width='2' height='2' fill='%23fff3dc' opacity='0.32'/%3E%3Crect x='793' y='484' width='2' height='2' fill='%23fff3dc' opacity='0.50'/%3E%3Crect x='1273' y='664' width='2' height='2' fill='%23fff3dc' opacity='0.38'/%3E%3Crect x='854' y='653' width='2' height='2' fill='%23fff3dc' opacity='0.50'/%3E%3Crect x='434' y='988' width='2' height='2' fill='%23fff3dc' opacity='0.63'/%3E%3Crect x='669' y='51' width='2' height='2' fill='%23fff3dc' opacity='0.67'/%3E%3Crect x='1414' y='414' width='2' height='2' fill='%23fff3dc' opacity='0.31'/%3E%3Crect x='1227' y='802' width='2' height='2' fill='%23fff3dc' opacity='0.62'/%3E%3Crect x='625' y='405' width='2' height='2' fill='%23fff3dc' opacity='0.77'/%3E%3Crect x='695' y='157' width='2' height='2' fill='%23fff3dc' opacity='0.36'/%3E%3Crect x='145' y='578' width='2' height='2' fill='%23fff3dc' opacity='0.48'/%3E%3Crect x='1237' y='130' width='2' height='2' fill='%23fff3dc' opacity='0.33'/%3E%3Crect x='228' y='806' width='2' height='2' fill='%23fff3dc' opacity='0.50'/%3E%3Crect x='917' y='927' width='2' height='2' fill='%23fff3dc' opacity='0.67'/%3E%3Crect x='275' y='348' width='2' height='2' fill='%23fff3dc' opacity='0.38'/%3E%3Crect x='275' y='67' width='2' height='2' fill='%23fff3dc' opacity='0.49'/%3E%3Crect x='1206' y='792' width='2' height='2' fill='%23fff3dc' opacity='0.70'/%3E%3Crect x='483' y='837' width='2' height='2' fill='%23fff3dc' opacity='0.32'/%3E%3Crect x='1460' y='315' width='2' height='2' fill='%23fff3dc' opacity='0.60'/%3E%3Crect x='1018' y='86' width='2' height='2' fill='%23fff3dc' opacity='0.66'/%3E%3Crect x='1101' y='891' width='2' height='2' fill='%23fff3dc' opacity='0.62'/%3E%3Crect x='1371' y='621' width='2' height='2' fill='%23fff3dc' opacity='0.61'/%3E%3Crect x='314' y='473' width='2' height='2' fill='%23fff3dc' opacity='0.58'/%3E%3Crect x='67' y='939' width='2' height='2' fill='%23fff3dc' opacity='0.38'/%3E%3Crect x='575' y='149' width='2' height='2' fill='%23fff3dc' opacity='0.79'/%3E%3Crect x='1305' y='193' width='2' height='2' fill='%23fff3dc' opacity='0.74'/%3E%3Crect x='1348' y='672' width='2' height='2' fill='%23fff3dc' opacity='0.63'/%3E%3Crect x='519' y='390' width='2' height='2' fill='%23fff3dc' opacity='0.53'/%3E%3Crect x='1358' y='778' width='2' height='2' fill='%23fff3dc' opacity='0.62'/%3E%3Crect x='493' y='249' width='2' height='2' fill='%23fff3dc' opacity='0.49'/%3E%3Crect x='588' y='504' width='2' height='2' fill='%23fff3dc' opacity='0.39'/%3E%3Crect x='6' y='986' width='2' height='2' fill='%23fff3dc' opacity='0.53'/%3E%3Crect x='715' y='619' width='2' height='2' fill='%23fff3dc' opacity='0.71'/%3E%3Crect x='1338' y='811' width='2' height='2' fill='%23fff3dc' opacity='0.50'/%3E%3Crect x='107' y='359' width='2' height='2' fill='%23fff3dc' opacity='0.48'/%3E%3Crect x='1284' y='504' width='2' height='2' fill='%23fff3dc' opacity='0.63'/%3E%3Crect x='65' y='130' width='2' height='2' fill='%23fff3dc' opacity='0.76'/%3E%3Crect x='502' y='720' width='2' height='2' fill='%23fff3dc' opacity='0.34'/%3E%3Crect x='1203' y='895' width='2' height='2' fill='%23fff3dc' opacity='0.63'/%3E%3Crect x='1255' y='26' width='2' height='2' fill='%23fff3dc' opacity='0.33'/%3E%3Crect x='983' y='693' width='2' height='2' fill='%23fff3dc' opacity='0.35'/%3E%3Crect x='211' y='886' width='2' height='2' fill='%23fff3dc' opacity='0.44'/%3E%3Crect x='1298' y='795' width='2' height='2' fill='%23fff3dc' opacity='0.64'/%3E%3Crect x='1154' y='221' width='2' height='2' fill='%23fff3dc' opacity='0.72'/%3E%3Crect x='977' y='252' width='2' height='2' fill='%23fff3dc' opacity='0.46'/%3E%3Crect x='982' y='905' width='2' height='2' fill='%23fff3dc' opacity='0.53'/%3E%3Crect x='407' y='964' width='2' height='2' fill='%23fff3dc' opacity='0.54'/%3E%3Crect x='947' y='616' width='2' height='2' fill='%23fff3dc' opacity='0.42'/%3E%3Crect x='596' y='199' width='2' height='2' fill='%23fff3dc' opacity='0.50'/%3E%3Crect x='1019' y='278' width='2' height='2' fill='%23fff3dc' opacity='0.46'/%3E%3Crect x='603' y='792' width='2' height='2' fill='%23fff3dc' opacity='0.43'/%3E%3Crect x='1229' y='49' width='2' height='2' fill='%23fff3dc' opacity='0.73'/%3E%3Crect x='1546' y='453' width='2' height='2' fill='%23fff3dc' opacity='0.56'/%3E%3Crect x='1102' y='896' width='2' height='2' fill='%23fff3dc' opacity='0.43'/%3E%3Crect x='857' y='857' width='2' height='2' fill='%23fff3dc' opacity='0.67'/%3E%3Crect x='594' y='376' width='2' height='2' fill='%23fff3dc' opacity='0.48'/%3E%3Crect x='234' y='331' width='2' height='2' fill='%23fff3dc' opacity='0.34'/%3E%3Crect x='368' y='615' width='2' height='2' fill='%23fff3dc' opacity='0.78'/%3E%3Crect x='474' y='516' width='2' height='2' fill='%23fff3dc' opacity='0.46'/%3E%3Crect x='1546' y='870' width='2' height='2' fill='%23fff3dc' opacity='0.76'/%3E%3Crect x='1433' y='733' width='2' height='2' fill='%23fff3dc' opacity='0.67'/%3E%3Crect x='355' y='291' width='2' height='2' fill='%23fff3dc' opacity='0.61'/%3E%3Crect width='1600' height='1000' fill='url(%23v)'/%3E%3C/svg%3E");
+  --bg-size:auto,clamp(120px,14vw,220px) auto,100% 100%;
+  --r:10px; --chip-r:4px; --btn-r:8px;
+  --card-shadow:0 0 0 1px rgba(76,194,255,.22),6px 7px 0 0 #05070f;
+  --count-size:clamp(50px,8vw,84px); --count-weight:400; --digit-w:.96em; --colon-w:.36em;
   --glow:none;
   color-scheme:dark;
 }
@@ -266,9 +267,9 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 :root[data-skin="synth"] .fstack{box-shadow:0 0 12px -3px rgba(255,62,165,.55)}
 :root[data-skin="synth"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.45),transparent 55%,rgba(13,2,33,.25))}
 :root[data-skin="pixel"]{--ok:#3be8ff;--mid:#ffd319;--bad:#ff4fa3}
-:root[data-skin="keep"]{--ok:#8ccf6e;--mid:#f0c34a;--bad:#e2443b}
-:root[data-skin="keep"] .fstack{width:12px;border-radius:0}
-:root[data-skin="keep"] .fstack i{background-image:repeating-linear-gradient(0deg,transparent 0 6px,rgba(11,13,26,.6) 6px 8px)}
+:root[data-skin="orbit"]{--ok:#4cc2ff;--mid:#ffd34d;--bad:#ff3b4e}
+:root[data-skin="orbit"] .fstack{border:2px solid #05070f;border-bottom:0;border-radius:3px 3px 0 0;width:min(16px,70%)}
+:root[data-skin="orbit"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.35),transparent 50%)}
 :root[data-skin="pixel"] .fstack{width:12px;border-radius:0}
 :root[data-skin="pixel"] .fstack i{background-image:repeating-linear-gradient(0deg,transparent 0 6px,rgba(15,5,36,.6) 6px 8px)}
 .focus-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
@@ -432,7 +433,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .sw-dots{background:radial-gradient(circle,#e8202a 0 24%,#141414 28%)}
 .sw-line{background:linear-gradient(135deg,#0f0f0f 0 44%,#ff4f00 44% 56%,#0f0f0f 56%)}
 .sw-synth{background:linear-gradient(#ffd319 0 28%,#ff2975 28% 52%,#2a0a4a 52%)}
-.sw-keep{border-radius:0;background:linear-gradient(#0b0d1a 0 40%,#4a4f6e 40% 70%,#f0a03a 70% 80%,#4a4f6e 80%)}
+.sw-orbit{background:linear-gradient(90deg,#3a6cff 0 30%,#ff7a2f 30% 60%,#ff3b4e 60% 75%,#59b8ff 75%)}
 .sw-pixel{border-radius:0;background:conic-gradient(#ff4fa3 0 25%,#3be8ff 0 50%,#ff4fa3 0 75%,#3be8ff 0) 0 0/6px 6px}
 
 /* skin-specific type and effects */
@@ -585,47 +586,37 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="pixel"] .fday-pct{font-size:24px}
 :root[data-skin="pixel"] .fday-grade{border-radius:0;transform:none;font-size:16px;width:44px;height:44px;border-width:3px}
 :root[data-skin="pixel"] .fold .chev{shape-rendering:crispEdges}
-:root[data-skin="keep"] body{background-attachment:fixed;background-position:center bottom;background-repeat:no-repeat;image-rendering:pixelated}
-:root[data-skin="keep"] .card{border:0}
-:root[data-skin="keep"] .logo{font-family:var(--font-hand);font-size:18px;line-height:1.3}
-:root[data-skin="keep"] .logo svg{color:var(--accent)}
-:root[data-skin="keep"] .clock{font-size:16px;color:var(--now);letter-spacing:0;text-shadow:2px 2px 0 #6b1f1a}
-:root[data-skin="keep"] h2,:root[data-skin="keep"] .settings summary{font-family:var(--font-hand);font-size:13px;line-height:1.5;text-transform:uppercase;color:var(--rest)}
-:root[data-skin="keep"] h2::before,:root[data-skin="keep"] .settings summary::before{content:"";display:inline-block;width:8px;height:8px;margin-right:10px;vertical-align:1px;background:var(--accent);box-shadow:2px 2px 0 0 #6b1f1a}
-:root[data-skin="keep"] .chip{font-family:var(--font-hand);font-size:10px;line-height:1.4;padding:6px 8px;text-transform:uppercase}
-:root[data-skin="keep"] .now[data-kind="lesson"] .chip{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-:root[data-skin="keep"] .now[data-kind="break"] .chip{background:var(--rest);border-color:var(--rest);color:#0b0d1a}
-:root[data-skin="keep"] .now-range{font-family:var(--font-body);font-size:18px}
-:root[data-skin="keep"] .count{text-shadow:4px 4px 0 #6b1f1a;line-height:1.1}
-:root[data-skin="keep"] .now[data-kind="break"] .count{color:var(--rest);text-shadow:4px 4px 0 #1f3a6b}
-:root[data-skin="keep"] .now[data-kind="lesson"] .count{color:var(--accent)}
-:root[data-skin="keep"] .count-sub{font-size:17px}
-:root[data-skin="keep"] .bar{height:12px;border-radius:0;box-shadow:0 -2px 0 0 var(--line),0 2px 0 0 var(--line),-2px 0 0 0 var(--line),2px 0 0 0 var(--line)}
-:root[data-skin="keep"] .bar-fill{border-radius:0;background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 12px)}
-:root[data-skin="keep"] .now[data-kind="break"] .bar-fill{background:repeating-linear-gradient(90deg,var(--rest) 0 10px,transparent 10px 12px)}
-:root[data-skin="keep"] .blk,:root[data-skin="keep"] .nowmark{border-radius:0}
-:root[data-skin="keep"] .nowmark{width:4px;margin-left:-2px}
-:root[data-skin="keep"] .ticks{font-size:9px}
-:root[data-skin="keep"] .btn{border:0;background:var(--track);color:var(--ink);box-shadow:0 -2px 0 0 var(--line),0 2px 0 0 var(--line),-2px 0 0 0 var(--line),2px 0 0 0 var(--line),inset -2px -3px 0 0 rgba(0,0,0,.35)}
-:root[data-skin="keep"] .btn:hover{background:#2d3150}
-:root[data-skin="keep"] .btn:active{transform:translateY(2px)}
-:root[data-skin="keep"] .btn.primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 -2px 0 0 #6b1f1a,0 2px 0 0 #6b1f1a,-2px 0 0 0 #6b1f1a,2px 0 0 0 #6b1f1a,inset -2px -3px 0 0 rgba(0,0,0,.25)}
-:root[data-skin="keep"] .btn.ghost{background:transparent}
-:root[data-skin="keep"] .seg{border:0;box-shadow:0 -2px 0 0 var(--line),0 2px 0 0 var(--line),-2px 0 0 0 var(--line),2px 0 0 0 var(--line)}
-:root[data-skin="keep"] .skin[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
-:root[data-skin="keep"] .dt span,:root[data-skin="keep"] .lcount,:root[data-skin="keep"] .focus-pill,:root[data-skin="keep"] .fdot,:root[data-skin="keep"] .fstat-l i{border-radius:0}
-:root[data-skin="keep"] .add input,:root[data-skin="keep"] .lp-head input,:root[data-skin="keep"] .brk,:root[data-skin="keep"] .form input[type=time],:root[data-skin="keep"] .form input[type=number],:root[data-skin="keep"] .form select{border-radius:0;border:2px solid var(--line);background:#0b0d1a}
-:root[data-skin="keep"] .brk.custom{border-color:var(--rest)}
-:root[data-skin="keep"] td.t,:root[data-skin="keep"] td.n{font-size:11px}
-:root[data-skin="keep"] tr.cur td.t,:root[data-skin="keep"] tr.cur td.n{color:var(--accent)}
-:root[data-skin="keep"] td.end{font-family:var(--font-hand);font-size:9px;text-transform:uppercase;color:var(--now)}
-:root[data-skin="keep"] .player{border-radius:0;background:#07080f}
-:root[data-skin="keep"] .list-panel{border:0;border-radius:0;box-shadow:0 -4px 0 0 var(--line),0 4px 0 0 var(--line),-4px 0 0 0 var(--line),4px 0 0 0 var(--line),8px 10px 0 0 rgba(0,0,0,.5)}
-:root[data-skin="keep"] .fday-pct{font-size:24px}
-:root[data-skin="keep"] .fday-grade{border-radius:0;transform:none;font-size:16px;width:44px;height:44px;border-width:3px}
-:root[data-skin="keep"] .fold .chev{shape-rendering:crispEdges}
-:root[data-skin="keep"] .card{background-image:linear-gradient(rgba(255,255,255,.015),rgba(0,0,0,.08))}
-:root[data-skin="keep"] .clock{color:var(--accent);text-shadow:2px 2px 0 #6b1f1a}
+:root[data-skin="orbit"] body{background-attachment:fixed;background-position:0 0,right 6% top 90px,0 0;background-repeat:repeat,no-repeat,no-repeat}
+:root[data-skin="orbit"] .card{border:2px solid #05070f}
+:root[data-skin="orbit"] .logo{font-family:var(--font-hand);font-size:28px;color:#fff3dc;-webkit-text-stroke:5px #05070f;paint-order:stroke fill;text-shadow:3px 3px 0 #ff3b4e}
+:root[data-skin="orbit"] .logo svg{color:#ff3b4e;filter:drop-shadow(2px 2px 0 #05070f)}
+:root[data-skin="orbit"] .today{color:#cdd3f2;text-shadow:0 1px 2px #05070f}
+:root[data-skin="orbit"] .clock{font-size:24px;color:#ffd34d;-webkit-text-stroke:4px #05070f;paint-order:stroke fill;text-shadow:3px 3px 0 #05070f}
+:root[data-skin="orbit"] h2,:root[data-skin="orbit"] .settings summary{font-family:var(--font-hand);font-weight:400;font-size:20px;letter-spacing:.02em;color:#fff3dc;-webkit-text-stroke:3px #05070f;paint-order:stroke fill;text-shadow:2px 2px 0 #3a6cff}
+:root[data-skin="orbit"] h2::before,:root[data-skin="orbit"] .settings summary::before{content:"";display:inline-block;width:.8em;height:.8em;margin-right:.35em;vertical-align:-.08em;background:#ff3b4e;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%)}
+:root[data-skin="orbit"] .chip{font-family:var(--font-hand);font-size:13px;letter-spacing:.06em;padding:4px 12px;border:2px solid #05070f;transform:skewX(-12deg);box-shadow:3px 3px 0 #05070f}
+:root[data-skin="orbit"] .now[data-kind="lesson"] .chip{background:var(--accent);color:var(--accent-ink)}
+:root[data-skin="orbit"] .now[data-kind="break"] .chip{background:var(--rest);color:#06162a}
+:root[data-skin="orbit"] .count{color:#fff3dc;-webkit-text-stroke:6px #05070f;paint-order:stroke fill;text-shadow:5px 5px 0 var(--accent);font-variant-numeric:tabular-nums}
+:root[data-skin="orbit"] .now[data-kind="break"] .count{text-shadow:5px 5px 0 var(--rest)}
+:root[data-skin="orbit"] .now-range,:root[data-skin="orbit"] td.t{font-family:var(--font-body);font-weight:800}
+:root[data-skin="orbit"] .bar{height:10px;border:2px solid #05070f;border-radius:4px;box-sizing:content-box}
+:root[data-skin="orbit"] .bar-fill{border-radius:0;background:linear-gradient(90deg,#3a6cff,#ff7a2f 70%,#ff3b4e)}
+:root[data-skin="orbit"] .now[data-kind="break"] .bar-fill{background:linear-gradient(90deg,#3a6cff,#4cc2ff 70%,#9fd8ff)}
+:root[data-skin="orbit"] .blk.lesson.cur{background:linear-gradient(90deg,#ff7a2f,#ff3b4e)}
+:root[data-skin="orbit"] .btn{border:2px solid #05070f;box-shadow:3px 3px 0 #05070f;font-weight:700}
+:root[data-skin="orbit"] .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #05070f}
+:root[data-skin="orbit"] .btn.primary{background:var(--accent);color:var(--accent-ink)}
+:root[data-skin="orbit"] .seg{border:2px solid #05070f;box-shadow:3px 3px 0 #05070f}
+:root[data-skin="orbit"] .skin[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+:root[data-skin="orbit"] tr.cur td.t,:root[data-skin="orbit"] tr.cur td.n{color:var(--accent)}
+:root[data-skin="orbit"] td.end{font-family:var(--font-hand);color:var(--now)}
+:root[data-skin="orbit"] .add input,:root[data-skin="orbit"] .lp-head input,:root[data-skin="orbit"] .brk,:root[data-skin="orbit"] .form input[type=time],:root[data-skin="orbit"] .form input[type=number],:root[data-skin="orbit"] .form select{border:2px solid #05070f;background:#0b1030}
+:root[data-skin="orbit"] .brk.custom{border-color:var(--rest)}
+:root[data-skin="orbit"] .player{border:2px solid #05070f;border-radius:10px;background:#060920}
+:root[data-skin="orbit"] .list-panel{border:2px solid #05070f;box-shadow:6px 7px 0 #05070f}
+:root[data-skin="orbit"] .fday-pct,:root[data-skin="orbit"] .fstat-v{font-family:var(--font-hand);font-weight:400}
+:root[data-skin="orbit"] .fday-grade{font-family:var(--font-hand);font-weight:400;border-width:3px;box-shadow:3px 3px 0 #05070f}
 .scene{display:none;position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
 .top-right{display:flex;align-items:center;gap:12px}
 .sun{position:absolute;left:50%;top:64%;width:min(46vmin,440px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(#ffd319 8%,#ff8c42 38%,#ff2975 72%,#b026ff);-webkit-mask-image:linear-gradient(#000 0 30%,transparent 30% 32%,#000 32% 38%,transparent 38% 41%,#000 41% 45%,transparent 45% 49%,#000 49%);mask-image:linear-gradient(#000 0 30%,transparent 30% 32%,#000 32% 38%,transparent 38% 41%,#000 41% 45%,transparent 45% 49%,#000 49%);filter:drop-shadow(0 0 40px rgba(255,41,117,.55))}
@@ -813,7 +804,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <button class="skin" type="button" data-skin="line" aria-pressed="false"><span class="sw sw-line"></span>Лінія</button>
           <button class="skin" type="button" data-skin="synth" aria-pressed="false"><span class="sw sw-synth"></span>Ретро</button>
           <button class="skin" type="button" data-skin="pixel" aria-pressed="false"><span class="sw sw-pixel"></span>Піксель</button>
-          <button class="skin" type="button" data-skin="keep" aria-pressed="false"><span class="sw sw-keep"></span>Фортеця</button>
+          <button class="skin" type="button" data-skin="orbit" aria-pressed="false"><span class="sw sw-orbit"></span>Орбіта</button>
         </div>
       </fieldset>
       <div class="field"><label for="sStart">Початок першого уроку</label><input type="time" id="sStart" value="08:00"></div>
@@ -1593,40 +1584,43 @@ const VIZ = {
       if(pk > lit){ g.fillStyle = '#fdeaff'; g.fillRect(x, base - pk * bs, inner, inner); }
     }
   },
-  // Fortress: columns of pixel torch-fire on a crenellated stone wall, gold peak sparks, a pixel moon and stars
-  keep(g, G, C, L, t){
-    const bs = Math.max(4, Math.floor(G.step)), gap = Math.max(1, Math.round(bs * .2)), inner = bs - gap;
-    const rows = Math.max(4, Math.floor(G.area * .85 / bs)), base = Math.round(G.top + G.area * .9);
-    const fire = ['#7a1f1a', '#b8361f', '#e2621f', '#f4a12e', '#ffe07a'], px = Math.max(2, Math.round(G.dpr * 2));
-    for(let k = 0; k < 22; k++){
-      if(Math.sin(t * 1.3 + k * 2.1) < -.4) continue;
-      g.fillStyle = '#f3ead6';
-      g.fillRect(Math.round((Math.sin(k * 91.7) * .5 + .5) * G.W), Math.round((Math.sin(k * 47.3) * .5 + .5) * (base - bs * 4)), px, px);
+  // Orbit: 80s-anime hyperspace. One bundle of vertical speed-line streaks per band, stretching out from the middle with the music,
+  // blue at the edges and orange-red in the centre (as on the Orbitals key art); a red cross sparkle flares on the loudest band
+  orbit(g, G, C, L, t){
+    const pal = ['#ff4a3a', '#ff8a3d', '#59b8ff', '#3a6cff'];
+    if(!V.streaks){
+      // one faded streak sprite per colour, stretched to any length; cheaper than a gradient per streak
+      V.streaks = pal.map((col) => {
+        const c = document.createElement('canvas'); c.width = 4; c.height = 128;
+        const x = c.getContext('2d'), gr = x.createLinearGradient(0, 0, 0, 128);
+        gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(.5, col); gr.addColorStop(1, 'rgba(0,0,0,0)');
+        x.fillStyle = gr; x.fillRect(0, 0, 4, 128);
+        return c;
+      });
     }
-    const q = Math.max(2, Math.round(bs / 2)), R = q * 5, mx = Math.round(G.W * .86 / q) * q, my = Math.round((G.top + R) / q) * q;
-    for(let dy = -R; dy < R; dy += q){
-      const hw = Math.round(Math.sqrt(R * R - (dy + q / 2) * (dy + q / 2)) / q) * q;
-      g.fillStyle = '#f3ead6'; g.fillRect(mx - hw, my + dy, hw * 2, q);
-    }
-    g.fillStyle = '#c9bfa8'; g.fillRect(mx - q * 2, my - q, q, q); g.fillRect(mx + q, my + q, q * 2, q);
-    // the wall: stone courses with merlons on top
-    const wallTop = base + gap;
-    for(let x = Math.round(G.padX) - bs; x < G.W - G.padX + bs; x += bs){
-      g.fillStyle = '#4a4f6e'; g.fillRect(x, wallTop, inner, G.H - wallTop);
-      if(Math.round((x - G.padX) / bs) % 2 === 0) g.fillRect(x, wallTop - Math.round(bs * .6), inner, Math.round(bs * .6));
-      g.fillStyle = '#353a55';
-      for(let y = wallTop + bs; y < G.H; y += bs) g.fillRect(x, y, inner, gap);
-    }
+    g.globalCompositeOperation = 'lighter';
+    let best = 0;
     for(let i = 0; i < G.N; i++){
-      const x = Math.round(G.padX + i * G.step), lv = Math.max(0, L[i] + Math.sin(t * 13 + i * 1.7) * .02);
-      const lit = Math.round(lv * rows), pk = Math.round(V.peaks[i] * rows);
-      for(let k = 0; k < lit; k++){
-        const f = k / Math.max(lit, 1);
-        g.fillStyle = fire[f < .25 ? 0 : f < .5 ? 1 : f < .7 ? 2 : f < .88 ? 3 : 4];
-        g.fillRect(x, base - Math.round(bs * .6) - (k + 1) * bs, inner, inner);
+      if(L[i] > L[best]) best = i;
+      const d = Math.abs(i / (G.N - 1) - .5) * 2, spr = V.streaks[d < .25 ? 0 : d < .5 ? 1 : d < .75 ? 2 : 3];
+      const x = G.padX + G.step * (i + .5), h = Math.max(.05, L[i]) * G.area * 1.7;
+      for(let k = 0; k < 3; k++){
+        const off = Math.sin(i * 12.9 + k * 4.1) * G.step * .4, len = h * (.55 + .45 * Math.pow(Math.sin(t * 2.6 + i * .7 + k * 2.1), 2));
+        const w = Math.max(1, G.dpr * (k === 0 ? 3 : 1.4));
+        g.globalAlpha = k === 0 ? .95 : .55;
+        g.drawImage(spr, x + off - w / 2, G.mid - len / 2, w, len);
       }
-      if(pk > lit){ g.fillStyle = '#f0c34a'; g.fillRect(x, base - Math.round(bs * .6) - pk * bs, inner, inner); }
     }
+    g.globalAlpha = 1;
+    if(L[best] > .15){
+      const x = G.padX + G.step * (best + .5), r = (14 + L[best] * 40) * G.dpr, w = Math.max(1, 1.5 * G.dpr);
+      g.fillStyle = '#ff3b4e';
+      g.beginPath(); g.moveTo(x, G.mid - r); g.lineTo(x + w, G.mid - w); g.lineTo(x + r, G.mid); g.lineTo(x + w, G.mid + w);
+      g.lineTo(x, G.mid + r); g.lineTo(x - w, G.mid + w); g.lineTo(x - r, G.mid); g.lineTo(x - w, G.mid - w); g.closePath(); g.fill();
+      g.fillStyle = '#fff3dc'; g.beginPath(); g.arc(x, G.mid, 2.5 * G.dpr, 0, Math.PI * 2); g.fill();
+    }
+    g.globalCompositeOperation = 'source-atop'; g.fillStyle = 'rgba(0,0,0,.18)';
+    for(let y = 0; y < G.H; y += 3 * G.dpr) g.fillRect(0, y, G.W, Math.max(1, G.dpr));
   },
   // Retro: striped sunset sun that swells with the bass, the spectrum as a neon mountain range, a rolling grid floor
   synth(g, G, C, L, t, dt){
@@ -2121,77 +2115,13 @@ function pixelScene(){
   return (pixelSceneUrl = c.toDataURL('image/png'));
 }
 
-// Pixel-art castle at night for the Fortress skin, computed pixel by pixel at 320x200 like pixelScene.
-let keepSceneUrl = '';
-function keepScene(){
-  if(keepSceneUrl) return keepSceneUrl;
-  const W = 320, H = 200, GROUND = 182, c = document.createElement('canvas');
-  c.width = W; c.height = H;
-  const g = c.getContext('2d'), img = g.createImageData(W, H), d = img.data;
-  const hex = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
-  const sky = [[0, '#0b0d1a'], [40, '#0e1124'], [80, '#12172e'], [115, '#171e3a'], [140, '#1d2546'], [158, '#252f55']].map(([y, h]) => [y, hex(h)]);
-  const C = {};
-  for(const [k, h] of Object.entries({star:'#f3ead6', moon:'#f3ead6', crater:'#c9bfa8', halo:'#2a3460', far:'#141b33', stone:'#4a4f6e', mortar:'#353a55', shade:'#3b4060',
-    gate:'#0a0b14', bars:'#3a3226', win:'#f0c35a', winDim:'#f0a03a', pole:'#c9bfa8', flag:'#e2443b', gold:'#f0c34a', stick:'#6b4a2a', flame:'#ffd36b', flameEdge:'#f08a24',
-    hill:'#17221c', ground:'#16211d', grass:'#24382a', path:'#3a3226'})) C[k] = hex(h);
-  const hash = (x, y) => { const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return v - Math.floor(v); };
-  const inRect = (x, y, x0, x1, y0, y1) => x >= x0 && x <= x1 && y >= y0 && y <= y1;
-  const merlon = (x, y, x0, x1, top) => inRect(x, y, x0, x1, top - 4, top - 1) && Math.floor((x - x0) / 4) % 2 === 0;
-  // castle: a curtain wall, two towers, a keep, a gate with torches, lit windows and banners
-  const castle = (x, y) => {
-    if(inRect(x, y, 161, 161, 108, 121) || inRect(x, y, 279, 279, 108, 121) || inRect(x, y, 220, 220, 118, 131)) return C.pole;
-    if(inRect(x, y, 162, 167, 109, 114) || inRect(x, y, 280, 285, 109, 114)) return C.flag;
-    if(inRect(x, y, 221, 227, 119, 124)) return y === 121 ? C.gold : C.flag;
-    for(const tx of [206, 234]){
-      if(inRect(x, y, tx, tx, 170, 174)) return C.stick;
-      if(inRect(x, y, tx - 1, tx + 1, 165, 169)) return x === tx && y > 165 ? C.flame : C.flameEdge;
-    }
-    if(inRect(x, y, 212, 228, 166, 181) && (y >= 170 || Math.abs(x - 220) <= 6)) return (x - 212) % 3 === 0 && y >= 168 ? C.bars : C.gate;
-    if(inRect(x, y, 159, 163, 136, 141) || inRect(x, y, 277, 281, 140, 145)) return C.win;
-    if(inRect(x, y, 217, 223, 145, 150)) return C.winDim;
-    const parts = [[140, 300, 158], [150, 172, 126], [268, 290, 126], [200, 240, 136]];
-    for(const [x0, x1, top] of parts){
-      if(merlon(x, y, x0, x1, top)) return C.stone;
-      if(inRect(x, y, x0, x1, top, GROUND - 1)){
-        if(x >= x1 - 2 && x1 - x0 < 30) return C.shade;
-        const row = Math.floor(y / 6);
-        return y % 6 === 0 || (x + (row % 2) * 4) % 8 === 0 ? C.mortar : C.stone;
-      }
-    }
-    return null;
-  };
-  const put = (i, rgb) => { d[i] = rgb[0]; d[i + 1] = rgb[1]; d[i + 2] = rgb[2]; d[i + 3] = 255; };
-  for(let y = 0; y < H; y++) for(let x = 0; x < W; x++){
-    const i = (y * W + x) * 4;
-    let col = sky[0][1];
-    for(const [sy, sc] of sky) if(y >= sy) col = sc;
-    if(y < 150 && hash(x, y) > .994) col = C.star;
-    const mdx = x - 168 + .5, mdy = y - 9 + .5, md = mdx * mdx + mdy * mdy;
-    if(md < 81) col = C.halo;
-    if(md < 49) col = hash(x * 3, y * 7) > .78 ? C.crater : C.moon;
-    if(y >= 158 - Math.round(6 * Math.sin(x * .05) + 4 * Math.sin(x * .13))) col = C.far;
-    const cc = castle(x, y);
-    if(cc) col = cc;
-    if(x < 140 && y >= 174 - Math.round(7 * Math.sin(x * .03))) col = C.hill;
-    if(y >= GROUND){
-      const spread = (y - GROUND) * 1.3;
-      col = y === GROUND ? C.grass : C.ground;
-      if(x >= 214 - spread && x <= 226 + spread) col = C.path;
-    }
-    put(i, col);
-  }
-  g.putImageData(img, 0, 0);
-  return (keepSceneUrl = c.toDataURL('image/png'));
-}
-
-const SKINS = ['chalk', 'cyber', 'aero', 'dots', 'line', 'synth', 'pixel', 'keep'];
+const SKINS = ['chalk', 'cyber', 'aero', 'dots', 'line', 'synth', 'pixel', 'orbit'];
 function applySkin(){
   const s = SKINS.includes(S.skin) ? S.skin : 'chalk';
   if(s === 'chalk') delete document.documentElement.dataset.skin;
   else document.documentElement.dataset.skin = s;
   document.querySelectorAll('.skin').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.skin === s)));
   if(s === 'pixel') document.documentElement.style.setProperty('--pixel-scene', 'url(' + pixelScene() + ')');
-  if(s === 'keep') document.documentElement.style.setProperty('--keep-scene', 'url(' + keepScene() + ')');
 }
 $('skins').addEventListener('click', (e) => {
   const b = e.target.closest('.skin');
