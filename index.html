@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Дзвоник</title>
-<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','aero','dots','line','synth','dnd','medieval','magic'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
+<script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','aero','dots','line','synth'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
 <meta name="description" content="Особистий розклад дзвінків: уроки й перерви у фіксований час, дзвінки та музика з YouTube.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%23f1cf5e'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23f1cf5e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=Russo+One&family=Onest:wght@400;500;700&family=Doto:ROND,wght@100,600;100,800&family=JetBrains+Mono:wght@400;500;700&family=Geologica:wght@200;300;400;600&family=Alegreya:wght@500;600&family=Alegreya+SC:wght@500;700&family=Alegreya+Sans:wght@400;500;700&family=Kurale&family=Vollkorn:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Marck+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Golos+Text:wght@400;500;600&family=Oswald:wght@400;500&family=Orbitron:wght@500;700&family=Exo+2:ital,wght@0,400;0,600;1,800&family=Russo+One&family=Onest:wght@400;500;700&family=Doto:ROND,wght@100,600;100,800&family=JetBrains+Mono:wght@400;500;700&family=Geologica:wght@200;300;400;600&display=swap">
 <style>
 /* Layout: dark-only page; live "now" card left with music under it, bell schedule right. Skins only swap tokens. */
 /* Chalkboard (default): school slate green, chalk yellow for lessons, chalk green for breaks */
@@ -126,54 +126,6 @@
   --glow:none;
   color-scheme:dark;
 }
-/* D&D: a tabletop by candlelight. Dark tooled leather with an arcane circle and a map compass in the corners, gilded lessons, moonlit breaks, dragon-red accents, small-caps headings */
-:root[data-skin="dnd"]{
-  --bg:#100b09; --grid:transparent; --margin-line:transparent; --surface:rgba(28,20,16,.94); --line:#3a2b20; --track:#2a1f18;
-  --ink:#f0e4c8; --ink-2:#c8b393; --ink-3:#958064; --accent:#ddb15f; --accent-ink:#1a1009; --accent-soft:#3b2b15;
-  --rest:#93bfd0; --rest-soft:#1b2a30; --now:#e0613f; --warn:#e8775c; --warn-soft:#3a1812;
-  --font-display:"Alegreya","Georgia",serif;
-  --font-body:"Alegreya Sans","Segoe UI",sans-serif;
-  --font-hand:"Alegreya SC","Georgia",serif;
-  --bg-pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .82 0 0 0 0 .64 0 0 0 0 .42 .18 0 0 0 -.06'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(75% 60% at 0% 0%,rgba(224,150,70,.10),transparent 70%),radial-gradient(65% 55% at 100% 100%,rgba(176,52,34,.10),transparent 70%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 490 500'%3E%3Cdefs%3E%3Cpath id='r0' d='M-3 8V-8M-3-2L4-7M-3 3L4-2'/%3E%3Cpath id='r1' d='M-4 8V-8L4-4V8'/%3E%3Cpath id='r2' d='M-3-8V8M-3-4L3 0L-3 4'/%3E%3Cpath id='r3' d='M-3 8V-8L3-4M-3-3L3 1'/%3E%3Cpath id='r4' d='M-3 8V-8L3-4L-3 0L3 8'/%3E%3Cpath id='r5' d='M3-6L-3 0L3 6'/%3E%3Cpath id='r6' d='M-4-8L4 8M4-8L-4 8'/%3E%3Cpath id='r7' d='M-3 8V-8L3-4L-3 0'/%3E%3Cpath id='r8' d='M-4-8V8M4-8V8M-4-3L4 3'/%3E%3Cpath id='r9' d='M0-8V8M-4-3L4 3'/%3E%3Cpath id='r10' d='M0-8V8'/%3E%3Cpath id='r11' d='M-1-7L-5-2L-1 3M1-3L5 2L1 7'/%3E%3Cpath id='r12' d='M0-8V8M0-8L4-5M0 8L-4 5'/%3E%3Cpath id='r13' d='M-3-8V8M-3-8L1-5L4-8M-3 8L1 5L4 8'/%3E%3Cpath id='r14' d='M0 8V-8M0-2L-5-8M0-2L5-8'/%3E%3Cpath id='r15' d='M3-8L-3-2L3 2L-3 8'/%3E%3Cpath id='r16' d='M0 8V-8M-5-3L0-8L5-3'/%3E%3Cpath id='r17' d='M-3-8V8L3 4L-3 0L3-4Z'/%3E%3Cpath id='r18' d='M-4 8V-8L0-3L4-8V8'/%3E%3Cpath id='r19' d='M-4 8V-8L4 0M4 8V-8L-4 0'/%3E%3Cpath id='r20' d='M-3 8V-8L3-4'/%3E%3Cpath id='r21' d='M0-7L5 0L0 7L-5 0Z'/%3E%3Cpath id='r22' d='M-5-7L5 7V-7L-5 7Z'/%3E%3Cpath id='r23' d='M-5 8L4-1L0-6L-4-1L5 8'/%3E%3C/defs%3E%3Cg fill='none' stroke='%23d2a85a' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg opacity='.14' stroke-width='2'%3E%3Ccircle cx='120' cy='130' r='352'/%3E%3Ccircle cx='120' cy='130' r='300'/%3E%3C/g%3E%3Cg opacity='.1' stroke-width='1.5'%3E%3Ccircle cx='120' cy='130' r='362'/%3E%3Ccircle cx='120' cy='130' r='150'/%3E%3Ccircle cx='120' cy='130' r='44'/%3E%3Ccircle cx='120' cy='130' r='295' stroke-width='10' stroke-dasharray='1.5 24.244'/%3E%3Ccircle cx='120' cy='130' r='291' stroke-width='18' stroke-dasharray='2.5 149.867'/%3E%3C/g%3E%3Cg opacity='.2' stroke-width='2.2'%3E%3Cg transform='translate(120 130)'%3E%3Cuse href='%23r0' transform='rotate(0)' y='-326'/%3E%3Cuse href='%23r1' transform='rotate(9)' y='-326'/%3E%3Cuse href='%23r2' transform='rotate(18)' y='-326'/%3E%3Cuse href='%23r3' transform='rotate(27)' y='-326'/%3E%3Cuse href='%23r4' transform='rotate(36)' y='-326'/%3E%3Cuse href='%23r5' transform='rotate(45)' y='-326'/%3E%3Cuse href='%23r6' transform='rotate(54)' y='-326'/%3E%3Cuse href='%23r7' transform='rotate(63)' y='-326'/%3E%3Cuse href='%23r8' transform='rotate(72)' y='-326'/%3E%3Cuse href='%23r9' transform='rotate(81)' y='-326'/%3E%3Cuse href='%23r10' transform='rotate(90)' y='-326'/%3E%3Cuse href='%23r11' transform='rotate(99)' y='-326'/%3E%3Cuse href='%23r12' transform='rotate(108)' y='-326'/%3E%3Cuse href='%23r13' transform='rotate(117)' y='-326'/%3E%3Cuse href='%23r14' transform='rotate(126)' y='-326'/%3E%3Cuse href='%23r15' transform='rotate(135)' y='-326'/%3E%3Cuse href='%23r16' transform='rotate(144)' y='-326'/%3E%3Cuse href='%23r17' transform='rotate(153)' y='-326'/%3E%3Cuse href='%23r18' transform='rotate(162)' y='-326'/%3E%3Cuse href='%23r19' transform='rotate(171)' y='-326'/%3E%3Cuse href='%23r20' transform='rotate(180)' y='-326'/%3E%3Cuse href='%23r21' transform='rotate(189)' y='-326'/%3E%3Cuse href='%23r22' transform='rotate(198)' y='-326'/%3E%3Cuse href='%23r23' transform='rotate(207)' y='-326'/%3E%3Cuse href='%23r0' transform='rotate(216)' y='-326'/%3E%3Cuse href='%23r1' transform='rotate(225)' y='-326'/%3E%3Cuse href='%23r2' transform='rotate(234)' y='-326'/%3E%3Cuse href='%23r3' transform='rotate(243)' y='-326'/%3E%3Cuse href='%23r4' transform='rotate(252)' y='-326'/%3E%3Cuse href='%23r5' transform='rotate(261)' y='-326'/%3E%3Cuse href='%23r6' transform='rotate(270)' y='-326'/%3E%3Cuse href='%23r7' transform='rotate(279)' y='-326'/%3E%3Cuse href='%23r8' transform='rotate(288)' y='-326'/%3E%3Cuse href='%23r9' transform='rotate(297)' y='-326'/%3E%3Cuse href='%23r10' transform='rotate(306)' y='-326'/%3E%3Cuse href='%23r11' transform='rotate(315)' y='-326'/%3E%3Cuse href='%23r12' transform='rotate(324)' y='-326'/%3E%3Cuse href='%23r13' transform='rotate(333)' y='-326'/%3E%3Cuse href='%23r14' transform='rotate(342)' y='-326'/%3E%3Cuse href='%23r15' transform='rotate(351)' y='-326'/%3E%3C/g%3E%3C/g%3E%3Cpath opacity='.2' stroke='%23b4452c' stroke-width='2' d='M197.1 -159.9L332.5 341.7L-169.6 208.2ZM42.9 419.9L-92.5 -81.7L409.6 51.8Z'/%3E%3Cpath opacity='.12' stroke-width='1.5' d='M265 168.6L159.1 274.8L14.1 236.3L-25 91.4L80.9 -14.8L225.9 23.7Z'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 330 310'%3E%3Cdefs%3E%3Cpath id='r0' d='M-3 8V-8M-3-2L4-7M-3 3L4-2'/%3E%3Cpath id='r1' d='M-4 8V-8L4-4V8'/%3E%3Cpath id='r2' d='M-3-8V8M-3-4L3 0L-3 4'/%3E%3Cpath id='r3' d='M-3 8V-8L3-4M-3-3L3 1'/%3E%3Cpath id='r4' d='M-3 8V-8L3-4L-3 0L3 8'/%3E%3Cpath id='r5' d='M3-6L-3 0L3 6'/%3E%3Cpath id='r6' d='M-4-8L4 8M4-8L-4 8'/%3E%3Cpath id='r7' d='M-3 8V-8L3-4L-3 0'/%3E%3Cpath id='r8' d='M-4-8V8M4-8V8M-4-3L4 3'/%3E%3Cpath id='r9' d='M0-8V8M-4-3L4 3'/%3E%3Cpath id='r10' d='M0-8V8'/%3E%3Cpath id='r11' d='M-1-7L-5-2L-1 3M1-3L5 2L1 7'/%3E%3Cpath id='r12' d='M0-8V8M0-8L4-5M0 8L-4 5'/%3E%3Cpath id='r13' d='M-3-8V8M-3-8L1-5L4-8M-3 8L1 5L4 8'/%3E%3Cpath id='r14' d='M0 8V-8M0-2L-5-8M0-2L5-8'/%3E%3Cpath id='r15' d='M3-8L-3-2L3 2L-3 8'/%3E%3Cpath id='r16' d='M0 8V-8M-5-3L0-8L5-3'/%3E%3Cpath id='r17' d='M-3-8V8L3 4L-3 0L3-4Z'/%3E%3Cpath id='r18' d='M-4 8V-8L0-3L4-8V8'/%3E%3Cpath id='r19' d='M-4 8V-8L4 0M4 8V-8L-4 0'/%3E%3Cpath id='r20' d='M-3 8V-8L3-4'/%3E%3Cpath id='r21' d='M0-7L5 0L0 7L-5 0Z'/%3E%3Cpath id='r22' d='M-5-7L5 7V-7L-5 7Z'/%3E%3Cpath id='r23' d='M-5 8L4-1L0-6L-4-1L5 8'/%3E%3C/defs%3E%3Cg fill='none' stroke='%23d2a85a' stroke-linejoin='round'%3E%3Cg opacity='.13' stroke-width='1.6'%3E%3Ccircle cx='240' cy='240' r='214'/%3E%3Ccircle cx='240' cy='240' r='200'/%3E%3Ccircle cx='240' cy='240' r='120'/%3E%3Ccircle cx='240' cy='240' r='209' stroke-width='10' stroke-dasharray='1.5 19.019'/%3E%3Ccircle cx='240' cy='240' r='205' stroke-width='18' stroke-dasharray='2.5 158.507'/%3E%3C/g%3E%3Cpath opacity='.1' fill='%23d2a85a' stroke='none' d='M240 240L240 50L258.4 221.6ZM240 240L313.5 166.5L266 240ZM240 240L430 240L258.4 258.4ZM240 240L313.5 313.5L240 266ZM240 240L240 430L221.6 258.4ZM240 240L166.5 313.5L214 240ZM240 240L50 240L221.6 221.6ZM240 240L166.5 166.5L240 214Z'/%3E%3Cpath opacity='.18' stroke-width='1.6' d='M240 240L221.6 221.6L240 50L258.4 221.6ZM240 240L240 214L313.5 166.5L266 240ZM240 240L258.4 221.6L430 240L258.4 258.4ZM240 240L266 240L313.5 313.5L240 266ZM240 240L258.4 258.4L240 430L221.6 258.4ZM240 240L240 266L166.5 313.5L214 240ZM240 240L221.6 258.4L50 240L221.6 221.6ZM240 240L214 240L166.5 166.5L240 214Z'/%3E%3Cg opacity='.16' stroke-width='2'%3E%3Cg transform='translate(240 240)'%3E%3Cuse href='%23r7' transform='rotate(0)' y='-160'/%3E%3Cuse href='%23r8' transform='rotate(15)' y='-160'/%3E%3Cuse href='%23r9' transform='rotate(30)' y='-160'/%3E%3Cuse href='%23r10' transform='rotate(45)' y='-160'/%3E%3Cuse href='%23r11' transform='rotate(60)' y='-160'/%3E%3Cuse href='%23r12' transform='rotate(75)' y='-160'/%3E%3Cuse href='%23r13' transform='rotate(90)' y='-160'/%3E%3Cuse href='%23r14' transform='rotate(105)' y='-160'/%3E%3Cuse href='%23r15' transform='rotate(120)' y='-160'/%3E%3Cuse href='%23r16' transform='rotate(135)' y='-160'/%3E%3Cuse href='%23r17' transform='rotate(150)' y='-160'/%3E%3Cuse href='%23r18' transform='rotate(165)' y='-160'/%3E%3Cuse href='%23r19' transform='rotate(180)' y='-160'/%3E%3Cuse href='%23r20' transform='rotate(195)' y='-160'/%3E%3Cuse href='%23r21' transform='rotate(210)' y='-160'/%3E%3Cuse href='%23r22' transform='rotate(225)' y='-160'/%3E%3Cuse href='%23r23' transform='rotate(240)' y='-160'/%3E%3Cuse href='%23r0' transform='rotate(255)' y='-160'/%3E%3Cuse href='%23r1' transform='rotate(270)' y='-160'/%3E%3Cuse href='%23r2' transform='rotate(285)' y='-160'/%3E%3Cuse href='%23r3' transform='rotate(300)' y='-160'/%3E%3Cuse href='%23r4' transform='rotate(315)' y='-160'/%3E%3Cuse href='%23r5' transform='rotate(330)' y='-160'/%3E%3Cuse href='%23r6' transform='rotate(345)' y='-160'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  --bg-size:180px 180px,100% 100%,100% 100%,clamp(360px,32vw,600px) auto,clamp(230px,22vw,380px) auto;
-  --r:8px; --chip-r:4px; --btn-r:6px;
-  --card-shadow:inset 0 0 0 4px #1c1410,inset 0 0 0 5px rgba(221,177,95,.16),0 16px 36px -20px rgba(0,0,0,.95);
-  --count-size:clamp(60px,10vw,100px); --count-weight:600; --digit-w:.52em; --colon-w:.28em;
-  --glow:none;
-  color-scheme:dark;
-}
-/* Castle: a great hall at night. Ashlar walls, a stained-glass lancet window on the right and a heraldic banner on the left; lapis lessons, emerald breaks, ruby and gold leaf for heraldry, manuscript headings with illuminated initials */
-:root[data-skin="medieval"]{
-  --bg:#0b0e15; --grid:transparent; --margin-line:transparent; --surface:rgba(17,21,31,.94); --line:#2a3245; --track:#1b2131;
-  --ink:#ece4d2; --ink-2:#b9b2a3; --ink-3:#868172; --accent:#8fa8ff; --accent-ink:#0a0f22; --accent-soft:#1e2950;
-  --rest:#5fd09a; --rest-soft:#14322a; --now:#e5525f; --warn:#ef7b84; --warn-soft:#3a151b;
-  --font-display:"Vollkorn","Georgia",serif;
-  --font-body:"Vollkorn","Georgia",serif;
-  --font-hand:"Kurale","Georgia",serif;
-  --bg-pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 470'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='.4'/%3E%3Cstop offset='.3' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='.45' stop-color='%23fff' stop-opacity='.07'/%3E%3Cstop offset='.62' stop-color='%23000' stop-opacity='.18'/%3E%3Cstop offset='.8' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='.4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg opacity='.34'%3E%3Cpath d='M8 14H152' stroke='%23596178' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='7' cy='14' r='6' fill='%23c9a54e'/%3E%3Ccircle cx='153' cy='14' r='6' fill='%23c9a54e'/%3E%3Cpath d='M30 20H130V440L80 396L30 440Z' fill='%2397243a'/%3E%3Cpath d='M30 20H130V96H30Z' fill='%23c9a54e'/%3E%3Cg fill='%232b479e'%3E%3Ccircle cx='56' cy='60' r='9'/%3E%3Ccircle cx='80' cy='60' r='9'/%3E%3Ccircle cx='104' cy='60' r='9'/%3E%3C/g%3E%3Cg transform='translate(44 168) scale(3)' fill='%23c9a54e'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23c9a54e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/g%3E%3Cpath d='M30 20H130V440L80 396L30 440Z' fill='url(%23f)'/%3E%3Cpath d='M37 96V425L80 387L123 425V96' fill='none' stroke='%23c9a54e' stroke-width='2.5'/%3E%3Cpath d='M38 6h14v16h-14zM73 6h14v16h-14zM108 6h14v16h-14z' fill='%237d1c2e'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 540'%3E%3Cdefs%3E%3Cpattern id='q' width='18' height='24' patternUnits='userSpaceOnUse'%3E%3Cpath d='M0 0L18 24M18 0L0 24' stroke='%2305070b' stroke-width='1.5' fill='none'/%3E%3C/pattern%3E%3CclipPath id='c'%3E%3Cpath d='M44 540V290A76 76 0 0 1 92 231.1A76 76 0 0 1 140 290V540Z'/%3E%3Cpath d='M160 540V290A76 76 0 0 1 208 231.1A76 76 0 0 1 256 290V540Z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg opacity='.26'%3E%3Cpath d='M20 540V200A200 200 0 0 1 150 12.7A200 200 0 0 1 280 200V540Z' fill='%232a3246'/%3E%3Cpath d='M34 540V200A186 186 0 0 1 150 27.7A186 186 0 0 1 266 200V540Z' fill='%23151a26'/%3E%3Cpath d='M44 540V290A76 76 0 0 1 92 231.1A76 76 0 0 1 140 290V540Z' fill='%232c4aa8'/%3E%3Cpath d='M160 540V290A76 76 0 0 1 208 231.1A76 76 0 0 1 256 290V540Z' fill='%232c4aa8'/%3E%3Cpath d='M44 540V290A76 76 0 0 1 92 231.1A76 76 0 0 1 140 290V540Z' fill='url(%23q)'/%3E%3Cpath d='M160 540V290A76 76 0 0 1 208 231.1A76 76 0 0 1 256 290V540Z' fill='url(%23q)'/%3E%3Cg clip-path='url(%23c)' fill='none'%3E%3Cpath d='M44 540V290A76 76 0 0 1 92 231.1A76 76 0 0 1 140 290V540ZM160 540V290A76 76 0 0 1 208 231.1A76 76 0 0 1 256 290V540Z' stroke='%23a3263b' stroke-width='14'/%3E%3Cpath d='M44 540V290A76 76 0 0 1 92 231.1A76 76 0 0 1 140 290V540ZM160 540V290A76 76 0 0 1 208 231.1A76 76 0 0 1 256 290V540Z' stroke='%2305070b' stroke-width='18' stroke-dasharray='2 22'/%3E%3C/g%3E%3Cg fill='%23a3263b' stroke='%2305070b' stroke-width='2'%3E%3Ccircle cx='92' cy='305' r='10'/%3E%3Ccircle cx='102' cy='315' r='10'/%3E%3Ccircle cx='92' cy='325' r='10'/%3E%3Ccircle cx='82' cy='315' r='10'/%3E%3C/g%3E%3Ccircle cx='92' cy='315' r='6' fill='%23c9a043'/%3E%3Cg fill='%231f7a52' stroke='%2305070b' stroke-width='2'%3E%3Ccircle cx='92' cy='390' r='10'/%3E%3Ccircle cx='102' cy='400' r='10'/%3E%3Ccircle cx='92' cy='410' r='10'/%3E%3Ccircle cx='82' cy='400' r='10'/%3E%3C/g%3E%3Ccircle cx='92' cy='400' r='6' fill='%23c9a043'/%3E%3Cg fill='%23a3263b' stroke='%2305070b' stroke-width='2'%3E%3Ccircle cx='92' cy='475' r='10'/%3E%3Ccircle cx='102' cy='485' r='10'/%3E%3Ccircle cx='92' cy='495' r='10'/%3E%3Ccircle cx='82' cy='485' r='10'/%3E%3C/g%3E%3Ccircle cx='92' cy='485' r='6' fill='%23c9a043'/%3E%3Cg fill='%231f7a52' stroke='%2305070b' stroke-width='2'%3E%3Ccircle cx='208' cy='305' r='10'/%3E%3Ccircle cx='218' cy='315' r='10'/%3E%3Ccircle cx='208' cy='325' r='10'/%3E%3Ccircle cx='198' cy='315' r='10'/%3E%3C/g%3E%3Ccircle cx='208' cy='315' r='6' fill='%23c9a043'/%3E%3Cg fill='%23a3263b' stroke='%2305070b' stroke-width='2'%3E%3Ccircle cx='208' cy='390' r='10'/%3E%3Ccircle cx='218' cy='400' r='10'/%3E%3Ccircle cx='208' cy='410' r='10'/%3E%3Ccircle cx='198' cy='400' r='10'/%3E%3C/g%3E%3Ccircle cx='208' cy='400' r='6' fill='%23c9a043'/%3E%3Cg fill='%231f7a52' stroke='%2305070b' stroke-width='2'%3E%3Ccircle cx='208' cy='475' r='10'/%3E%3Ccircle cx='218' cy='485' r='10'/%3E%3Ccircle cx='208' cy='495' r='10'/%3E%3Ccircle cx='198' cy='485' r='10'/%3E%3C/g%3E%3Ccircle cx='208' cy='485' r='6' fill='%23c9a043'/%3E%3Ccircle cx='150' cy='135' r='58' fill='%23a3263b'/%3E%3Cg stroke='%2305070b' stroke-width='2' fill='%232c4aa8'%3E%3Ccircle cx='182' cy='135' r='21'/%3E%3Ccircle cx='166' cy='162.7' r='21'/%3E%3Ccircle cx='134' cy='162.7' r='21'/%3E%3Ccircle cx='118' cy='135' r='21'/%3E%3Ccircle cx='134' cy='107.3' r='21'/%3E%3Ccircle cx='166' cy='107.3' r='21'/%3E%3C/g%3E%3Ccircle cx='150' cy='135' r='12' fill='%23c9a043' stroke='%2305070b' stroke-width='2'/%3E%3Cg fill='none' stroke='%232a3246'%3E%3Ccircle cx='150' cy='135' r='61' stroke-width='7'/%3E%3Cpath d='M44 540V290A76 76 0 0 1 92 231.1A76 76 0 0 1 140 290V540ZM160 540V290A76 76 0 0 1 208 231.1A76 76 0 0 1 256 290V540Z' stroke-width='6'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),radial-gradient(48% 55% at 90% 20%,rgba(66,98,214,.12),transparent 70%),radial-gradient(40% 45% at 6% 4%,rgba(160,36,58,.08),transparent 70%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='176'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.04'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='.014'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='url(%23s)'%3E%3Crect x='1' y='1' width='108' height='42' rx='2' opacity='0.9'/%3E%3Crect x='111' y='1' width='98' height='42' rx='2' opacity='0.6'/%3E%3Crect x='211' y='1' width='88' height='42' rx='2' opacity='0.8'/%3E%3Crect x='56' y='45' width='103' height='42' rx='2' opacity='0.65'/%3E%3Crect x='161' y='45' width='88' height='42' rx='2' opacity='1'/%3E%3Crect x='251' y='45' width='103' height='42' rx='2' opacity='0.55'/%3E%3Crect x='-49' y='45' width='103' height='42' rx='2' opacity='0.55'/%3E%3Crect x='31' y='89' width='103' height='42' rx='2' opacity='0.85'/%3E%3Crect x='136' y='89' width='88' height='42' rx='2' opacity='0.5'/%3E%3Crect x='226' y='89' width='103' height='42' rx='2' opacity='0.95'/%3E%3Crect x='-74' y='89' width='103' height='42' rx='2' opacity='0.95'/%3E%3Crect x='81' y='133' width='103' height='42' rx='2' opacity='0.6'/%3E%3Crect x='186' y='133' width='88' height='42' rx='2' opacity='0.85'/%3E%3Crect x='276' y='133' width='103' height='42' rx='2' opacity='0.7'/%3E%3Crect x='-24' y='133' width='103' height='42' rx='2' opacity='0.7'/%3E%3C/g%3E%3C/svg%3E");
-  --bg-size:clamp(96px,8.5vw,150px) auto,clamp(240px,24vw,420px) auto,100% 100%,100% 100%,300px 176px;
-  --r:6px; --chip-r:2px; --btn-r:4px;
-  --card-shadow:inset 0 1px 0 rgba(255,255,255,.045),inset 0 -1px 0 rgba(0,0,0,.45),0 18px 38px -22px rgba(0,0,0,.95);
-  --count-size:clamp(60px,10vw,100px); --count-weight:600; --digit-w:.6em; --colon-w:.3em;
-  --glow:none;
-  color-scheme:dark;
-}
-/* Magic: a storybook night of spells. Midnight-indigo sky with a nebula glow, stars and a crescent moon, gold filigree on the window corners and on every card; spell-turquoise lessons, lantern-apricot breaks, Cormorant and Lora type */
-:root[data-skin="magic"]{
-  --bg:#0a0920; --grid:transparent; --margin-line:transparent; --surface:rgba(20,18,50,.92); --line:#302a60; --track:#1e1a46;
-  --ink:#efecfb; --ink-2:#c0bbdf; --ink-3:#8c86b3; --accent:#6fe3d3; --accent-ink:#05171b; --accent-soft:#173b4b;
-  --rest:#ffbe92; --rest-soft:#3c2536; --now:#ffe08a; --warn:#ff9aa8; --warn-soft:#3a1828;
-  --font-display:"Cormorant Garamond","Georgia",serif;
-  --font-body:"Lora","Georgia",serif;
-  --font-hand:"Cormorant Garamond","Georgia",serif;
-  --bg-pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cdefs%3E%3ClinearGradient id='fx' gradientUnits='userSpaceOnUse' x1='40' y1='0' x2='292' y2='0'%3E%3Cstop offset='0' stop-color='%23dcb96e'/%3E%3Cstop offset='1' stop-color='%23dcb96e' stop-opacity='0'/%3E%3C/linearGradient%3E%3CradialGradient id='gl'%3E%3Cstop offset='0' stop-color='%23a6f3e8' stop-opacity='.55'/%3E%3Cstop offset='1' stop-color='%23a6f3e8' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cg id='t'%3E%3Cg fill='none' stroke='%23d7b46a' stroke-linecap='round'%3E%3Cpath d='M44 9H292' stroke='url(%23fx)' stroke-width='1.3'/%3E%3Cpath d='M60 15.5H210' stroke='url(%23fx)' stroke-width='.7'/%3E%3Cpath d='M36 24C68 13 92 34 122 33C148 32 154 19 176 19C192 19 199 29 194 37' stroke-width='1.6'/%3E%3Cpath d='M194 37a7.5 7.5 0 0 1 -15 0a4.35 4.35 0 0 1 8.7 0a2.52 2.52 0 0 1 -5.05 0' stroke-width='1.3'/%3E%3Cpath d='M122 33C119 47 108 55 96 54' stroke-width='1.2'/%3E%3Cpath d='M96 54a5.5 5.5 0 0 1 0 11a3.19 3.19 0 0 1 0 -6.38a1.85 1.85 0 0 1 0 3.7' stroke-width='1'/%3E%3Cpath d='M176 19C206 19 222 31 248 27C262 25 268 20 280 21' stroke-width='.9' stroke-opacity='.7'/%3E%3Cpath d='M232 29a4 4 0 0 0 8 0a2.32 2.32 0 0 0 -4.64 0a1.35 1.35 0 0 0 2.69 0' stroke-width='.8' stroke-opacity='.8'/%3E%3C/g%3E%3Cg fill='%23d7b46a'%3E%3Cpath d='M70 21Q78.85 20.3 83.93 11.25Q73.69 12.93 70 21Z'/%3E%3Cpath d='M150 27Q152.6 34.4 161.49 36.64Q157.74 28.27 150 27Z'/%3E%3Cpath d='M108 50Q101.72 49.93 97.61 56Q104.92 55.47 108 50Z'/%3E%3Cpath d='M212 22Q217.75 22.63 221.97 17.35Q215.22 17.19 212 22Z'/%3E%3Ccircle cx='262' cy='9' r='1.6'/%3E%3Ccircle cx='272' cy='9' r='1.1'/%3E%3Ccircle cx='280' cy='9' r='.7'/%3E%3C/g%3E%3C/g%3E%3C/defs%3E%3Cg opacity='.5'%3E%3Cuse href='%23t'/%3E%3Cuse href='%23t' transform='matrix(0 1 1 0 0 0)'/%3E%3Cg fill='none' stroke='%23d7b46a' stroke-linecap='round'%3E%3Cpath d='M40 40C52 54 52 66 66 72' stroke-width='1.2'/%3E%3Cpath d='M66 72a5 5 0 0 0 10 0a2.9 2.9 0 0 0 -5.8 0a1.68 1.68 0 0 0 3.36 0' stroke-width='1'/%3E%3C/g%3E%3Cpath d='M46 46Q47.63 53.28 55.9 55.9Q53.28 47.63 46 46Z' fill='%23d7b46a'/%3E%3Ccircle cx='26' cy='26' r='20' fill='url(%23gl)'/%3E%3Cpath d='M26 13Q27.36 24.64 39 26Q27.36 27.36 26 39Q24.64 27.36 13 26Q24.64 24.64 26 13Z' fill='%23c8fff6'/%3E%3Ccircle cx='26' cy='26' r='2.6' fill='%23fff'/%3E%3Cpath d='M142 42Q142.49 46.51 147 47Q142.49 47.49 142 52Q141.51 47.49 137 47Q141.51 46.51 142 42Z' fill='%23a6f3e8'/%3E%3Cpath d='M47 138Q47.39 141.61 51 142Q47.39 142.39 47 146Q46.61 142.39 43 142Q46.61 141.61 47 138Z' fill='%23ffffff' fill-opacity='.8'/%3E%3Cpath d='M236 40.8Q236.31 43.69 239.2 44Q236.31 44.31 236 47.2Q235.69 44.31 232.8 44Q235.69 43.69 236 40.8Z' fill='%23ffffff' fill-opacity='.7'/%3E%3Cpath d='M64 224.4Q64.35 227.65 67.6 228Q64.35 228.35 64 231.6Q63.65 228.35 60.4 228Q63.65 227.65 64 224.4Z' fill='%23a6f3e8' fill-opacity='.85'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cdefs%3E%3ClinearGradient id='fx' gradientUnits='userSpaceOnUse' x1='40' y1='0' x2='292' y2='0'%3E%3Cstop offset='0' stop-color='%23dcb96e'/%3E%3Cstop offset='1' stop-color='%23dcb96e' stop-opacity='0'/%3E%3C/linearGradient%3E%3CradialGradient id='gl'%3E%3Cstop offset='0' stop-color='%23a6f3e8' stop-opacity='.55'/%3E%3Cstop offset='1' stop-color='%23a6f3e8' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cg id='t'%3E%3Cg fill='none' stroke='%23d7b46a' stroke-linecap='round'%3E%3Cpath d='M44 9H292' stroke='url(%23fx)' stroke-width='1.3'/%3E%3Cpath d='M60 15.5H210' stroke='url(%23fx)' stroke-width='.7'/%3E%3Cpath d='M36 24C68 13 92 34 122 33C148 32 154 19 176 19C192 19 199 29 194 37' stroke-width='1.6'/%3E%3Cpath d='M194 37a7.5 7.5 0 0 1 -15 0a4.35 4.35 0 0 1 8.7 0a2.52 2.52 0 0 1 -5.05 0' stroke-width='1.3'/%3E%3Cpath d='M122 33C119 47 108 55 96 54' stroke-width='1.2'/%3E%3Cpath d='M96 54a5.5 5.5 0 0 1 0 11a3.19 3.19 0 0 1 0 -6.38a1.85 1.85 0 0 1 0 3.7' stroke-width='1'/%3E%3Cpath d='M176 19C206 19 222 31 248 27C262 25 268 20 280 21' stroke-width='.9' stroke-opacity='.7'/%3E%3Cpath d='M232 29a4 4 0 0 0 8 0a2.32 2.32 0 0 0 -4.64 0a1.35 1.35 0 0 0 2.69 0' stroke-width='.8' stroke-opacity='.8'/%3E%3C/g%3E%3Cg fill='%23d7b46a'%3E%3Cpath d='M70 21Q78.85 20.3 83.93 11.25Q73.69 12.93 70 21Z'/%3E%3Cpath d='M150 27Q152.6 34.4 161.49 36.64Q157.74 28.27 150 27Z'/%3E%3Cpath d='M108 50Q101.72 49.93 97.61 56Q104.92 55.47 108 50Z'/%3E%3Cpath d='M212 22Q217.75 22.63 221.97 17.35Q215.22 17.19 212 22Z'/%3E%3Ccircle cx='262' cy='9' r='1.6'/%3E%3Ccircle cx='272' cy='9' r='1.1'/%3E%3Ccircle cx='280' cy='9' r='.7'/%3E%3C/g%3E%3C/g%3E%3C/defs%3E%3Cg opacity='.5' transform='matrix(-1 0 0 -1 300 300)'%3E%3Cuse href='%23t'/%3E%3Cuse href='%23t' transform='matrix(0 1 1 0 0 0)'/%3E%3Cg fill='none' stroke='%23d7b46a' stroke-linecap='round'%3E%3Cpath d='M40 40C52 54 52 66 66 72' stroke-width='1.2'/%3E%3Cpath d='M66 72a5 5 0 0 0 10 0a2.9 2.9 0 0 0 -5.8 0a1.68 1.68 0 0 0 3.36 0' stroke-width='1'/%3E%3C/g%3E%3Cpath d='M46 46Q47.63 53.28 55.9 55.9Q53.28 47.63 46 46Z' fill='%23d7b46a'/%3E%3Ccircle cx='26' cy='26' r='20' fill='url(%23gl)'/%3E%3Cpath d='M26 13Q27.36 24.64 39 26Q27.36 27.36 26 39Q24.64 27.36 13 26Q24.64 24.64 26 13Z' fill='%23c8fff6'/%3E%3Ccircle cx='26' cy='26' r='2.6' fill='%23fff'/%3E%3Cpath d='M142 42Q142.49 46.51 147 47Q142.49 47.49 142 52Q141.51 47.49 137 47Q141.51 46.51 142 42Z' fill='%23a6f3e8'/%3E%3Cpath d='M47 138Q47.39 141.61 51 142Q47.39 142.39 47 146Q46.61 142.39 43 142Q46.61 141.61 47 138Z' fill='%23ffffff' fill-opacity='.8'/%3E%3Cpath d='M236 40.8Q236.31 43.69 239.2 44Q236.31 44.31 236 47.2Q235.69 44.31 232.8 44Q235.69 43.69 236 40.8Z' fill='%23ffffff' fill-opacity='.7'/%3E%3Cpath d='M64 224.4Q64.35 227.65 67.6 228Q64.35 228.35 64 231.6Q63.65 228.35 60.4 228Q63.65 227.65 64 224.4Z' fill='%23a6f3e8' fill-opacity='.85'/%3E%3C/g%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cdefs%3E%3CradialGradient id='h'%3E%3Cstop offset='0' stop-color='%23fff1c8' stop-opacity='.3'/%3E%3Cstop offset='.45' stop-color='%23c9b8ff' stop-opacity='.1'/%3E%3Cstop offset='1' stop-color='%23c9b8ff' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='m' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fffaf0'/%3E%3Cstop offset='1' stop-color='%23efd28e'/%3E%3C/linearGradient%3E%3Cmask id='c'%3E%3Ccircle cx='140' cy='70' r='30' fill='%23fff'/%3E%3Ccircle cx='153' cy='60' r='26' fill='%23000'/%3E%3C/mask%3E%3C/defs%3E%3Ccircle cx='140' cy='70' r='76' fill='url(%23h)'/%3E%3Ccircle cx='140' cy='70' r='30' fill='url(%23m)' mask='url(%23c)'/%3E%3Cpath d='M28 150L58 132L86 146L108 176L146 182M146 182L172 160L196 196' fill='none' stroke='%23c9d4ff' stroke-opacity='.28' stroke-width='.8'/%3E%3Ccircle cx='28' cy='150' r='4.800000000000001' fill='%23cfe0ff' fill-opacity='.12'/%3E%3Ccircle cx='28' cy='150' r='1.6' fill='%23f4f6ff'/%3E%3Ccircle cx='58' cy='132' r='3.5999999999999996' fill='%23cfe0ff' fill-opacity='.12'/%3E%3Ccircle cx='58' cy='132' r='1.2' fill='%23f4f6ff'/%3E%3Ccircle cx='86' cy='146' r='5.699999999999999' fill='%23cfe0ff' fill-opacity='.12'/%3E%3Ccircle cx='86' cy='146' r='1.9' fill='%23f4f6ff'/%3E%3Ccircle cx='108' cy='176' r='3.9000000000000004' fill='%23cfe0ff' fill-opacity='.12'/%3E%3Ccircle cx='108' cy='176' r='1.3' fill='%23f4f6ff'/%3E%3Ccircle cx='146' cy='182' r='4.5' fill='%23cfe0ff' fill-opacity='.12'/%3E%3Ccircle cx='146' cy='182' r='1.5' fill='%23f4f6ff'/%3E%3Ccircle cx='172' cy='160' r='3.3000000000000003' fill='%23cfe0ff' fill-opacity='.12'/%3E%3Ccircle cx='172' cy='160' r='1.1' fill='%23f4f6ff'/%3E%3Ccircle cx='196' cy='196' r='5.1' fill='%23cfe0ff' fill-opacity='.12'/%3E%3Ccircle cx='196' cy='196' r='1.7' fill='%23f4f6ff'/%3E%3Cpath d='M196 29Q196.49 33.51 201 34Q196.49 34.49 196 39Q195.51 34.49 191 34Q195.51 33.51 196 29Z' fill='%23fff' fill-opacity='.85'/%3E%3Cpath d='M84 40.6Q84.33 43.67 87.4 44Q84.33 44.33 84 47.4Q83.67 44.33 80.6 44Q83.67 43.67 84 40.6Z' fill='%23a6f3e8' fill-opacity='.8'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='460'%3E%3Ccircle cx='169.1' cy='70.79' r='0.94' fill='%23e5dcff' fill-opacity='0.26'/%3E%3Ccircle cx='50.57' cy='267.75' r='1.13' fill='%23ffffff' fill-opacity='0.33'/%3E%3Ccircle cx='225.76' cy='33.85' r='0.52' fill='%23e5dcff' fill-opacity='0.44'/%3E%3Ccircle cx='65.88' cy='103.8' r='0.92' fill='%23e5dcff' fill-opacity='0.72'/%3E%3Ccircle cx='304.14' cy='24.61' r='0.62' fill='%23dce6ff' fill-opacity='0.52'/%3E%3Ccircle cx='151.44' cy='67.78' r='0.54' fill='%23dce6ff' fill-opacity='0.38'/%3E%3Ccircle cx='55.18' cy='262.47' r='0.59' fill='%23ffffff' fill-opacity='0.27'/%3E%3Ccircle cx='293.21' cy='284.27' r='0.82' fill='%23fff1cc' fill-opacity='0.5'/%3E%3Ccircle cx='242.25' cy='423.09' r='0.72' fill='%23dce6ff' fill-opacity='0.35'/%3E%3Ccircle cx='362.68' cy='113.31' r='0.88' fill='%23fff1cc' fill-opacity='0.5'/%3E%3Ccircle cx='378.39' cy='133.3' r='1.19' fill='%23c6f6ef' fill-opacity='0.28'/%3E%3Ccircle cx='87.12' cy='157.98' r='1.15' fill='%23ffffff' fill-opacity='0.44'/%3E%3Ccircle cx='396.52' cy='263.3' r='1.11' fill='%23fff1cc' fill-opacity='0.39'/%3E%3Ccircle cx='308.69' cy='266.43' r='0.79' fill='%23fff1cc' fill-opacity='0.67'/%3E%3Ccircle cx='246.63' cy='304.85' r='0.5' fill='%23e5dcff' fill-opacity='0.59'/%3E%3Ccircle cx='514.44' cy='376.8' r='0.66' fill='%23fff1cc' fill-opacity='0.42'/%3E%3Ccircle cx='13.64' cy='212.53' r='0.58' fill='%23ffffff' fill-opacity='0.28'/%3E%3Ccircle cx='114.6' cy='133.07' r='1' fill='%23c6f6ef' fill-opacity='0.43'/%3E%3Ccircle cx='43.58' cy='206.83' r='0.86' fill='%23c6f6ef' fill-opacity='0.69'/%3E%3Ccircle cx='447.82' cy='128.96' r='0.76' fill='%23c6f6ef' fill-opacity='0.41'/%3E%3Ccircle cx='496.19' cy='70.82' r='0.58' fill='%23dce6ff' fill-opacity='0.34'/%3E%3Ccircle cx='8.22' cy='380.98' r='0.59' fill='%23dce6ff' fill-opacity='0.37'/%3E%3Ccircle cx='218.18' cy='170.38' r='0.87' fill='%23e5dcff' fill-opacity='0.73'/%3E%3Ccircle cx='492.32' cy='300.66' r='1' fill='%23e5dcff' fill-opacity='0.46'/%3E%3Ccircle cx='204.47' cy='183.93' r='0.53' fill='%23ffffff' fill-opacity='0.56'/%3E%3Ccircle cx='100.35' cy='451.01' r='0.78' fill='%23e5dcff' fill-opacity='0.28'/%3E%3Ccircle cx='29.13' cy='2.11' r='0.56' fill='%23fff1cc' fill-opacity='0.27'/%3E%3Ccircle cx='318.69' cy='34.06' r='0.61' fill='%23fff1cc' fill-opacity='0.42'/%3E%3Ccircle cx='495.02' cy='276.64' r='0.81' fill='%23c6f6ef' fill-opacity='0.28'/%3E%3Ccircle cx='514.44' cy='214.49' r='0.81' fill='%23ffffff' fill-opacity='0.27'/%3E%3Ccircle cx='388.83' cy='339.6' r='0.81' fill='%23e5dcff' fill-opacity='0.59'/%3E%3Ccircle cx='13.92' cy='435.65' r='0.85' fill='%23e5dcff' fill-opacity='0.3'/%3E%3Ccircle cx='473.7' cy='347.71' r='0.67' fill='%23ffffff' fill-opacity='0.56'/%3E%3Ccircle cx='361.24' cy='121.07' r='0.73' fill='%23dce6ff' fill-opacity='0.31'/%3E%3Ccircle cx='276.82' cy='357.25' r='0.7' fill='%23dce6ff' fill-opacity='0.34'/%3E%3Ccircle cx='417.94' cy='375.16' r='1' fill='%23e5dcff' fill-opacity='0.34'/%3E%3Ccircle cx='256.28' cy='335.34' r='1.19' fill='%23c6f6ef' fill-opacity='0.64'/%3E%3Ccircle cx='135.73' cy='317.79' r='1.17' fill='%23fff1cc' fill-opacity='0.46'/%3E%3Ccircle cx='494.78' cy='168.27' r='0.62' fill='%23dce6ff' fill-opacity='0.34'/%3E%3Ccircle cx='176.27' cy='222.09' r='1.19' fill='%23ffffff' fill-opacity='0.54'/%3E%3Ccircle cx='249.41' cy='299.76' r='1.05' fill='%23ffffff' fill-opacity='0.26'/%3E%3Ccircle cx='471.45' cy='358.73' r='1.01' fill='%23dce6ff' fill-opacity='0.47'/%3E%3Ccircle cx='225.91' cy='291.94' r='0.52' fill='%23c6f6ef' fill-opacity='0.72'/%3E%3Ccircle cx='240.99' cy='340.97' r='0.51' fill='%23dce6ff' fill-opacity='0.3'/%3E%3Ccircle cx='16.22' cy='271.41' r='0.8' fill='%23e5dcff' fill-opacity='0.57'/%3E%3Ccircle cx='428.48' cy='449.02' r='0.94' fill='%23e5dcff' fill-opacity='0.41'/%3E%3Ccircle cx='284.92' cy='11.76' r='1.05' fill='%23ffffff' fill-opacity='0.6'/%3E%3Ccircle cx='273.72' cy='427.73' r='0.78' fill='%23dce6ff' fill-opacity='0.68'/%3E%3Ccircle cx='16.44' cy='99.03' r='0.83' fill='%23fff1cc' fill-opacity='0.62'/%3E%3Ccircle cx='135.83' cy='193.07' r='0.55' fill='%23fff1cc' fill-opacity='0.7'/%3E%3Ccircle cx='465.22' cy='304.09' r='1.06' fill='%23e5dcff' fill-opacity='0.49'/%3E%3Ccircle cx='69.47' cy='71.24' r='0.83' fill='%23dce6ff' fill-opacity='0.68'/%3E%3Ccircle cx='316.01' cy='355.87' r='0.56' fill='%23e5dcff' fill-opacity='0.3'/%3E%3Ccircle cx='376.2' cy='255.75' r='0.69' fill='%23e5dcff' fill-opacity='0.49'/%3E%3Ccircle cx='250.96' cy='356.08' r='1.11' fill='%23dce6ff' fill-opacity='0.25'/%3E%3Ccircle cx='144.89' cy='354.15' r='0.83' fill='%23ffffff' fill-opacity='0.52'/%3E%3Ccircle cx='230.72' cy='281.31' r='0.83' fill='%23fff1cc' fill-opacity='0.49'/%3E%3Ccircle cx='235.41' cy='245.18' r='0.81' fill='%23e5dcff' fill-opacity='0.72'/%3E%3Ccircle cx='454.29' cy='431.63' r='0.64' fill='%23dce6ff' fill-opacity='0.52'/%3E%3Ccircle cx='435.44' cy='64.53' r='0.54' fill='%23ffffff' fill-opacity='0.45'/%3E%3Ccircle cx='348.32' cy='197.32' r='0.61' fill='%23ffffff' fill-opacity='0.38'/%3E%3Ccircle cx='464.87' cy='72.43' r='0.99' fill='%23dce6ff' fill-opacity='0.57'/%3E%3Ccircle cx='132.6' cy='64.59' r='0.8' fill='%23ffffff' fill-opacity='0.62'/%3E%3Ccircle cx='207.5' cy='224.19' r='1.19' fill='%23dce6ff' fill-opacity='0.66'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='330' height='290'%3E%3Ccircle cx='149.48' cy='162.09' r='0.77' fill='%23e5dcff' fill-opacity='0.27'/%3E%3Ccircle cx='280.74' cy='56.31' r='0.71' fill='%23e5dcff' fill-opacity='0.27'/%3E%3Ccircle cx='260.51' cy='28.92' r='0.49' fill='%23ffffff' fill-opacity='0.17'/%3E%3Ccircle cx='196.11' cy='115.3' r='0.55' fill='%23dce6ff' fill-opacity='0.35'/%3E%3Ccircle cx='205.14' cy='239.87' r='0.38' fill='%23dce6ff' fill-opacity='0.15'/%3E%3Ccircle cx='197.48' cy='224.54' r='0.5' fill='%23dce6ff' fill-opacity='0.31'/%3E%3Ccircle cx='171.23' cy='185.12' r='0.57' fill='%23c6f6ef' fill-opacity='0.33'/%3E%3Ccircle cx='215.47' cy='118.34' r='0.6' fill='%23ffffff' fill-opacity='0.4'/%3E%3Ccircle cx='232.75' cy='92.17' r='0.45' fill='%23ffffff' fill-opacity='0.22'/%3E%3Ccircle cx='185.58' cy='32.87' r='0.4' fill='%23ffffff' fill-opacity='0.22'/%3E%3Ccircle cx='314.32' cy='244.33' r='0.35' fill='%23ffffff' fill-opacity='0.2'/%3E%3Ccircle cx='155.22' cy='282.38' r='0.53' fill='%23dce6ff' fill-opacity='0.16'/%3E%3Ccircle cx='255.79' cy='79.16' r='0.39' fill='%23c6f6ef' fill-opacity='0.23'/%3E%3Ccircle cx='249.12' cy='35.75' r='0.46' fill='%23ffffff' fill-opacity='0.17'/%3E%3Ccircle cx='153.57' cy='141.23' r='0.66' fill='%23e5dcff' fill-opacity='0.19'/%3E%3Ccircle cx='64.16' cy='211.32' r='0.41' fill='%23ffffff' fill-opacity='0.32'/%3E%3Ccircle cx='130.72' cy='285.15' r='0.35' fill='%23e5dcff' fill-opacity='0.38'/%3E%3Ccircle cx='101.15' cy='255.07' r='0.44' fill='%23e5dcff' fill-opacity='0.25'/%3E%3Ccircle cx='211.24' cy='30.7' r='0.8' fill='%23fff1cc' fill-opacity='0.2'/%3E%3Ccircle cx='5.12' cy='176.56' r='0.72' fill='%23ffffff' fill-opacity='0.25'/%3E%3Ccircle cx='31.38' cy='168.66' r='0.46' fill='%23fff1cc' fill-opacity='0.31'/%3E%3Ccircle cx='204.82' cy='38.39' r='0.61' fill='%23dce6ff' fill-opacity='0.37'/%3E%3Ccircle cx='284.49' cy='54.29' r='0.42' fill='%23e5dcff' fill-opacity='0.39'/%3E%3Ccircle cx='83.34' cy='56.28' r='0.68' fill='%23dce6ff' fill-opacity='0.4'/%3E%3Ccircle cx='225.95' cy='113.03' r='0.57' fill='%23ffffff' fill-opacity='0.16'/%3E%3Ccircle cx='35.85' cy='13.07' r='0.78' fill='%23c6f6ef' fill-opacity='0.21'/%3E%3C/svg%3E"),radial-gradient(60% 50% at 86% 4%,rgba(124,92,236,.2),transparent 70%),radial-gradient(55% 45% at 2% 100%,rgba(52,178,170,.12),transparent 70%),radial-gradient(70% 60% at 42% 46%,rgba(64,48,150,.12),transparent 75%),linear-gradient(#0d0b2b,#08081a);
-  --bg-size:clamp(190px,17vw,300px) auto,clamp(190px,17vw,300px) auto,clamp(130px,11vw,200px) auto,520px 460px,330px 290px,100% 100%,100% 100%,100% 100%,100% 100%;
-  --r:6px; --chip-r:999px; --btn-r:6px;
-  --card-shadow:0 0 0 1px rgba(6,5,20,.6),0 20px 44px -24px rgba(0,0,0,.95),0 0 60px -34px rgba(140,110,255,.55);
-  --count-size:clamp(64px,10.5vw,108px); --count-weight:600; --digit-w:.53em; --colon-w:.25em;
-  --glow:none;
-  color-scheme:dark;
-}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -281,20 +233,6 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 :root[data-skin="synth"]{--ok:#36e2f0;--mid:#ffd319;--bad:#ff3ea5}
 :root[data-skin="synth"] .fstack{box-shadow:0 0 12px -3px rgba(255,62,165,.55)}
 :root[data-skin="synth"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.45),transparent 55%,rgba(13,2,33,.25))}
-:root[data-skin="dnd"]{--ok:#93bfd0;--mid:#ddb15f;--bad:#d9573c}
-:root[data-skin="dnd"] .fstack{width:min(14px,62%);border-radius:7px 7px 0 0;box-shadow:0 0 0 1px rgba(221,177,95,.3)}
-:root[data-skin="dnd"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.22),transparent 45%,rgba(0,0,0,.22))}
-:root[data-skin="dnd"] .fstack i+i{border-bottom:1px solid rgba(16,11,9,.85)}
-:root[data-skin="medieval"]{--ok:#5fd09a;--mid:#e2bf68;--bad:#e5525f}
-/* focus bars are little lancets: pointed tops, leaded glass */
-:root[data-skin="medieval"] .fstack{width:min(14px,62%);border-radius:0;clip-path:polygon(0 5px,50% 0,100% 5px,100% 100%,0 100%)}
-:root[data-skin="medieval"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.26),transparent 45%,rgba(0,0,0,.24))}
-:root[data-skin="medieval"] .fstack i+i{border-bottom:1px solid #07090e}
-:root[data-skin="magic"]{--ok:#6fe3d3;--mid:#f0cd78;--bad:#ff8fa8}
-/* focus bars are slim beams of spell-light with a soft glow and a bright rounded tip */
-:root[data-skin="magic"] .fstack{width:min(12px,56%);border-radius:6px 6px 0 0;box-shadow:0 0 10px -3px rgba(111,227,211,.55)}
-:root[data-skin="magic"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.3),transparent 50%,rgba(10,9,32,.25))}
-:root[data-skin="magic"] .fstack i+i{border-bottom:1px solid #0a0920}
 .focus-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .cam{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);padding:12px 14px 12px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--mid);box-shadow:0 10px 30px rgba(0,0,0,.45);color:var(--ink);font-weight:600}
@@ -456,9 +394,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .sw-dots{background:radial-gradient(circle,#e8202a 0 24%,#141414 28%)}
 .sw-line{background:linear-gradient(135deg,#0f0f0f 0 44%,#ff4f00 44% 56%,#0f0f0f 56%)}
 .sw-synth{background:linear-gradient(#ffd319 0 28%,#ff2975 28% 52%,#2a0a4a 52%)}
-.sw-dnd{background:linear-gradient(135deg,#a8321f 0 38%,#ddb15f 38% 62%,#1c1410 62%)}
-.sw-medieval{background:conic-gradient(#2f4fae 0 25%,#d6b25a 0 50%,#b02a3e 0 75%,#1f7a55 0)}
-.sw-magic{background:radial-gradient(circle at 64% 36%,#e8fffb 0 9%,#6fe3d3 13% 24%,transparent 29%),linear-gradient(135deg,#2c2472 0 46%,#d9b76a 46% 58%,#110f30 58%)}
 
 /* skin-specific type and effects */
 :root[data-skin="cyber"] .logo{font-family:var(--font-body);font-style:italic;font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.08em;text-shadow:-1.5px 0 var(--rest),1.5px 0 var(--accent)}
@@ -564,164 +499,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="synth"] .bar-fill{background:linear-gradient(90deg,#ff2975,#ff8c42)}
 :root[data-skin="synth"] .now[data-kind="break"] .bar-fill{background:linear-gradient(90deg,#36e2f0,#7a5cff)}
 :root[data-skin="synth"] .btn.primary{background:linear-gradient(90deg,#ff2975,#ff8c42);border-color:transparent;color:#1a0526}
-/* the arcane circle sits in the top-left corner of the window and the compass rose in the bottom-right */
-:root[data-skin="dnd"] body{background-attachment:fixed;background-position:0 0,0 0,0 0,0 0,100% 100%;background-repeat:repeat,no-repeat,no-repeat,no-repeat,no-repeat;font-variant-numeric:lining-nums}
-:root[data-skin="dnd"] .logo{font-family:var(--font-hand);font-weight:700;font-size:30px;letter-spacing:.03em}
-:root[data-skin="dnd"] .logo svg{filter:drop-shadow(0 0 6px rgba(221,177,95,.45))}
-:root[data-skin="dnd"] .clock{font-weight:500;color:var(--accent)}
-:root[data-skin="dnd"] h2,:root[data-skin="dnd"] .settings summary{font-family:var(--font-hand);font-weight:700;font-size:25px;letter-spacing:.03em;color:#ecd9b0}
-/* a small dragon-red gem in a gold setting before each heading */
-:root[data-skin="dnd"] h2::before,:root[data-skin="dnd"] .settings summary::before{content:"";display:inline-block;width:.3em;height:.3em;margin:0 .55em 0 .15em;vertical-align:.14em;background:#b8402a;transform:rotate(45deg);box-shadow:0 0 0 2px #1c1410,0 0 0 3px rgba(221,177,95,.7)}
-/* headings sit on a gilded rule that fades out, as in a rulebook */
-:root[data-skin="dnd"] .sec-head{padding-bottom:7px;border-bottom:1px solid;border-image:linear-gradient(90deg,rgba(221,177,95,.55),rgba(221,177,95,.12) 60%,transparent) 1}
-:root[data-skin="dnd"] .chip{font-family:var(--font-hand);font-weight:700;font-size:15px;text-transform:none;letter-spacing:.05em;padding:2px 12px}
-:root[data-skin="dnd"] .now[data-kind="lesson"] .chip{background:linear-gradient(#ecc777,#c8923f);border-color:#8f6528;color:var(--accent-ink)}
-:root[data-skin="dnd"] .now[data-kind="break"] .chip{background:var(--rest);border-color:var(--rest);color:var(--accent-ink)}
-/* Alegreya defaults to old-style figures; numbers here should stand straight and keep their width */
-:root[data-skin="dnd"] .count,:root[data-skin="dnd"] .clock,:root[data-skin="dnd"] .now-range,:root[data-skin="dnd"] table,:root[data-skin="dnd"] td.t,:root[data-skin="dnd"] td.n,:root[data-skin="dnd"] .chip,:root[data-skin="dnd"] .ticks,:root[data-skin="dnd"] .fstat-v,:root[data-skin="dnd"] .brk{font-variant-numeric:lining-nums tabular-nums}
-/* the timer is gilded for a lesson and silvered for a break, with a little candlelight around it */
-:root[data-skin="dnd"] .count{filter:drop-shadow(0 0 16px rgba(221,177,95,.2))}
-:root[data-skin="dnd"] .now[data-kind="lesson"] .count .d,:root[data-skin="dnd"] .now[data-kind="lesson"] .count .c{color:transparent;-webkit-text-fill-color:transparent;background:linear-gradient(#f7e2a8 12%,#ddb15f 55%,#a9732f 100%);-webkit-background-clip:text;background-clip:text}
-:root[data-skin="dnd"] .now[data-kind="break"] .count{filter:drop-shadow(0 0 16px rgba(147,191,208,.18))}
-:root[data-skin="dnd"] .now[data-kind="break"] .count .d,:root[data-skin="dnd"] .now[data-kind="break"] .count .c{color:transparent;-webkit-text-fill-color:transparent;background:linear-gradient(#e6f2f6 12%,#93bfd0 58%,#5d8a9e 100%);-webkit-background-clip:text;background-clip:text}
-:root[data-skin="dnd"] .bar{height:7px;box-shadow:inset 0 1px 2px rgba(0,0,0,.7)}
-:root[data-skin="dnd"] .bar-fill{background:linear-gradient(90deg,#8a5a24,#ddb15f 70%,#f3d690);box-shadow:0 0 10px rgba(221,177,95,.35)}
-:root[data-skin="dnd"] .now[data-kind="break"] .bar-fill{background:linear-gradient(90deg,#3f6b7d,#93bfd0 70%,#d6e9f0);box-shadow:0 0 10px rgba(147,191,208,.3)}
-:root[data-skin="dnd"] .blk.lesson.cur{background:linear-gradient(90deg,#a9732f,#ddb15f)}
-:root[data-skin="dnd"] .nowmark{box-shadow:0 0 6px var(--now)}
-:root[data-skin="dnd"] .btn{background:linear-gradient(#2a1f18,#1d1511);border-color:#47362a}
-:root[data-skin="dnd"] .btn:hover{border-color:#8a6a3a}
-:root[data-skin="dnd"] .btn.primary{background:linear-gradient(#ecc777,#c8923f);border-color:#8f6528;color:var(--accent-ink)}
-:root[data-skin="dnd"] .btn.ghost{background:transparent}
-:root[data-skin="dnd"] .skin[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
-:root[data-skin="dnd"] th{font-family:var(--font-hand);font-size:14px;font-weight:700;text-transform:none;letter-spacing:.04em;color:var(--ink-2);border-bottom-color:rgba(221,177,95,.35)}
-:root[data-skin="dnd"] tbody tr:nth-child(even):not(.cur){background:rgba(240,228,200,.03)}
-:root[data-skin="dnd"] tr.cur td.t,:root[data-skin="dnd"] tr.cur td.n{color:var(--accent)}
-:root[data-skin="dnd"] tr.cur td.n{box-shadow:inset 2px 0 0 var(--accent)}
-:root[data-skin="dnd"] td.end{font-size:17px;letter-spacing:.04em}
-:root[data-skin="dnd"] .add input,:root[data-skin="dnd"] .lp-head input,:root[data-skin="dnd"] .brk,:root[data-skin="dnd"] .form input[type=time],:root[data-skin="dnd"] .form input[type=number],:root[data-skin="dnd"] .form select{background:#0d0907}
-:root[data-skin="dnd"] .player{background:#0b0807;border-radius:6px}
-/* a d20 is pressed faintly into the timer card, like a stamp in the leather */
-:root[data-skin="dnd"] .now{position:relative;isolation:isolate}
-:root[data-skin="dnd"] .now::before{content:"";position:absolute;z-index:-1;right:3%;top:50%;width:min(24%,180px);aspect-ratio:104/112;transform:translateY(-50%) rotate(8deg);opacity:.09;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-52 -56 104 112'%3E%3Cg fill='none' stroke='%23ddb15f' stroke-width='1.4' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M0-50L43.3-25V25L0 50L-43.3 25V-25Z'/%3E%3Cpath d='M0-27L23.4 13.5H-23.4Z'/%3E%3Cpath d='M0-27V-50M0-27L43.3-25M0-27L-43.3-25M23.4 13.5L43.3-25M23.4 13.5L43.3 25M23.4 13.5L0 50M-23.4 13.5L0 50M-23.4 13.5L-43.3 25M-23.4 13.5L-43.3-25'/%3E%3C/g%3E%3Ctext x='0' y='6' fill='%23ddb15f' font-family='Georgia,serif' font-size='15' font-weight='700' text-anchor='middle'%3E20%3C/text%3E%3C/svg%3E") center/contain no-repeat;pointer-events:none}
-/* the banner hangs on the left wall and the stained-glass lancet on the right; both stay put while the page scrolls */
-:root[data-skin="medieval"] body{background-attachment:fixed;background-position:left 2.4vw top 120px,right 2vw top 40px,0 0,0 0,0 0;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat;font-variant-numeric:lining-nums}
-:root[data-skin="medieval"] .logo{font-family:var(--font-hand);font-weight:400;font-size:32px;letter-spacing:.01em;gap:10px}
-/* the bell is charged on a heraldic shield: gules, a bell Or */
-:root[data-skin="medieval"] .logo svg{width:32px;height:37px;padding:7px 6px 10px;color:#ecc96a;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 37'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23b02d42'/%3E%3Cstop offset='1' stop-color='%236a1422'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M1.5 1.5H30.5V17C30.5 27 23 32.5 16 35.5C9 32.5 1.5 27 1.5 17Z' fill='url(%23g)' stroke='%23c9a957' stroke-width='1.5'/%3E%3C/svg%3E") center/100% 100% no-repeat}
-:root[data-skin="medieval"] .clock{font-weight:500;color:var(--ink-2)}
-:root[data-skin="medieval"] h2,:root[data-skin="medieval"] .settings summary{font-family:var(--font-hand);font-weight:400;font-size:26px;letter-spacing:.01em}
-/* an illuminated initial: a gold letter on a lapis ground in a thin gilded frame, drawn as background layers so the frame hugs the capital rather than Kurale's tall line box */
-:root[data-skin="medieval"] h2::first-letter,:root[data-skin="medieval"] .settings summary::first-letter{color:#ecc96a;font-size:1.15em;padding:0 .14em;margin-right:.1em;background:linear-gradient(#b99a4e,#b99a4e) 0 21%/100% 1px,linear-gradient(#b99a4e,#b99a4e) 0 82%/100% 1px,linear-gradient(#b99a4e,#b99a4e) 0 53.8%/1px 61%,linear-gradient(#b99a4e,#b99a4e) 100% 53.8%/1px 61%,linear-gradient(#304ca6,#1c2d6c) 0 53.8%/100% 61%;background-repeat:no-repeat}
-/* ::first-letter needs a block, so the settings summary drops flex and floats its +/− instead */
-:root[data-skin="medieval"] .settings summary{display:block}
-:root[data-skin="medieval"] .settings summary::after{float:right;line-height:1.1}
-/* the chip is a small swallow-tailed pennant with a gilded hoist and edges */
-:root[data-skin="medieval"] .chip{--fill:var(--track);font-family:var(--font-hand);font-weight:400;font-size:16px;text-transform:none;letter-spacing:.03em;padding:2px 20px 2px 12px;border:0;border-radius:0;clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%);background:linear-gradient(#c9a957,#c9a957) 0 0/100% 1px no-repeat,linear-gradient(#c9a957,#c9a957) 0 100%/100% 1px no-repeat,linear-gradient(#c9a957,#c9a957) 0 0/2px 100% no-repeat,var(--fill)}
-:root[data-skin="medieval"] .now[data-kind="lesson"] .chip{--fill:linear-gradient(#3a58b8,#263e8e);color:#f5eedc}
-:root[data-skin="medieval"] .now[data-kind="break"] .chip{--fill:linear-gradient(#21835a,#165e41);color:#f5eedc}
-/* Vollkorn defaults to old-style figures; numbers here should stand straight and keep their width */
-:root[data-skin="medieval"] .count,:root[data-skin="medieval"] .clock,:root[data-skin="medieval"] .now-range,:root[data-skin="medieval"] table,:root[data-skin="medieval"] td.t,:root[data-skin="medieval"] td.n,:root[data-skin="medieval"] .chip,:root[data-skin="medieval"] .ticks,:root[data-skin="medieval"] .fstat-v,:root[data-skin="medieval"] .fwd b,:root[data-skin="medieval"] .fday-pct,:root[data-skin="medieval"] .brk{font-variant-numeric:lining-nums tabular-nums}
-/* the timer is written in vellum for a lesson and in emerald for a break, with a little moonlight around it */
-:root[data-skin="medieval"] .count{text-shadow:0 0 28px rgba(110,140,240,.2)}
-:root[data-skin="medieval"] .now[data-kind="break"] .count{text-shadow:0 0 28px rgba(95,208,154,.16)}
-:root[data-skin="medieval"] .bar{height:6px;border-radius:1px;box-shadow:inset 0 1px 2px rgba(0,0,0,.7)}
-:root[data-skin="medieval"] .bar-fill{background:linear-gradient(90deg,#2a4296,#8fa8ff)}
-:root[data-skin="medieval"] .now[data-kind="break"] .bar-fill{background:linear-gradient(90deg,#166a49,#5fd09a)}
-/* the day ruler is a castle wall: lessons are merlons, breaks the low crenels between them, and a red pennant flies over "now" */
-:root[data-skin="medieval"] .blk{border-radius:0}
-:root[data-skin="medieval"] .blk.lesson{top:3px;bottom:0}
-:root[data-skin="medieval"] .blk.break{top:12px;bottom:0}
-:root[data-skin="medieval"] .blk.lesson.cur{background:linear-gradient(#a9bcff,#5d79d8)}
-:root[data-skin="medieval"] .nowmark{top:-8px;bottom:0;border-radius:0}
-:root[data-skin="medieval"] .nowmark::before{content:"";position:absolute;left:2px;top:0;width:10px;height:7px;background:var(--now);clip-path:polygon(0 0,100% 0,62% 50%,100% 100%,0 100%)}
-:root[data-skin="medieval"] .btn{background:linear-gradient(#1d2333,#141927);border-color:#323b52}
-:root[data-skin="medieval"] .btn:hover{border-color:#5d6781}
-:root[data-skin="medieval"] .btn.primary,:root[data-skin="medieval"] .seg button[aria-pressed="true"],:root[data-skin="medieval"] .dt input:checked+span{background:linear-gradient(#3a58b8,#263e8e);border-color:#b99a4e;color:#f5eedc}
-:root[data-skin="medieval"] .btn.ghost{background:transparent}
-:root[data-skin="medieval"] .skin[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
-:root[data-skin="medieval"] th{font-size:11px;letter-spacing:.1em;border-bottom:3px double #39425a}
-:root[data-skin="medieval"] tr.cur{background:linear-gradient(90deg,rgba(64,92,196,.36),rgba(64,92,196,.08))}
-:root[data-skin="medieval"] tr.cur td.n{color:var(--accent)}
-/* "кінець" is a rubric, in red as in a manuscript */
-:root[data-skin="medieval"] td.end{font-size:18px;color:#d46b75}
-:root[data-skin="medieval"] .add input,:root[data-skin="medieval"] .lp-head input,:root[data-skin="medieval"] .brk,:root[data-skin="medieval"] .form input[type=time],:root[data-skin="medieval"] .form input[type=number],:root[data-skin="medieval"] .form select{background:#090c12;border-radius:3px;box-shadow:inset 0 1px 3px rgba(0,0,0,.55)}
-:root[data-skin="medieval"] .player{background:#080a10;border-radius:4px}
-:root[data-skin="medieval"] .list-panel{border-color:#343d55;box-shadow:inset 0 1px 0 rgba(201,169,87,.3),0 18px 40px -14px rgba(0,0,0,.85)}
-:root[data-skin="medieval"] .trk.cur .tt::before{color:#ecc96a}
-:root[data-skin="medieval"] .fday{border-color:#2f3850;background:linear-gradient(90deg,rgba(64,92,196,.14),transparent 75%)}
-/* the day's grade is pressed into a wax seal tinted by the result */
-:root[data-skin="medieval"] .fday-grade{border:0;color:#f6eedb;font-family:var(--font-hand);font-weight:400;background:radial-gradient(circle at 36% 30%,color-mix(in srgb,var(--c) 80%,#fff),color-mix(in srgb,var(--c) 55%,#000) 75%);box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 40%,#000),0 3px 8px rgba(0,0,0,.6);text-shadow:0 1px 1px rgba(0,0,0,.5)}
-:root[data-skin="medieval"] .fstat{border-color:#2a3245;background:rgba(255,255,255,.018)}
-/* filigree grows from the top-left and bottom-right corners of the window and the moon hangs in the sky on the right; all of it stays put while the page scrolls */
-:root[data-skin="magic"] body{background-attachment:fixed;background-position:0 0,100% 100%,right 1vw top 30vh,0 0,47px 61px,0 0,0 0,0 0,0 0;background-repeat:no-repeat,no-repeat,no-repeat,repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat;font-variant-numeric:lining-nums}
-:root[data-skin="magic"] .wrap{z-index:1}
-/* a few brighter sparkles twinkle in two slow layers that pulse out of step over the still stars */
-:root[data-skin="magic"] .scene{display:block}
-:root[data-skin="magic"] .scene>*{display:none}
-:root[data-skin="magic"] .scene::before,:root[data-skin="magic"] .scene::after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='560'%3E%3Ccircle cx='60' cy='70' r='8.55' fill='%23ffffff' fill-opacity='.14'/%3E%3Cpath d='M60 65.5Q60.44 69.56 64.5 70Q60.44 70.44 60 74.5Q59.56 70.44 55.5 70Q59.56 69.56 60 65.5Z' fill='%23ffffff'/%3E%3Ccircle cx='60' cy='70' r='0.99' fill='%23fff'/%3E%3Ccircle cx='250' cy='40' r='6.08' fill='%23a6f3e8' fill-opacity='.14'/%3E%3Cpath d='M250 36.8Q250.31 39.69 253.2 40Q250.31 40.31 250 43.2Q249.69 40.31 246.8 40Q249.69 39.69 250 36.8Z' fill='%23a6f3e8'/%3E%3Ccircle cx='250' cy='40' r='0.7' fill='%23fff'/%3E%3Ccircle cx='470' cy='160' r='7.6' fill='%23fff1cc' fill-opacity='.14'/%3E%3Cpath d='M470 156Q470.39 159.61 474 160Q470.39 160.39 470 164Q469.61 160.39 466 160Q469.61 159.61 470 156Z' fill='%23fff1cc'/%3E%3Ccircle cx='470' cy='160' r='0.88' fill='%23fff'/%3E%3Ccircle cx='130' cy='300' r='5.7' fill='%23ffffff' fill-opacity='.14'/%3E%3Cpath d='M130 297Q130.29 299.71 133 300Q130.29 300.29 130 303Q129.71 300.29 127 300Q129.71 299.71 130 297Z' fill='%23ffffff'/%3E%3Ccircle cx='130' cy='300' r='0.66' fill='%23fff'/%3E%3Ccircle cx='380' cy='420' r='6.84' fill='%23a6f3e8' fill-opacity='.14'/%3E%3Cpath d='M380 416.4Q380.35 419.65 383.6 420Q380.35 420.35 380 423.6Q379.65 420.35 376.4 420Q379.65 419.65 380 416.4Z' fill='%23a6f3e8'/%3E%3Ccircle cx='380' cy='420' r='0.79' fill='%23fff'/%3E%3Ccircle cx='590' cy='500' r='5.32' fill='%23ffffff' fill-opacity='.14'/%3E%3Cpath d='M590 497.2Q590.27 499.73 592.8 500Q590.27 500.27 590 502.8Q589.73 500.27 587.2 500Q589.73 499.73 590 497.2Z' fill='%23ffffff'/%3E%3Ccircle cx='590' cy='500' r='0.62' fill='%23fff'/%3E%3C/svg%3E") 0 0/640px 560px;opacity:.2;animation:magicTwinkle 6.5s ease-in-out infinite alternate;will-change:opacity}
-:root[data-skin="magic"] .scene::after{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='470' height='410'%3E%3Ccircle cx='40' cy='190' r='6.84' fill='%23a6f3e8' fill-opacity='.14'/%3E%3Cpath d='M40 186.4Q40.35 189.65 43.6 190Q40.35 190.35 40 193.6Q39.65 190.35 36.4 190Q39.65 189.65 40 186.4Z' fill='%23a6f3e8'/%3E%3Ccircle cx='40' cy='190' r='0.79' fill='%23fff'/%3E%3Ccircle cx='200' cy='90' r='7.98' fill='%23ffffff' fill-opacity='.14'/%3E%3Cpath d='M200 85.8Q200.41 89.59 204.2 90Q200.41 90.41 200 94.2Q199.59 90.41 195.8 90Q199.59 89.59 200 85.8Z' fill='%23ffffff'/%3E%3Ccircle cx='200' cy='90' r='0.92' fill='%23fff'/%3E%3Ccircle cx='330' cy='330' r='5.32' fill='%23e5dcff' fill-opacity='.14'/%3E%3Cpath d='M330 327.2Q330.27 329.73 332.8 330Q330.27 330.27 330 332.8Q329.73 330.27 327.2 330Q329.73 329.73 330 327.2Z' fill='%23e5dcff'/%3E%3Ccircle cx='330' cy='330' r='0.62' fill='%23fff'/%3E%3Ccircle cx='420' cy='40' r='6.08' fill='%23fff1cc' fill-opacity='.14'/%3E%3Cpath d='M420 36.8Q420.31 39.69 423.2 40Q420.31 40.31 420 43.2Q419.69 40.31 416.8 40Q419.69 39.69 420 36.8Z' fill='%23fff1cc'/%3E%3Ccircle cx='420' cy='40' r='0.7' fill='%23fff'/%3E%3Ccircle cx='140' cy='370' r='4.94' fill='%23ffffff' fill-opacity='.14'/%3E%3Cpath d='M140 367.4Q140.25 369.75 142.6 370Q140.25 370.25 140 372.6Q139.75 370.25 137.4 370Q139.75 369.75 140 367.4Z' fill='%23ffffff'/%3E%3Ccircle cx='140' cy='370' r='0.57' fill='%23fff'/%3E%3C/svg%3E") 140px 90px/470px 410px;animation-duration:8.3s;animation-delay:-4s}
-@keyframes magicTwinkle{from{opacity:.1}to{opacity:.85}}
-@media (prefers-reduced-motion: reduce){:root[data-skin="magic"] .scene::before,:root[data-skin="magic"] .scene::after{animation:none;opacity:.5}}
-/* every card is framed like a page of a spellbook: gold filigree corners with a spark in each, a crest in the middle of the top edge */
-:root[data-skin="magic"] .card{border:1px solid transparent;border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cdefs%3E%3ClinearGradient id='g' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='30' y2='30'%3E%3Cstop offset='0' stop-color='%23f8e7b0'/%3E%3Cstop offset='.5' stop-color='%23dcb96e'/%3E%3Cstop offset='1' stop-color='%23b48d48'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg id='c'%3E%3Cpath d='M40 1.5H11A9.5 9.5 0 0 1 1.5 11V40' fill='none' stroke='url(%23g)' stroke-width='1.3'/%3E%3Cpath d='M40 5H25M5 40V25' fill='none' stroke='%23d7b46a' stroke-opacity='.45' stroke-width='.8'/%3E%3Ccircle cx='23.6' cy='5' r='1.1' fill='%23e9cd88'/%3E%3Ccircle cx='5' cy='23.6' r='1.1' fill='%23e9cd88'/%3E%3Cg fill='none' stroke='url(%23g)' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath d='M11 1.5C11.5 6.5 14.5 9.5 19.5 9.5C24 9.5 27.5 7.6 31 7.6C34 7.6 35.5 9.6 34.3 11.4C33.3 12.8 31.2 12.4 31.2 10.9'/%3E%3Cpath d='M1.5 11C6.5 11.5 9.5 14.5 9.5 19.5C9.5 24 7.6 27.5 7.6 31C7.6 34 9.6 35.5 11.4 34.3C12.8 33.3 12.4 31.2 10.9 31.2'/%3E%3C/g%3E%3Cpath d='M8.6 8.6Q15 10.6 16.6 16.6Q10.6 15 8.6 8.6Z' fill='%23d7b46a' fill-opacity='.8'/%3E%3Cpath d='M19.6 17.2Q19.84 19.36 22 19.6Q19.84 19.84 19.6 22Q19.36 19.84 17.2 19.6Q19.36 19.36 19.6 17.2Z' fill='%23e9cd88'/%3E%3Cpath d='M4.6 1Q4.95 4.25 8.2 4.6Q4.95 4.95 4.6 8.2Q4.25 4.95 1 4.6Q4.25 4.25 4.6 1Z' fill='%23a6f3e8'/%3E%3C/g%3E%3Cuse href='%23c' transform='matrix(-1 0 0 1 96 0)'/%3E%3Cuse href='%23c' transform='matrix(1 0 0 -1 0 96)'/%3E%3Cuse href='%23c' transform='matrix(-1 0 0 -1 96 96)'/%3E%3Cpath d='M40 1.5H56M40 94.5H56M1.5 40V56M94.5 40V56' stroke='%23c29d55' stroke-width='1.3'/%3E%3Cpath d='M40 5H56M40 91H56M5 40V56M91 40V56' stroke='%23d7b46a' stroke-opacity='.45' stroke-width='.8'/%3E%3C/svg%3E") 40/28px stretch;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14'%3E%3Cpath d='M52 2.5C46 2.5 42 8.5 35 8.5C30.5 8.5 29 5.5 30.5 3.8C31.8 2.4 34 3 34 4.8' fill='none' stroke='%23d7b46a' stroke-width='1' stroke-linecap='round'/%3E%3Ccircle cx='40.5' cy='11.2' r='.9' fill='%23e9cd88'/%3E%3Cg transform='matrix(-1 0 0 1 120 0)'%3E%3Cpath d='M52 2.5C46 2.5 42 8.5 35 8.5C30.5 8.5 29 5.5 30.5 3.8C31.8 2.4 34 3 34 4.8' fill='none' stroke='%23d7b46a' stroke-width='1' stroke-linecap='round'/%3E%3Ccircle cx='40.5' cy='11.2' r='.9' fill='%23e9cd88'/%3E%3C/g%3E%3Cpath d='M60 .5L65 5.5L60 10.5L55 5.5Z' fill='%23d7b46a'/%3E%3Cpath d='M60 2.1Q60.33 5.17 63.4 5.5Q60.33 5.83 60 8.9Q59.67 5.83 56.6 5.5Q59.67 5.17 60 2.1Z' fill='%23c8fff6'/%3E%3C/svg%3E") 50% 0/120px 14px no-repeat,radial-gradient(90% 70% at 50% 0%,rgba(120,96,240,.09),transparent 70%),var(--surface)}
-:root[data-skin="magic"] .logo{font-family:"Marck Script",var(--font-hand);font-weight:400;font-size:38px;gap:8px;color:#f1dca2;filter:drop-shadow(0 0 10px rgba(241,220,162,.22))}
-:root[data-skin="magic"] .logo svg{color:#e6c97f;filter:drop-shadow(0 0 5px rgba(111,227,211,.7))}
-/* a spark sits on the logo like the tip of a wand */
-:root[data-skin="magic"] .logo::after{content:"";align-self:flex-start;width:12px;height:12px;margin-left:-4px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 0.5Q11 9 19.5 10Q11 11 10 19.5Q9 11 0.5 10Q9 9 10 0.5Z' fill='%23a6f3e8'/%3E%3Ccircle cx='10' cy='10' r='1.6' fill='%23fff'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 4px rgba(111,227,211,.9))}
-:root[data-skin="magic"] .clock{font-weight:600;font-size:30px;color:#ead39a;letter-spacing:.03em}
-:root[data-skin="magic"] h2,:root[data-skin="magic"] .settings summary{font-family:var(--font-hand);font-style:italic;font-weight:600;font-size:29px;letter-spacing:.005em;color:#f2e4ba}
-/* headings open with a spell spark and trail a small gold swash */
-:root[data-skin="magic"] h2::before,:root[data-skin="magic"] .settings summary::before{content:"";display:inline-block;width:.5em;height:.5em;margin-right:.32em;vertical-align:.04em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 0.5Q11 9 19.5 10Q11 11 10 19.5Q9 11 0.5 10Q9 9 10 0.5Z' fill='%23a6f3e8'/%3E%3Ccircle cx='10' cy='10' r='1.6' fill='%23fff'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 4px rgba(111,227,211,.85))}
-:root[data-skin="magic"] h2::after{content:"";display:inline-block;width:1.8em;height:.48em;margin-left:.3em;vertical-align:.02em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16'%3E%3Cg fill='none' stroke='%23d7b46a' stroke-linecap='round'%3E%3Cpath d='M2 8.5C10 8.5 13 3.5 19 3.5C24 3.5 25 8 21.5 9C19 9.6 18 7 20 6.3' stroke-width='1.2'/%3E%3Cpath d='M19 3.5C28 3.5 30 12.5 40 12.5C47 12.5 50 8 58 8' stroke-width='.9' stroke-opacity='.7'/%3E%3C/g%3E%3Ccircle cx='58' cy='8' r='1.2' fill='%23d7b46a'/%3E%3C/svg%3E") 0 50%/contain no-repeat;opacity:.85}
-:root[data-skin="magic"] .settings summary::after{font-style:normal}
-:root[data-skin="magic"] .chip{font-weight:700;font-size:15px;letter-spacing:.12em;padding:3px 14px;border-color:#3d3676}
-:root[data-skin="magic"] .now[data-kind="lesson"] .chip{background:linear-gradient(#a3f4e9,#56cdbf);border-color:#bff8ef;color:var(--accent-ink);box-shadow:0 0 16px -3px rgba(111,227,211,.6)}
-:root[data-skin="magic"] .now[data-kind="break"] .chip{background:linear-gradient(#ffdcc4,#f5a87e);border-color:#ffe3cf;color:#2a1220;box-shadow:0 0 16px -3px rgba(255,190,146,.5)}
-/* Cormorant and Lora can fall back to old-style figures; numbers here should stand straight and keep their width */
-:root[data-skin="magic"] .count,:root[data-skin="magic"] .clock,:root[data-skin="magic"] .now-range,:root[data-skin="magic"] table,:root[data-skin="magic"] td.t,:root[data-skin="magic"] td.n,:root[data-skin="magic"] .chip,:root[data-skin="magic"] .ticks,:root[data-skin="magic"] .fstat-v,:root[data-skin="magic"] .fwd b,:root[data-skin="magic"] .fday-pct,:root[data-skin="magic"] .brk,:root[data-skin="magic"] .lcount{font-variant-numeric:lining-nums tabular-nums}
-:root[data-skin="magic"] .now-range{font-weight:600;font-size:20px}
-/* the timer glows with spell-light for a lesson, lantern-light for a break, and starlight outside the school day */
-:root[data-skin="magic"] .count{color:#e9e4ff;filter:drop-shadow(0 0 18px rgba(160,140,255,.28))}
-:root[data-skin="magic"] .now[data-kind="lesson"] .count{filter:drop-shadow(0 0 18px rgba(111,227,211,.3))}
-:root[data-skin="magic"] .now[data-kind="lesson"] .count .d,:root[data-skin="magic"] .now[data-kind="lesson"] .count .c{color:transparent;-webkit-text-fill-color:transparent;background:linear-gradient(#f2fffc 14%,#8ef0e3 55%,#3fb2b4 100%);-webkit-background-clip:text;background-clip:text}
-:root[data-skin="magic"] .now[data-kind="break"] .count{filter:drop-shadow(0 0 18px rgba(255,190,146,.26))}
-:root[data-skin="magic"] .now[data-kind="break"] .count .d,:root[data-skin="magic"] .now[data-kind="break"] .count .c{color:transparent;-webkit-text-fill-color:transparent;background:linear-gradient(#fff6ee 14%,#ffc8a3 55%,#e58c70 100%);-webkit-background-clip:text;background-clip:text}
-/* the progress bar is a trail of light with a bright spark at its tip */
-:root[data-skin="magic"] .bar{height:6px;overflow:visible;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(217,183,106,.2)}
-:root[data-skin="magic"] .bar-fill{background:radial-gradient(circle at calc(100% - 3px) 50%,#fff 0 1.5px,rgba(255,255,255,0) 4px),linear-gradient(90deg,rgba(63,178,180,.25),#6fe3d3 70%,#dafffa);box-shadow:0 0 12px rgba(111,227,211,.5)}
-:root[data-skin="magic"] .now[data-kind="break"] .bar-fill{background:radial-gradient(circle at calc(100% - 3px) 50%,#fff 0 1.5px,rgba(255,255,255,0) 4px),linear-gradient(90deg,rgba(229,140,112,.25),#ffbe92 70%,#fff1e4);box-shadow:0 0 12px rgba(255,190,146,.45)}
-/* the day ruler: lessons are soft lit capsules, breaks thin threads between them, and a star marks "now" */
-:root[data-skin="magic"] .ticks{font-size:13px;font-weight:600}
-:root[data-skin="magic"] .blk.lesson{top:4px;bottom:4px;border-right:0;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(111,227,211,.2)}
-:root[data-skin="magic"] .blk.break{top:8px;bottom:8px;border-radius:2px}
-:root[data-skin="magic"] .blk.past{box-shadow:none}
-:root[data-skin="magic"] .blk.lesson.cur{background:linear-gradient(90deg,#3fb2b4,#9af2e6);box-shadow:0 0 10px rgba(111,227,211,.55)}
-:root[data-skin="magic"] .blk.break.cur{box-shadow:0 0 10px rgba(255,190,146,.5)}
-:root[data-skin="magic"] .nowmark{top:-3px;bottom:-5px;box-shadow:0 0 6px var(--now)}
-:root[data-skin="magic"] .nowmark::before{content:"";position:absolute;left:50%;top:-11px;width:13px;height:13px;margin-left:-6.5px;background:var(--now);clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}
-:root[data-skin="magic"] .btn{background:linear-gradient(#221d52,#17143c);border-color:#3c3577}
-:root[data-skin="magic"] .btn:hover{border-color:#b39758}
-:root[data-skin="magic"] .btn.primary,:root[data-skin="magic"] .seg button[aria-pressed="true"],:root[data-skin="magic"] .dt input:checked+span{background:linear-gradient(#a3f4e9,#52c8bb);border-color:#bff8ef;color:var(--accent-ink);box-shadow:0 0 18px -6px rgba(111,227,211,.8)}
-:root[data-skin="magic"] .btn.ghost{background:transparent}
-:root[data-skin="magic"] .skin[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
-:root[data-skin="magic"] th{font-size:11.5px;letter-spacing:.1em;color:#c3ae7c;border-bottom-color:rgba(217,183,106,.38)}
-:root[data-skin="magic"] td.n{font-weight:600}
-:root[data-skin="magic"] td.t{font-size:19px;font-weight:600}
-:root[data-skin="magic"] tr.cur{background:linear-gradient(90deg,rgba(111,227,211,.2),rgba(111,227,211,.04))}
-:root[data-skin="magic"] tr.cur td.t,:root[data-skin="magic"] tr.cur td.n{color:var(--accent)}
-:root[data-skin="magic"] td.b.cur{background:linear-gradient(90deg,rgba(255,190,146,.2),rgba(255,190,146,.05))}
-/* "кінець" is written by hand, in gold ink */
-:root[data-skin="magic"] td.end{font-family:"Marck Script",var(--font-hand);font-size:21px;color:#e6c97f}
-:root[data-skin="magic"] .add input,:root[data-skin="magic"] .lp-head input,:root[data-skin="magic"] .brk,:root[data-skin="magic"] .form input[type=time],:root[data-skin="magic"] .form input[type=number],:root[data-skin="magic"] .form select{background:#0b0a23;border-color:#39336e;border-radius:6px;box-shadow:inset 0 1px 6px rgba(0,0,0,.45)}
-:root[data-skin="magic"] .brk.custom{border-color:var(--rest);box-shadow:inset 0 1px 6px rgba(0,0,0,.45),0 0 10px -3px rgba(255,190,146,.6)}
-:root[data-skin="magic"] .player{background:radial-gradient(120% 100% at 50% 0%,#1b1749,#08071c 70%);border-radius:5px;box-shadow:inset 0 0 0 1px rgba(217,183,106,.2)}
-:root[data-skin="magic"] .list-panel{border-color:rgba(217,183,106,.45);border-radius:6px;background:linear-gradient(#18153f,#100e2d);box-shadow:0 0 34px -12px rgba(140,110,255,.45),0 18px 40px -14px rgba(0,0,0,.85)}
-:root[data-skin="magic"] .trk.cur .tt::before{content:"✦ "}
-:root[data-skin="magic"] .fday{border-color:#39336e;background:linear-gradient(90deg,rgba(111,227,211,.08),transparent 75%)}
-/* the day's grade glows in a small gilded medallion tinted by the result */
-:root[data-skin="magic"] .fday-grade{border:1px solid rgba(217,183,106,.75);font-weight:700;transform:none;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--c) 26%,transparent),transparent 72%);box-shadow:0 0 0 3px #0e0c28,0 0 0 4px rgba(217,183,106,.28),0 0 18px -2px color-mix(in srgb,var(--c) 55%,transparent);text-shadow:0 0 10px color-mix(in srgb,var(--c) 70%,transparent)}
-:root[data-skin="magic"] .fstat{border-color:#302a60;background:rgba(255,255,255,.02)}
 /* the timer card carries its own little sunset: a dim striped sun on the right and a neon grid floor */
 :root[data-skin="synth"] .now{position:relative;overflow:hidden;isolation:isolate;background:#16062c}
 :root[data-skin="synth"] .now::before{content:"";position:absolute;z-index:-1;right:2.5%;top:60%;width:min(28%,180px);aspect-ratio:1;transform:translateY(-50%);border-radius:50%;opacity:.42;background:linear-gradient(#ffd319 8%,#ff8c42 38%,#ff2975 72%,#b026ff);-webkit-mask-image:linear-gradient(#000 0 30%,transparent 30% 33%,#000 33% 38%,transparent 38% 42%,#000 42% 46%,transparent 46% 50%,#000 50%);mask-image:linear-gradient(#000 0 30%,transparent 30% 33%,#000 33% 38%,transparent 38% 42%,#000 42% 46%,transparent 46% 50%,#000 50%)}
@@ -914,9 +691,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <button class="skin" type="button" data-skin="dots" aria-pressed="false"><span class="sw sw-dots"></span>Точки</button>
           <button class="skin" type="button" data-skin="line" aria-pressed="false"><span class="sw sw-line"></span>Лінія</button>
           <button class="skin" type="button" data-skin="synth" aria-pressed="false"><span class="sw sw-synth"></span>Ретро</button>
-          <button class="skin" type="button" data-skin="dnd" aria-pressed="false"><span class="sw sw-dnd"></span>D&amp;D</button>
-          <button class="skin" type="button" data-skin="medieval" aria-pressed="false"><span class="sw sw-medieval"></span>Замок</button>
-          <button class="skin" type="button" data-skin="magic" aria-pressed="false"><span class="sw sw-magic"></span>Магія</button>
         </div>
       </fieldset>
       <div class="field"><label for="sStart">Початок першого уроку</label><input type="time" id="sStart" value="08:00"></div>
@@ -1567,14 +1341,6 @@ function sparkle(g, x, y, s){
   g.quadraticCurveTo(x, y, x - s, y); g.quadraticCurveTo(x, y, x, y - s);
   g.fill();
 }
-// A candle flame in unit space: base at 0, tip at -1, half a unit wide; sw bends the tip sideways.
-function dndFlame(g, sw){
-  g.beginPath(); g.moveTo(sw, -1);
-  g.bezierCurveTo(sw * .4 + .12, -.62, .52, -.5, .5, -.18);
-  g.bezierCurveTo(.48, .08, -.48, .08, -.5, -.18);
-  g.bezierCurveTo(-.52, -.5, sw * .4 - .12, -.62, sw, -1);
-  g.fill();
-}
 
 // One look per skin. G: canvas geometry, C: skin colours, L: band levels 0..1, t: seconds, dt: frame time.
 const VIZ = {
@@ -1700,226 +1466,6 @@ const VIZ = {
     g.stroke();
     g.restore();
     g.fillStyle = '#ff3ea5'; g.fillRect(0, hz - G.dpr, G.W, Math.max(1, G.dpr * 1.5));
-  },
-  // D&D: a row of candle flames that follow the music, embers drifting up from them, and a faint rune circle that swells with the bass
-  dnd(g, G, C, L, t, dt){
-    const n = G.N / 2, w = G.step * 2, base = G.top + G.area * .98, px = G.dpr, TAU = Math.PI * 2;
-    let bass = 0, energy = 0;
-    for(let i = 0; i < 6; i++) bass += L[i] / 6;
-    for(let i = 0; i < G.N; i++) energy += L[i] / G.N;
-    if(!V.dnd){
-      const flame = g.createLinearGradient(0, 0, 0, -1), core = g.createLinearGradient(0, 0, 0, -1), halo = g.createRadialGradient(0, -.3, 0, 0, -.3, .5);
-      flame.addColorStop(0, 'rgba(255,196,96,.95)'); flame.addColorStop(.35, 'rgba(242,124,44,.85)'); flame.addColorStop(.75, 'rgba(190,52,26,.45)'); flame.addColorStop(1, 'rgba(150,30,20,0)');
-      core.addColorStop(0, 'rgba(255,250,228,.95)'); core.addColorStop(.6, 'rgba(255,216,134,.55)'); core.addColorStop(1, 'rgba(255,200,100,0)');
-      halo.addColorStop(0, 'rgba(255,150,60,.22)'); halo.addColorStop(1, 'rgba(255,150,60,0)');
-      // Elder Futhark-like runes in a 10x16 box
-      const runes = ['M-3 8V-8M-3-2L4-7M-3 3L4-2', 'M-4 8V-8L4-4V8', 'M-3-8V8M-3-4L3 0L-3 4', 'M-3 8V-8L3-4M-3-3L3 1', 'M-3 8V-8L3-4L-3 0L3 8', 'M3-6L-3 0L3 6',
-        'M-4-8L4 8M4-8L-4 8', 'M-4-8V8M4-8V8M-4-3L4 3', 'M0 8V-8M0-2L-5-8M0-2L5-8', 'M3-8L-3-2L3 2L-3 8', 'M0 8V-8M-5-3L0-8L5-3', 'M-4 8V-8L0-3L4-8V8'];
-      V.dnd = {flame, core, halo, runes:runes.map(d => new Path2D(d)), embers:[], acc:0};
-    }
-    const D = V.dnd;
-    // torchlight on the wall
-    const wall = g.createRadialGradient(G.W / 2, base, 0, G.W / 2, base, G.W * .62);
-    wall.addColorStop(0, 'rgba(226,128,52,' + (.08 + energy * .2).toFixed(3) + ')'); wall.addColorStop(1, 'rgba(226,128,52,0)');
-    g.fillStyle = wall; g.fillRect(0, 0, G.W, G.H);
-    // rune circle: two rings, a slowly turning hexagram, and runes lit by their bands
-    const cx = G.W / 2, cy = G.mid, R = G.area * (.45 + bass * .05);
-    g.strokeStyle = C.a; g.lineWidth = Math.max(1, px);
-    g.globalAlpha = .14 + bass * .3;
-    g.beginPath(); g.arc(cx, cy, R, 0, TAU); g.moveTo(cx + R * .8, cy); g.arc(cx, cy, R * .8, 0, TAU); g.stroke();
-    g.globalAlpha = .1 + bass * .22;
-    const tri = (a0) => { for(let j = 0; j < 3; j++){ const a = a0 + j * TAU / 3, x = cx + R * .8 * Math.cos(a), y = cy + R * .8 * Math.sin(a); if(j) g.lineTo(x, y); else g.moveTo(x, y); } g.closePath(); };
-    g.beginPath(); tri(-t * .04); tri(Math.PI - t * .04); g.stroke();
-    const rs = R * .13 / 16, spin = t * .05;
-    g.lineWidth = 1.4 * px / rs; g.lineCap = 'round'; g.lineJoin = 'round';
-    for(let k = 0; k < n; k++){
-      const a = spin + k * TAU / n, ca = Math.cos(a), sa = Math.sin(a), rr = R * .9;
-      g.globalAlpha = .12 + Math.min(1, L[k * 2] + L[k * 2 + 1]) * .6;
-      g.setTransform(rs * ca, rs * sa, -rs * sa, rs * ca, cx + rr * sa, cy - rr * ca);
-      g.stroke(D.runes[k % D.runes.length]);
-    }
-    g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1;
-    // a gilded ledge the candles stand on
-    const ledge = g.createLinearGradient(G.padX, 0, G.W - G.padX, 0);
-    ledge.addColorStop(0, 'rgba(221,177,95,0)'); ledge.addColorStop(.5, 'rgba(221,177,95,.55)'); ledge.addColorStop(1, 'rgba(221,177,95,0)');
-    g.fillStyle = ledge; g.fillRect(G.padX * .5, base, G.W - G.padX, Math.max(1, px));
-    // flames: one per pair of bands, drawn in unit space so a single set of gradients serves them all
-    g.globalCompositeOperation = 'lighter';
-    for(let k = 0; k < n; k++){
-      const v = Math.max(L[k * 2], L[k * 2 + 1]), x = G.padX + w * (k + .5);
-      const fl = 1 + .07 * Math.sin(t * 11 + k * 1.9) + .05 * Math.sin(t * 17.3 + k * 4.1);
-      const h = (.07 + v * .88) * G.area * .9 * fl, fw = w * (.5 + v * .22), sw = .1 * Math.sin(t * 5.3 + k * 2.7) + .06 * Math.sin(t * 8.9 + k * 1.3);
-      g.setTransform(fw * 3, 0, 0, h * 1.4, x, base); g.fillStyle = D.halo; g.fillRect(-.5, -.8, 1, 1);
-      g.setTransform(fw, 0, 0, h, x, base); g.fillStyle = D.flame; dndFlame(g, sw);
-      g.setTransform(fw * .5, 0, 0, h * .55, x, base); g.fillStyle = D.core; dndFlame(g, sw * .6);
-    }
-    g.setTransform(1, 0, 0, 1, 0, 0);
-    // embers leave the busiest flames and fade as they rise
-    D.acc += dt * (3 + energy * 36);
-    while(D.acc >= 1){
-      D.acc--;
-      if(D.embers.length >= 40){ D.acc = 0; break; }
-      let k = Math.floor(Math.random() * n);
-      const k2 = Math.floor(Math.random() * n);
-      if(L[k2 * 2] > L[k * 2]) k = k2;
-      const v = Math.max(L[k * 2], L[k * 2 + 1]), life = 1.2 + Math.random() * 1.4;
-      D.embers.push({x:G.padX + w * (k + .5) + (Math.random() - .5) * w * .4, y:base - (.07 + v * .88) * G.area * .6, vy:(26 + 70 * v + Math.random() * 20) * px,
-        ph:Math.random() * TAU, s:(.8 + Math.random() * 1.1) * px, life, max:life});
-    }
-    for(let k = D.embers.length - 1; k >= 0; k--){
-      const e = D.embers[k];
-      e.life -= dt; e.y -= e.vy * dt; e.x += Math.sin(t * 2.4 + e.ph) * 14 * px * dt;
-      if(e.life <= 0 || e.y < 0){ D.embers.splice(k, 1); continue; }
-      const f = e.life / e.max;
-      g.globalAlpha = f * .9; g.fillStyle = f > .55 ? '#ffd27a' : '#f07a3a';
-      g.beginPath(); g.arc(e.x, e.y, e.s * (.5 + f * .5), 0, TAU); g.fill();
-    }
-  },
-  // Castle: heraldic banners hung from a gilded rod. Each hangs as long as its bands are loud and sways a little; a gold lozenge marks the recent peak
-  medieval(g, G, C, L, t, dt){
-    const n = 16, per = G.N / n, w = (G.W - G.padX * 2) / n, bw = w * .72, hw = bw / 2, px = G.dpr, rod = G.top + 6 * px;
-    const minL = Math.max(G.area * .16, bw * 1.9), maxL = G.area * .97 - minL - 6 * px, gold = '#d6b25a';
-    let energy = 0;
-    for(let i = 0; i < G.N; i++) energy += L[i] / G.N;
-    if(!V.castle){
-      // cloth across a banner in unit space (-.5 to .5): shadowed folds at the edges and in the middle
-      const cloth = (c, d) => { const gr = g.createLinearGradient(-.5, 0, .5, 0); gr.addColorStop(0, d); gr.addColorStop(.28, c); gr.addColorStop(.42, c); gr.addColorStop(.62, d); gr.addColorStop(.8, c); gr.addColorStop(1, d); return gr; };
-      const knob = g.createRadialGradient(-.3, -.3, 0, 0, 0, 1);
-      knob.addColorStop(0, '#fbeab0'); knob.addColorStop(.55, '#d6b25a'); knob.addColorStop(1, '#7a5a22');
-      V.castle = {cloth:[cloth('#3758bd', '#18265c'), cloth('#ab2a40', '#530f1c'), cloth('#21845a', '#0c3a28')], knob,
-        bell:new Path2D('M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z')};
-    }
-    const K = V.castle;
-    // moonlight on the wall behind, a little brighter when the music is loud
-    if(K.w !== G.W || K.h !== G.H){
-      K.w = G.W; K.h = G.H; K.moon = g.createRadialGradient(G.W / 2, G.top, 0, G.W / 2, G.top, G.W * .55);
-      K.moon.addColorStop(0, 'rgba(96,126,230,.16)'); K.moon.addColorStop(1, 'rgba(96,126,230,0)');
-    }
-    g.globalAlpha = Math.min(1, .45 + energy * 1.4); g.fillStyle = K.moon; g.fillRect(0, 0, G.W, G.H); g.globalAlpha = 1;
-    g.lineJoin = 'round'; g.lineWidth = 1.3 * px; g.strokeStyle = gold;
-    for(let k = 0; k < n; k++){
-      let v = 0, pk = 0;
-      for(let j = k * per; j < (k + 1) * per; j++){ if(L[j] > v) v = L[j]; if(V.peaks[j] > pk) pk = V.peaks[j]; }
-      const x = G.padX + w * (k + .5), len = minL + v * maxL;
-      // the hem swings, the hoist stays on the rod
-      const off = len * ((.01 + energy * .05) * Math.sin(t * 1.3 + k * .75) + .006 * Math.sin(t * 3.1 + k * 2.3)), sk = off / len;
-      const tail = bw * .42, swallow = k % 2 === 0, yb = rod + len, yc = swallow ? yb : yb - tail;
-      g.beginPath(); g.moveTo(x - hw, rod);
-      g.quadraticCurveTo(x - hw, rod + len * .6, x - hw + off, yc);
-      g.lineTo(x + off, swallow ? yb - tail : yb);
-      g.lineTo(x + hw + off, yc);
-      g.quadraticCurveTo(x + hw, rod + len * .6, x + hw, rod);
-      g.closePath();
-      // the path is laid out in pixels; the cloth gradient is mapped across the (slanted) banner
-      g.setTransform(bw, 0, sk, 1, x - sk * rod, 0); g.fillStyle = K.cloth[k % 3]; g.fill();
-      g.setTransform(1, 0, 0, 1, 0, 0); g.stroke();
-      // a gold seam under the sleeve and a charge below it: bell, tower, lozenge, star
-      g.fillStyle = gold; g.fillRect(x - hw, rod + bw * .34, bw, Math.max(1, px));
-      const cy = rod + bw * .95, s = bw * .3;
-      if(k % 4 === 0){ const u = bw * .5 / 16; g.setTransform(u, 0, 0, u, x - 12 * u, cy - 12 * u); g.fill(K.bell); g.setTransform(1, 0, 0, 1, 0, 0); }
-      else if(k % 4 === 1){
-        g.fillRect(x - s * .55, cy - s * .7, s * 1.1, s * 1.7);
-        for(const m of [-.55, -.14, .27]) g.fillRect(x + s * m, cy - s, s * .28, s * .34);
-        g.fillStyle = 'rgba(8,10,16,.55)'; g.beginPath(); g.moveTo(x - s * .17, cy + s); g.arc(x, cy + s * .45, s * .17, Math.PI, 0); g.lineTo(x + s * .17, cy + s); g.fill(); g.fillStyle = gold;
-      }
-      else if(k % 4 === 2){ g.beginPath(); g.moveTo(x, cy - s); g.lineTo(x + s * .62, cy); g.lineTo(x, cy + s); g.lineTo(x - s * .62, cy); g.fill(); }
-      else sparkle(g, x, cy, s);
-      const pl = minL + pk * maxL;
-      if(pl > len + 8 * px){
-        const yy = rod + pl, r = 3 * px, xo = x + off * pl / len;
-        g.globalAlpha = .85; g.beginPath(); g.moveTo(xo, yy - r * 1.4); g.lineTo(xo + r, yy); g.lineTo(xo, yy + r * 1.4); g.lineTo(xo - r, yy); g.fill(); g.globalAlpha = 1;
-      }
-    }
-    // the rod: dark iron over the sleeves, with gilded knobs at the ends
-    const x0 = G.padX * .55, x1 = G.W - G.padX * .55, kr = 4.5 * px;
-    g.fillStyle = '#4a5268'; g.fillRect(x0, rod - 2 * px, x1 - x0, 3.5 * px);
-    g.fillStyle = 'rgba(255,255,255,.18)'; g.fillRect(x0, rod - 2 * px, x1 - x0, Math.max(1, px * .8));
-    g.fillStyle = K.knob;
-    for(const kx of [x0, x1]){ g.setTransform(kr, 0, 0, kr, kx, rod); g.beginPath(); g.arc(0, 0, 1, 0, Math.PI * 2); g.fill(); }
-    g.setTransform(1, 0, 0, 1, 0, 0); g.lineJoin = 'miter'; g.lineWidth = 1;
-  },
-  // Magic: three ribbons of spell-light braid between two glowing wand tips. Each swells and twists with its bands,
-  // sparks leap off the loud places and drift up as star-dust, and a soft glow breathes with the bass
-  magic(g, G, C, L, t, dt){
-    const px = G.dpr, TAU = Math.PI * 2, x0 = G.padX * .7, span = G.W - x0 * 2, n = 64;
-    let bass = 0, energy = 0;
-    for(let i = 0; i < 6; i++) bass += L[i] / 6;
-    for(let i = 0; i < G.N; i++) energy += L[i] / G.N;
-    if(!V.magic || V.magic.w !== G.W || V.magic.h !== G.H){
-      // gradients and the star field are made once per canvas size
-      const Q = V.magic = {w:G.W, h:G.H, sparks:V.magic ? V.magic.sparks : [], acc:0, ys:new Float32Array(n + 1), hs:new Float32Array(n + 1)};
-      Q.stars = Array.from({length:40}, () => ({x:Math.random() * G.W, y:Math.random() * G.H, s:(.6 + Math.random()) * px, ph:Math.random() * TAU, f:.5 + Math.random() * 1.5}));
-      Q.halo = g.createRadialGradient(G.W / 2, G.mid, 0, G.W / 2, G.mid, G.W * .5);
-      Q.halo.addColorStop(0, 'rgba(124,98,255,.2)'); Q.halo.addColorStop(.45, 'rgba(70,180,200,.07)'); Q.halo.addColorStop(1, 'rgba(70,180,200,0)');
-      // a wand tip in unit space, scaled where it is drawn
-      Q.tip = g.createRadialGradient(0, 0, 0, 0, 0, 1);
-      Q.tip.addColorStop(0, 'rgba(255,255,255,.95)'); Q.tip.addColorStop(.18, 'rgba(190,255,246,.75)'); Q.tip.addColorStop(.5, 'rgba(111,227,211,.18)'); Q.tip.addColorStop(1, 'rgba(111,227,211,0)');
-      // each ribbon is brighter in the middle of its run
-      const lit = (a, b) => { const gr = g.createLinearGradient(x0, 0, x0 + span, 0); gr.addColorStop(0, a); gr.addColorStop(.5, b); gr.addColorStop(1, a); return gr; };
-      Q.rib = [
-        {band:(u) => u, f:1.5, s:1.1, ph:0, tw:2.2, fill:lit(C.a, '#d9fff9'), glow:C.a},
-        {band:(u) => 1 - u, f:1.15, s:-.8, ph:2.1, tw:1.7, fill:lit('#9b86ff', '#e6ddff'), glow:'#a996ff'},
-        {band:(u) => .5 + Math.abs(u - .5), f:.8, s:.55, ph:4.2, tw:1.3, fill:lit(C.r, '#fff2e6'), glow:C.r},
-      ];
-    }
-    const Q = V.magic;
-    // a band level at any point 0..1 along the spectrum, smoothed between bands
-    const lv = (u) => { const p = Math.min(1, Math.max(0, u)) * (G.N - 1), i = Math.min(G.N - 2, Math.floor(p)), fr = p - i; return L[i] * (1 - fr) + L[i + 1] * fr; };
-    const env = (u) => Math.pow(Math.sin(Math.PI * u), .8);
-    const ribY = (r, u, l) => G.mid + G.area * (.08 + .44 * l) * env(u) * (Math.sin(TAU * u * r.f + t * r.s + r.ph) * .82 + Math.sin(TAU * u * r.f * 2.3 - t * r.s * 1.4) * .18);
-    // the night: twinkling stars and a glow that breathes with the bass
-    g.fillStyle = '#e8e4ff';
-    for(const s of Q.stars){
-      g.globalAlpha = .1 + .45 * (Math.sin(t * s.f + s.ph) * .5 + .5);
-      g.fillRect(s.x, s.y, s.s, s.s);
-    }
-    g.globalAlpha = Math.min(1, .55 + bass * .9); g.fillStyle = Q.halo; g.fillRect(0, 0, G.W, G.H);
-    g.globalAlpha = 1;
-    g.globalCompositeOperation = 'lighter'; g.lineJoin = 'round'; g.lineCap = 'round';
-    for(const r of Q.rib){
-      for(let k = 0; k <= n; k++){
-        const u = k / n, l = lv(r.band(u));
-        Q.ys[k] = ribY(r, u, l);
-        // the ribbon twists: its width runs through zero, as a silk band seen edge-on
-        Q.hs[k] = (.6 + (2.5 + 10 * l) * Math.abs(Math.cos(TAU * u * r.tw + t * .9 + r.ph))) * px * env(u);
-      }
-      g.beginPath();
-      for(let k = 0; k <= n; k++) g.lineTo(x0 + span * k / n, Q.ys[k] - Q.hs[k]);
-      for(let k = n; k >= 0; k--) g.lineTo(x0 + span * k / n, Q.ys[k] + Q.hs[k]);
-      g.closePath();
-      g.globalAlpha = .38; g.fillStyle = r.fill; g.fill();
-      g.beginPath();
-      for(let k = 0; k <= n; k++) g.lineTo(x0 + span * k / n, Q.ys[k]);
-      g.strokeStyle = r.glow; g.globalAlpha = .1; g.lineWidth = 9 * px; g.stroke();
-      g.globalAlpha = .9; g.strokeStyle = r.fill; g.lineWidth = 1.3 * px; g.stroke();
-    }
-    // the wand tips the ribbons are held between, flaring with the bass
-    const R = (16 + bass * 16) * px;
-    g.fillStyle = Q.tip; g.globalAlpha = .85;
-    for(const x of [x0, x0 + span]){ g.setTransform(R, 0, 0, R, x, G.mid); g.fillRect(-1, -1, 2, 2); }
-    g.setTransform(1, 0, 0, 1, 0, 0);
-    // sparks leave the louder places of the ribbons and rise, flickering, until they fade
-    Q.acc += dt * (5 + energy * 50);
-    while(Q.acc >= 1){
-      Q.acc--;
-      if(Q.sparks.length >= 80){ Q.acc = 0; break; }
-      let u = .04 + Math.random() * .92;
-      const u2 = .04 + Math.random() * .92, pick = Math.random(), r = Q.rib[pick < .55 ? 0 : pick < .85 ? 1 : 2];
-      if(lv(r.band(u2)) > lv(r.band(u))) u = u2;
-      const l = lv(r.band(u)), life = 1 + Math.random() * 1.6, c = Math.random();
-      Q.sparks.push({x:x0 + span * u, y:ribY(r, u, l), vx:(Math.random() - .5) * 26 * px, vy:-(16 + 64 * l + Math.random() * 20) * px,
-        s:(2.2 + Math.random() * 2.6 + l * 2.4) * px, ph:Math.random() * TAU, c:c < .25 ? '#ffe7a8' : c < .6 ? '#ffffff' : C.a, life, max:life});
-    }
-    for(let k = Q.sparks.length - 1; k >= 0; k--){
-      const p = Q.sparks[k];
-      p.life -= dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy *= 1 - dt * .6;
-      if(p.life <= 0 || p.y < -10){ Q.sparks.splice(k, 1); continue; }
-      const f = p.life / p.max, a = Math.min(1, f * 1.6) * (.55 + .45 * Math.sin(t * 9 + p.ph)), s = p.s * (.5 + f * .5);
-      g.fillStyle = p.c;
-      g.globalAlpha = a * .22; g.beginPath(); g.arc(p.x, p.y, s * .9, 0, TAU); g.fill();
-      g.globalAlpha = a; sparkle(g, p.x, p.y, s);
-    }
-    g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1; g.lineCap = 'butt'; g.lineJoin = 'miter'; g.lineWidth = 1;
   },
 };
 function vizFrame(ts){
@@ -2341,7 +1887,7 @@ new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerB
 applyView();
 
 // skins
-const SKINS = ['chalk', 'cyber', 'aero', 'dots', 'line', 'synth', 'dnd', 'medieval', 'magic'];
+const SKINS = ['chalk', 'cyber', 'aero', 'dots', 'line', 'synth'];
 function applySkin(){
   const s = SKINS.includes(S.skin) ? S.skin : 'chalk';
   if(s === 'chalk') delete document.documentElement.dataset.skin;
