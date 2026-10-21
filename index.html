@@ -226,6 +226,8 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fday-pct{font-family:var(--font-display);font-size:30px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums tabular-nums}
 .fday-pct small{font-size:16px;color:var(--ink-3);margin-left:2px}
 .fday-l{font-size:12px;color:var(--ink-3)}
+/* phone and talk time sits in the result as a line of text; its dot is the legend for the yellow in the bars */
+.fday-phone{margin-top:2px;color:var(--ink-2)}
 /* the grade looks like a teacher's mark in the margin */
 .fday-grade{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:2px solid var(--c);color:var(--c);font-family:var(--font-display);font-size:21px;font-weight:600;font-variant-numeric:lining-nums;transform:rotate(-8deg)}
 [data-tone="ok"]{--c:var(--ok)}
@@ -246,13 +248,27 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 /* a column that opens its day or month */
 button.fwd{font:inherit;font-size:11px;background:none;border:0;padding:0;color:var(--ink-3);cursor:pointer}
 button.fwd:hover span,button.fwd:focus-visible span{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
-/* which stretch of days the card shows: the tabs, then arrows with the period's name between them */
-.fnav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px}
-.fpager{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
-.fpager .btn:disabled{opacity:.35;cursor:default;border-color:var(--line)}
+/* which stretch of days the card shows, always on one row: the tabs, the arrows (right after the tabs, so they
+   stay put while the name changes), then the period's name; a narrow card switches to the short forms */
+#focusCard{container:focus / inline-size}
+.fnav{display:flex;align-items:center;gap:8px;min-width:0}
+.fnav .seg{flex:none}
+.fnav .fs{display:none}
+.fpager{display:flex;align-items:center;min-width:0}
+.fstep{flex:none;display:grid;place-items:center;width:26px;height:28px;padding:0;border:0;border-radius:var(--btn-r);background:none;color:var(--ink-2);cursor:pointer}
+.fstep:hover{color:var(--ink);background:var(--track)}
+.fstep:disabled{opacity:.3;cursor:default;background:none}
 /* the name doubles as "back to now" once you have stepped away from today */
-.fpager-l{font:inherit;font-size:13px;font-weight:600;min-width:11ch;text-align:center;background:none;border:0;padding:0 2px;color:var(--ink);cursor:default;white-space:nowrap}
+.fpager-l{font:inherit;font-size:13px;font-weight:600;min-width:0;margin-left:4px;padding:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:none;border:0;color:var(--ink);cursor:default}
 .fpager-l:not(:disabled){cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+@container focus (max-width:419px){
+  .fnav{gap:6px}
+  .fnav .fl{display:none}
+  .fnav .fs{display:inline}
+  .fnav .seg button{padding-inline:5px}
+  .fstep{width:22px}
+  .fpager-l{font-size:12px;margin-left:2px}
+}
 /* a month as a calendar: each day with data is a square in its result's colour, the grade inside */
 .fcal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
 .fcal-h{font-size:11px;color:var(--ink-3);text-align:center}
@@ -261,7 +277,7 @@ button.fwd:hover span,button.fwd:focus-visible span{color:var(--ink);text-decora
 button.fcal-d{cursor:pointer;border-color:var(--c);background:color-mix(in srgb,var(--c) 20%,transparent)}
 button.fcal-d:hover,button.fcal-d:focus-visible{background:color-mix(in srgb,var(--c) 38%,transparent)}
 .fcal-d.cur{box-shadow:inset 0 0 0 1px var(--ink-2)}
-.fstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fstats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .fstat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:calc(var(--r) * .5);container-type:inline-size}
 /* the number shrinks with its tile, so wide display fonts (Neon, Y2K) still fit */
 .fstat-v{font-family:var(--font-display);font-size:min(24px,19cqi);line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -781,20 +797,21 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <div class="fnav">
         <div class="seg" id="focusSpan" role="group" aria-label="За який час статистика">
           <button type="button" data-span="day" aria-pressed="true">День</button>
-          <button type="button" data-span="week" aria-pressed="false">Тиждень</button>
-          <button type="button" data-span="month" aria-pressed="false">Місяць</button>
+          <button type="button" data-span="week" aria-pressed="false" aria-label="Тиждень"><span class="fl">Тиждень</span><span class="fs">Тижд.</span></button>
+          <button type="button" data-span="month" aria-pressed="false" aria-label="Місяць"><span class="fl">Місяць</span><span class="fs">Міс.</span></button>
           <button type="button" data-span="all" aria-pressed="false">Усе</button>
         </div>
         <div class="fpager">
-          <button class="btn sm icon" id="focusPrev" type="button" aria-label="Раніше" title="Раніше"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button class="fpager-l" id="focusWhen" type="button">Сьогодні</button>
-          <button class="btn sm icon" id="focusNext" type="button" aria-label="Пізніше" title="Пізніше"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="fstep" id="focusPrev" type="button" aria-label="Раніше" title="Раніше"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="fstep" id="focusNext" type="button" aria-label="Пізніше" title="Пізніше"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="fpager-l" id="focusWhen" type="button"><span class="fl" id="focusWhenL">Сьогодні</span><span class="fs" id="focusWhenS">Сьогодні</span></button>
         </div>
       </div>
       <div class="fday" id="focusDay" hidden>
         <div class="fday-main">
           <span class="fday-pct"><span id="fdayPct">0</span><small>%</small></span>
           <span class="fday-l"><span id="fdayWhat">підсумок дня</span>: <span id="fdayParts"></span></span>
+          <span class="fstat-l fday-phone"><i class="d"></i><span id="fdayPhone"></span></span>
         </div>
         <span class="fday-grade" id="fdayGrade" title="Оцінка за 12-бальною шкалою">0</span>
       </div>
@@ -2517,13 +2534,29 @@ function periodOf(span, d){
   if(span === 'all'){ const today = noon(new Date()); return [firstDay() || today, today]; }
   return [d, d];
 }
+// the period's name, in full and short (for a narrow card): "пн, 19 жовтня" / "пн, 19.10"
 function periodName(span, a, b){
-  const back = Math.round((periodOf(span, new Date())[0] - a) / 864e5);
-  if(span === 'day') return back === 0 ? 'Сьогодні' : back === 1 ? 'Вчора' : WD[a.getDay()].toLowerCase() + ', ' + dateTxt(a);
-  if(span === 'week') return back === 0 ? 'Цей тиждень' : back === 7 ? 'Минулий тиждень'
-    : a.getMonth() === b.getMonth() ? a.getDate() + '–' + dateTxt(b) : dateTxt(a) + ' – ' + dateTxt(b);
-  if(span === 'month') return MON_NAME[a.getMonth()] + (a.getFullYear() !== new Date().getFullYear() ? ' ' + a.getFullYear() : '');
-  return 'з ' + dateTxt(a);
+  const back = Math.round((periodOf(span, new Date())[0] - a) / 864e5), other = (d) => d.getFullYear() !== new Date().getFullYear();
+  const dm = (d) => d.getDate() + '.' + pad(d.getMonth() + 1), num = (d) => dm(d) + (other(d) ? '.' + String(d.getFullYear()).slice(2) : '');
+  const short = (d) => d.getDate() + ' ' + MON_SHORT[d.getMonth()];
+  if(span === 'day'){
+    if(back < 2) return back ? ['Вчора', 'Вчора'] : ['Сьогодні', 'Сьогодні'];
+    const wd = WD[a.getDay()].toLowerCase() + ', ';
+    return [(other(a) ? '' : wd) + dateTxt(a), (other(a) ? '' : wd) + num(a)];
+  }
+  if(span === 'week'){
+    // short: dates only, the year once at the end: 13–19.10, 29.09–5.10, 27.10–2.11.25
+    const range = (a.getMonth() === b.getMonth() ? a.getDate() : dm(a)) + '–' + num(b);
+    if(back === 0) return ['Цей тиждень', range];
+    if(back === 7) return ['Минулий тиждень', range];
+    const y = other(b) ? ' ' + b.getFullYear() : '';
+    return [a.getMonth() !== b.getMonth() ? short(a) + ' – ' + short(b) + y : y ? a.getDate() + '–' + short(b) + y : a.getDate() + '–' + dateTxt(b), range];
+  }
+  if(span === 'month'){
+    const y = other(a) ? ' ' + a.getFullYear() : '';
+    return [MON_NAME[a.getMonth()] + y, (y ? MON_SHORT[a.getMonth()][0].toUpperCase() + MON_SHORT[a.getMonth()].slice(1) : MON_NAME[a.getMonth()]) + y];
+  }
+  return ['з ' + dateTxt(a), 'з ' + num(a)];
 }
 function setView(span, at){
   if(at && noon(at) >= periodOf(span, new Date())[0]) at = null;
@@ -2571,7 +2604,7 @@ function renderStats(st, now){
   const keys = keysIn(a, b), sum = sumDays(keys.map(k => F.days[k])), {tot, brk} = sum;
   const first = firstDay(), today = dayKey(new Date(now));
   document.querySelectorAll('#focusSpan [data-span]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.span === span)));
-  $('focusWhen').textContent = periodName(span, a, b);
+  [$('focusWhenL').textContent, $('focusWhenS').textContent] = periodName(span, a, b);
   $('focusWhen').disabled = live;
   $('focusWhen').title = live ? '' : 'Повернутися до ' + {day:'сьогодні', week:'цього тижня', month:'цього місяця'}[span];
   $('focusPrev').hidden = $('focusNext').hidden = span === 'all';
@@ -2581,7 +2614,7 @@ function renderStats(st, now){
   const tiles = [];
   if(fTotal(tot) > 20){
     // at work = lessons at the desk plus breaks spent at the desk (minus phone time, which never counts as work)
-    tiles.push(statTile('f', durParts(tot.f + tot.i + brk.f + brk.i), 'за роботою'), statTile('d', durParts(tot.d), 'телефон, розмови'), statTile('a', durParts(tot.a), 'не було'));
+    tiles.push(statTile('f', durParts(tot.f + tot.i + brk.f + brk.i), 'за роботою'), statTile('a', durParts(tot.a), 'не було'));
   }
   fill($('focusStats'), tiles);
   $('focusStats').hidden = !tiles.length;
@@ -2596,6 +2629,7 @@ function renderStats(st, now){
     $('fdayWhat').textContent = {day:'підсумок дня', week:'підсумок тижня', month:'підсумок місяця', all:'підсумок за весь час'}[span];
     $('fdayPct').textContent = Math.round(ds.score * 100);
     $('fdayParts').textContent = ds.parts.map(q => q.name + ' ' + Math.round(q.v * 100) + '%').join(' · ') + (n ? ' · ' + daysTxt(n) : '');
+    $('fdayPhone').textContent = 'телефон, розмови: ' + durParts(tot.d).map(p => p.join(' ')).join(' ');
     $('fdayGrade').textContent = ds.grade;
     $('fdayGrade').dataset.tone = ds.tone;
     $('fdayGrade').setAttribute('aria-label', 'Оцінка: ' + ds.grade + ' з 12');
