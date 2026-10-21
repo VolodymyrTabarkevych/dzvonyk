@@ -473,6 +473,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 
 /* skin switcher */
 .skins{display:flex;gap:4px;flex-wrap:wrap}
+.skin-shuffle{margin-top:6px}
 .skin{font:inherit;font-size:12px;font-weight:600;line-height:1;display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:var(--btn-r);border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer}
 .skin:hover{color:var(--ink);border-color:var(--ink-3)}
 .skin[aria-pressed="true"]{color:var(--ink);border-color:var(--accent);background:var(--accent-soft)}
@@ -870,6 +871,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <button class="skin" type="button" data-skin="pixel" aria-pressed="false"><span class="sw sw-pixel"></span>Піксель</button>
           <button class="skin" type="button" data-skin="orbit" aria-pressed="false"><span class="sw sw-orbit"></span>Орбіта</button>
         </div>
+        <label class="check skin-shuffle"><input type="checkbox" id="sShuffle"><span>Нова випадкова тема з кожним уроком</span></label>
       </fieldset>
       <div class="field"><label for="sStart">Початок першого уроку</label><input type="time" id="sStart" value="08:00"></div>
       <div class="field"><label for="sLesson">Тривалість уроку, хв</label><input type="number" id="sLesson" min="1" max="240" inputmode="numeric" value="45"></div>
@@ -927,7 +929,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 const $ = (id) => document.getElementById(id);
 const MIN = 60000;
 const KEY = 'dzvonyk.v1';
-const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', dayOn:{}, schedFull:false};
+const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', skinShuffle:false, shuffledFor:'', dayOn:{}, schedFull:false};
 const SOUNDS = [['japan','Японська школа'],['japanShort','Японська школа, коротко'],['school','Шкільний дзвінок'],['rise','Три ноти вгору'],['chime','Три ноти вниз'],['dingdong','Дінь-дон'],['gong','Гонг']];
 const WARN = [[0,'Без попередження'],[1,'За 1 хв до уроку'],[2,'За 2 хв до уроку'],[3,'За 3 хв до уроку'],[5,'За 5 хв до уроку']];
 const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
@@ -1950,6 +1952,7 @@ function tick(){
   $('today').textContent = DOW[d.getDay()] + ', ' + d.getDate() + ' ' + MON[d.getMonth()];
 
   const st = stateAt(now);
+  shuffleSkin(st);
   let chip, kind = 'idle', range = '', sub = '', next = '', progress = null, count;
   if(st.mode === 'lesson' || st.mode === 'break'){
     const p = st.p, i = st.plan.indexOf(p), nx = st.plan[i + 1];
@@ -2065,7 +2068,7 @@ document.querySelectorAll('[data-preview]').forEach(b => b.addEventListener('cli
 
 $('form').addEventListener('submit', (e) => e.preventDefault());
 $('form').addEventListener('change', (e) => {
-  if(['sVol', 'sDuck', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound', 'fPhoneSound', 'fStand', 'fStandSound'].includes(e.target.id)) return; // these have their own handlers
+  if(['sVol', 'sDuck', 'sShuffle', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound', 'fPhoneSound', 'fStand', 'fStandSound'].includes(e.target.id)) return; // these have their own handlers
   readForm(); fillForm(); save();
   renderAll();
   setKeepAlive(S.keepAlive && isRunning());
@@ -2194,6 +2197,24 @@ $('skins').addEventListener('click', (e) => {
   V.colors = null; // the visualiser picks up the new skin's colours
 });
 applySkin();
+// "Нова випадкова тема з кожним уроком": once per lesson, as it starts (or when the page opens during it),
+// a theme other than the current one. A theme picked by hand stays until the next lesson.
+const lessonKey = (p) => dayKey(new Date(p.start)) + ' ' + p.n;
+function shuffleSkin(st){
+  if(!S.skinShuffle || st.mode !== 'lesson' || S.shuffledFor === lessonKey(st.p)) return;
+  const pool = SKINS.filter(s => s !== S.skin);
+  S.skin = pool[Math.floor(Math.random() * pool.length)];
+  S.shuffledFor = lessonKey(st.p); save(); applySkin();
+  V.colors = null;
+}
+$('sShuffle').checked = S.skinShuffle;
+$('sShuffle').addEventListener('change', () => {
+  S.skinShuffle = $('sShuffle').checked;
+  // switched on in the middle of a lesson: the current theme stays, the next lesson brings a new one
+  const st = stateAt(Date.now());
+  if(S.skinShuffle && st.mode === 'lesson') S.shuffledFor = lessonKey(st.p);
+  save();
+});
 
 /* ---------- focus tracking (opt-in beta) ---------- */
 // Everything stays in this browser: webcam frames are analysed on the spot and only seconds per
