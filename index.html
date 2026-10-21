@@ -231,7 +231,8 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 [data-tone="ok"]{--c:var(--ok)}
 [data-tone="mid"]{--c:var(--mid)}
 [data-tone="bad"]{--c:var(--bad)}
-/* two small column charts: today's lessons and the last seven days; side by side only when there is room */
+/* two small charts: the period's own (a day's lessons, a week's days, a month, the months) and, for a day,
+   the seven days up to it; side by side only when there is room */
 .fcharts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px 20px}
 .fchart{display:flex;flex-direction:column;gap:4px;min-width:0}
 .fchart-h{font-size:12px;color:var(--ink-3)}
@@ -241,7 +242,25 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fwd-bar{display:flex;align-items:flex-end;justify-content:center;width:100%;height:40px;border-bottom:1px solid var(--line)}
 .fstack{display:flex;flex-direction:column-reverse;width:min(18px,70%);border-radius:3px 3px 0 0;overflow:hidden;background:var(--track)}
 .fstack i{display:block;flex:none;width:100%}
-.fwd.today span{color:var(--ink);font-weight:700}
+.fwd.cur span{color:var(--ink);font-weight:700}
+/* a column that opens its day or month */
+button.fwd{font:inherit;font-size:11px;background:none;border:0;padding:0;color:var(--ink-3);cursor:pointer}
+button.fwd:hover span,button.fwd:focus-visible span{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+/* which stretch of days the card shows: the tabs, then arrows with the period's name between them */
+.fnav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px}
+.fpager{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+.fpager .btn:disabled{opacity:.35;cursor:default;border-color:var(--line)}
+/* the name doubles as "back to now" once you have stepped away from today */
+.fpager-l{font:inherit;font-size:13px;font-weight:600;min-width:11ch;text-align:center;background:none;border:0;padding:0 2px;color:var(--ink);cursor:default;white-space:nowrap}
+.fpager-l:not(:disabled){cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+/* a month as a calendar: each day with data is a square in its result's colour, the grade inside */
+.fcal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.fcal-h{font-size:11px;color:var(--ink-3);text-align:center}
+.fcal-d{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;height:36px;padding:0;border:1px solid transparent;border-radius:calc(var(--r) * .35);font:inherit;font-size:10px;line-height:1;color:var(--ink-3);background:none;font-variant-numeric:lining-nums tabular-nums}
+.fcal-d b{font-size:14px;font-weight:600;color:var(--ink)}
+button.fcal-d{cursor:pointer;border-color:var(--c);background:color-mix(in srgb,var(--c) 20%,transparent)}
+button.fcal-d:hover,button.fcal-d:focus-visible{background:color-mix(in srgb,var(--c) 38%,transparent)}
+.fcal-d.cur{box-shadow:inset 0 0 0 1px var(--ink-2)}
 .fstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .fstat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:calc(var(--r) * .5);container-type:inline-size}
 /* the number shrinks with its tile, so wide display fonts (Neon, Y2K) still fit */
@@ -759,18 +778,31 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <button class="fold" id="focusFold" type="button" aria-expanded="false" aria-controls="focusSetup"><span id="focusFoldText">Налаштувати</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </span>
       </div>
+      <div class="fnav">
+        <div class="seg" id="focusSpan" role="group" aria-label="За який час статистика">
+          <button type="button" data-span="day" aria-pressed="true">День</button>
+          <button type="button" data-span="week" aria-pressed="false">Тиждень</button>
+          <button type="button" data-span="month" aria-pressed="false">Місяць</button>
+          <button type="button" data-span="all" aria-pressed="false">Усе</button>
+        </div>
+        <div class="fpager">
+          <button class="btn sm icon" id="focusPrev" type="button" aria-label="Раніше" title="Раніше"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="fpager-l" id="focusWhen" type="button">Сьогодні</button>
+          <button class="btn sm icon" id="focusNext" type="button" aria-label="Пізніше" title="Пізніше"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
       <div class="fday" id="focusDay" hidden>
         <div class="fday-main">
           <span class="fday-pct"><span id="fdayPct">0</span><small>%</small></span>
-          <span class="fday-l">підсумок дня: <span id="fdayParts"></span></span>
+          <span class="fday-l"><span id="fdayWhat">підсумок дня</span>: <span id="fdayParts"></span></span>
         </div>
-        <span class="fday-grade" id="fdayGrade" title="Оцінка за день за 12-бальною шкалою">0</span>
+        <span class="fday-grade" id="fdayGrade" title="Оцінка за 12-бальною шкалою">0</span>
       </div>
       <div class="fstats" id="focusStats"></div>
       <p class="focus-sum" id="focusSum"></p>
       <div class="fcharts" id="focusCharts" hidden>
-        <div class="fchart" id="focusLessonsBox"><span class="fchart-h">Сьогодні</span><div class="fcols" id="focusLessons"></div></div>
-        <div class="fchart" id="focusWeekBox"><span class="fchart-h">Останні 7 днів</span><div class="fcols" id="focusWeek"></div></div>
+        <div class="fchart" id="focusChartBox"><span class="fchart-h" id="focusChartH">Сьогодні</span><div class="fcols" id="focusChart"></div></div>
+        <div class="fchart" id="focusWeekBox"><span class="fchart-h" id="focusWeekH">Останні 7 днів</span><div class="fcols" id="focusWeek"></div></div>
       </div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
@@ -2146,8 +2178,11 @@ function loadFocus(){
   }catch(e){}
   if(!base.days || typeof base.days !== 'object') base.days = {};
   if(!Array.isArray(base.screens)) base.screens = [];
-  const keep = dayKey(new Date(Date.now() - 31 * 86400e3));
-  for(const k of Object.keys(base.days)) if(k < keep) delete base.days[k];
+  // every day is kept for the week, month and all-time totals; finished days only need whole seconds
+  const today = dayKey(new Date());
+  for(const [k, day] of Object.entries(base.days)) if(k < today && day && typeof day === 'object'){
+    for(const b of Object.values(day)) if(b && typeof b === 'object') for(const x in b) if(typeof b[x] === 'number') b[x] = Math.round(b[x]);
+  }
   delete base.idle; delete base.base; // options of the first beta, no longer used
   return base;
 }
@@ -2155,7 +2190,8 @@ function saveFocus(){ try{ localStorage.setItem(FKEY, JSON.stringify(F)); }catch
 
 const FS = {state:null, reason:'', last:0, savedAt:0, timer:0, n:0, stream:null, camReady:false,
   face:null, phone:null, loading:false, missSince:0, offSince:0, phoneAt:0, jaw:[], capture:null, err:'', renderAt:0,
-  setupOpen:false, slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, sitSince:0, standAt:0, toast:''};
+  setupOpen:false, slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, sitSince:0, standAt:0, toast:'',
+  view:{span:'day', at:null}};
 const FLABEL = {focused:'Фокус', away:'Нема на місці'};
 const FREASON = {phone:'Телефон', talk:'Розмова'};
 const FBUCKET = {focused:'f', distracted:'d', away:'a'};
@@ -2403,18 +2439,25 @@ function statTile(dot, parts, label){
   return tile;
 }
 const fTotal = (b) => b.f + b.d + b.a + (b.i || 0);
-// The day's result: focus on lessons weighs most; posture and resting on breaks count when there is data for them.
-// Grade on the 12-point school scale.
-function dayScore(day){
-  if(!day) return null;
-  const tot = {f:0, d:0, a:0, i:0}, brk = {f:0, d:0, a:0, i:0};
-  let pg = 0, pb = 0;
-  for(const [k, b] of Object.entries(day)){
-    const into = k[0] === 'L' ? tot : k[0] === 'B' ? brk : null;
-    if(!into) continue;
-    for(const x in into) into[x] += b[x] || 0;
-    if(k[0] === 'L'){ pg += b.pg || 0; pb += b.pb || 0; }
+// Seconds per state over any set of days: lessons (tot), breaks (brk) and posture on lessons (pg/pb).
+function sumDays(days){
+  const s = {tot:{f:0, d:0, a:0, i:0}, brk:{f:0, d:0, a:0, i:0}, pg:0, pb:0};
+  for(const day of days){
+    if(!day) continue;
+    for(const [k, b] of Object.entries(day)){
+      const into = k[0] === 'L' ? s.tot : k[0] === 'B' ? s.brk : null;
+      if(!into) continue;
+      for(const x in into) into[x] += b[x] || 0;
+      if(k[0] === 'L'){ s.pg += b.pg || 0; s.pb += b.pb || 0; }
+    }
   }
+  return s;
+}
+// The result: focus on lessons weighs most; posture and resting on breaks count when there is data for them.
+// Over a week or a month every second counts the same, so a full day weighs more than one short lesson.
+// Grade on the 12-point school scale.
+const dayScore = (day) => day ? scoreOf(sumDays([day])) : null;
+function scoreOf({tot, brk, pg, pb}){
   if(fTotal(tot) < 60) return null;
   const parts = [{name:'фокус', w:.6, v:(tot.f + tot.i) / fTotal(tot)}];
   if(pg + pb > 60) parts.push({name:'постава', w:.2, v:pg / (pg + pb)});
@@ -2423,10 +2466,12 @@ function dayScore(day){
   return {score, parts, grade:Math.max(1, Math.min(12, Math.round(score * 12))), tone:score >= .8 ? 'ok' : score >= .6 ? 'mid' : 'bad'};
 }
 // One column of a mini chart: a number on top, a stacked bar (fractions of its height), a label underneath.
+// With o.go ('day:2026-10-19', 'month:2026-10-01') it is a button that opens that day or month.
 function chartCol(label, top, segs, o){
-  const col = document.createElement('div');
+  const col = document.createElement(o.go ? 'button' : 'div');
   col.className = 'fwd' + (o.cls || '');
   col.title = o.title;
+  if(o.go){ col.type = 'button'; col.dataset.go = o.go; }
   const g = document.createElement('b'); g.textContent = top;
   const bar = document.createElement('span'); bar.className = 'fwd-bar';
   const stack = document.createElement('span'); stack.className = 'fstack';
@@ -2441,22 +2486,170 @@ function chartCol(label, top, segs, o){
   return col;
 }
 const pctTxt = (v) => Math.round(v * 100) + '%';
-function renderWeek(now){
-  // the last seven days up to today, so a Monday still shows last week
-  const first = new Date(now); first.setHours(12, 0, 0, 0); first.setDate(first.getDate() - 6);
-  const today = dayKey(new Date(now)), wk = $('focusWeek');
-  wk.textContent = '';
-  let any = false;
-  for(let k = 0; k < 7; k++){
-    const d = new Date(first); d.setDate(first.getDate() + k);
-    const name = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][d.getDay()];
-    const key = dayKey(d), ds = dayScore(F.days[key]), cls = key === today ? ' today' : '';
-    if(ds) any = true;
-    wk.append(ds
-      ? chartCol(name, ds.grade, [[{ok:'f', mid:'d', bad:'a'}[ds.tone], 1]], {cls, h:Math.max(8, ds.score * 100), title:name + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade})
-      : chartCol(name, '', [], {cls:cls + ' empty', h:4, title:name + ': немає даних'}));
+const TONE_BAR = {ok:'f', mid:'d', bad:'a'};
+// Swaps in freshly built nodes only when they differ, so hovering or clicking a column survives the once-a-second refresh.
+function fill(el, nodes){
+  const tmp = document.createElement('div'); tmp.append(...nodes);
+  if(tmp.innerHTML !== el.innerHTML) el.replaceChildren(...tmp.childNodes);
+}
+
+/* ---------- focus history: a day, a week, a month or all of it ---------- */
+// FS.view.at is any day inside the shown period; null means the period that holds today, so it moves on by itself.
+const MON_NAME = ['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
+const MON_SHORT = ['січ','лют','бер','кві','тра','чер','лип','сер','вер','жов','лис','гру'];
+const WD = ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'];
+const noon = (d) => { const x = new Date(d); x.setHours(12, 0, 0, 0); return x; };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const keyDate = (k) => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d, 12); };
+const keysIn = (a, b) => { const ks = []; for(let d = a; d <= b; d = addDays(d, 1)) ks.push(dayKey(d)); return ks; };
+const dateTxt = (d) => d.getDate() + ' ' + MON[d.getMonth()] + (d.getFullYear() !== new Date().getFullYear() ? ' ' + d.getFullYear() : '');
+const daysTxt = (n) => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'день' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'дні' : 'днів');
+// the first day with a result, where "Усе" starts and the back arrow stops
+function firstDay(){
+  const ks = Object.keys(F.days).filter(k => dayScore(F.days[k])).sort();
+  return ks.length ? keyDate(ks[0]) : null;
+}
+// the first and last day of the period that holds day d (weeks start on Monday)
+function periodOf(span, d){
+  d = noon(d);
+  if(span === 'week'){ const a = addDays(d, -((d.getDay() + 6) % 7)); return [a, addDays(a, 6)]; }
+  if(span === 'month') return [new Date(d.getFullYear(), d.getMonth(), 1, 12), new Date(d.getFullYear(), d.getMonth() + 1, 0, 12)];
+  if(span === 'all'){ const today = noon(new Date()); return [firstDay() || today, today]; }
+  return [d, d];
+}
+function periodName(span, a, b){
+  const back = Math.round((periodOf(span, new Date())[0] - a) / 864e5);
+  if(span === 'day') return back === 0 ? 'Сьогодні' : back === 1 ? 'Вчора' : WD[a.getDay()].toLowerCase() + ', ' + dateTxt(a);
+  if(span === 'week') return back === 0 ? 'Цей тиждень' : back === 7 ? 'Минулий тиждень'
+    : a.getMonth() === b.getMonth() ? a.getDate() + '–' + dateTxt(b) : dateTxt(a) + ' – ' + dateTxt(b);
+  if(span === 'month') return MON_NAME[a.getMonth()] + (a.getFullYear() !== new Date().getFullYear() ? ' ' + a.getFullYear() : '');
+  return 'з ' + dateTxt(a);
+}
+function setView(span, at){
+  if(at && noon(at) >= periodOf(span, new Date())[0]) at = null;
+  FS.view = {span, at:at ? noon(at) : null};
+  renderFocusNow();
+}
+// the arrows: one period back or forward; days without data (weekends, holidays) are skipped
+function stepView(dir){
+  const {span, at} = FS.view, [a, b] = periodOf(span, at || new Date());
+  let to = dir < 0 ? addDays(a, -1) : addDays(b, 1);
+  if(span === 'day'){
+    const ks = Object.keys(F.days).filter(k => dayScore(F.days[k])).sort(), k0 = dayKey(to);
+    const k = dir < 0 ? ks.filter(x => x <= k0).pop() : ks.find(x => x >= k0);
+    to = k ? keyDate(k) : dir < 0 ? to : null;
   }
-  $('focusWeekBox').hidden = !any;
+  setView(span, to);
+}
+// a day as a column: its grade on top and a bar as tall as its result; a day with data opens on click
+function dayCol(d, cur){
+  const key = dayKey(d), ds = dayScore(F.days[key]), name = WD[d.getDay()], cls = cur ? ' cur' : '';
+  return ds
+    ? chartCol(name, ds.grade, [[TONE_BAR[ds.tone], 1]], {cls, h:Math.max(8, ds.score * 100), go:'day:' + key, title:name + ', ' + dateTxt(d) + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade})
+    : chartCol(name, '', [], {cls, h:4, title:name + ', ' + dateTxt(d) + ': немає даних'});
+}
+// a month as a calendar, Monday first; days with data are coloured squares with the grade
+function monthCal(a, b, cur){
+  const out = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'].map(t => { const h = document.createElement('span'); h.className = 'fcal-h'; h.textContent = t; return h; });
+  for(let k = (a.getDay() + 6) % 7; k > 0; k--) out.push(document.createElement('span'));
+  for(let d = a; d <= b; d = addDays(d, 1)){
+    const key = dayKey(d), ds = dayScore(F.days[key]), c = document.createElement(ds ? 'button' : 'span');
+    c.className = 'fcal-d' + (key === cur ? ' cur' : '');
+    c.append(String(d.getDate()));
+    if(ds){
+      c.type = 'button'; c.dataset.go = 'day:' + key; c.dataset.tone = ds.tone;
+      c.title = WD[d.getDay()] + ', ' + dateTxt(d) + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade;
+      const g = document.createElement('b'); g.textContent = ds.grade; c.append(g);
+    }
+    out.push(c);
+  }
+  return out;
+}
+// The statistics for the picked period: the result with its grade, time tiles, and the charts under them.
+function renderStats(st, now){
+  const {span, at} = FS.view, live = !at, [a, b] = periodOf(span, at || new Date(now));
+  const keys = keysIn(a, b), sum = sumDays(keys.map(k => F.days[k])), {tot, brk} = sum;
+  const first = firstDay(), today = dayKey(new Date(now));
+  document.querySelectorAll('#focusSpan [data-span]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.span === span)));
+  $('focusWhen').textContent = periodName(span, a, b);
+  $('focusWhen').disabled = live;
+  $('focusWhen').title = live ? '' : 'Повернутися до ' + {day:'сьогодні', week:'цього тижня', month:'цього місяця'}[span];
+  $('focusPrev').hidden = $('focusNext').hidden = span === 'all';
+  $('focusPrev').disabled = !first || a <= first;
+  $('focusNext').disabled = live;
+
+  const tiles = [];
+  if(fTotal(tot) > 20){
+    // at work = lessons at the desk plus breaks spent at the desk (minus phone time, which never counts as work)
+    tiles.push(statTile('f', durParts(tot.f + tot.i + brk.f + brk.i), 'за роботою'), statTile('d', durParts(tot.d), 'телефон, розмови'), statTile('a', durParts(tot.a), 'не було'));
+  }
+  fill($('focusStats'), tiles);
+  $('focusStats').hidden = !tiles.length;
+  $('focusSum').hidden = !!tiles.length;
+  $('focusSum').textContent = live && (span === 'day' || !first) ? 'Статистика з’явиться, щойно почнеться урок.'
+    : 'За ' + {day:'цей день', week:'цей тиждень', month:'цей місяць', all:'весь час'}[span] + ' даних немає.';
+
+  const ds = scoreOf(sum);
+  $('focusDay').hidden = !ds;
+  if(ds){
+    const n = span === 'day' ? 0 : keys.filter(k => dayScore(F.days[k])).length;
+    $('fdayWhat').textContent = {day:'підсумок дня', week:'підсумок тижня', month:'підсумок місяця', all:'підсумок за весь час'}[span];
+    $('fdayPct').textContent = Math.round(ds.score * 100);
+    $('fdayParts').textContent = ds.parts.map(q => q.name + ' ' + Math.round(q.v * 100) + '%').join(' · ') + (n ? ' · ' + daysTxt(n) : '');
+    $('fdayGrade').textContent = ds.grade;
+    $('fdayGrade').dataset.tone = ds.tone;
+    $('fdayGrade').setAttribute('aria-label', 'Оцінка: ' + ds.grade + ' з 12');
+  }
+
+  // the main chart: a day's lessons, a week's days, a month's calendar, or all the months
+  const chart = $('focusChart'), cols = [];
+  let head = 'По днях', any = !!ds, week = [];
+  if(span === 'day'){
+    const day = F.days[keys[0]] || {}, curKey = live && st.mode === 'lesson' ? 'L' + st.p.n : '';
+    head = live ? 'Сьогодні' : 'Уроки';
+    for(const k of Object.keys(day).filter(k => k[0] === 'L').sort((x, y) => x.slice(1) - y.slice(1))){
+      const bk = day[k], t = fTotal(bk);
+      if(t <= 20) continue;
+      const f = (bk.f + (bk.i || 0)) / t;
+      cols.push(chartCol(k.slice(1), Math.round(f * 100), [['f', f], ['d', bk.d / t], ['a', bk.a / t]],
+        {cls:k === curKey ? ' cur' : '', title:'Урок ' + k.slice(1) + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t)}));
+    }
+    if(fTotal(brk) > 20){
+      // on a break away is the good part: rested in the "good" colour at the bottom, time at the desk above it
+      const r = brk.a / fTotal(brk);
+      cols.push(chartCol('пер.', Math.round(r * 100), [['f', r], ['d', 1 - r]], {cls:live && st.mode === 'break' ? ' cur' : '', title:'Перерви: відпочив ' + pctTxt(r) + ', за столом ' + pctTxt(1 - r)}));
+    }
+    any = cols.length > 0;
+    // and under it the seven days up to this one, so a Monday still shows the week before
+    for(let k = 6; k >= 0; k--) week.push(addDays(a, -k));
+  }else if(span === 'week'){
+    for(let d = a; d <= b; d = addDays(d, 1)) cols.push(dayCol(d, dayKey(d) === today));
+  }else if(span === 'month'){
+    cols.push(...monthCal(a, b, today));
+  }else{
+    // one column per month, the last twelve at most
+    const months = [];
+    for(let m = new Date(a.getFullYear(), a.getMonth(), 1, 12); m <= b; m = new Date(m.getFullYear(), m.getMonth() + 1, 1, 12)) months.push(m);
+    head = months.length > 12 ? 'Останні 12 місяців' : 'По місяцях';
+    for(const m of months.slice(-12)){
+      const [ma, mb] = periodOf('month', m), ms = scoreOf(sumDays(keysIn(ma, mb).map(k => F.days[k])));
+      const name = MON_NAME[m.getMonth()] + ' ' + m.getFullYear(), cls = mb >= noon(new Date(now)) ? ' cur' : '';
+      cols.push(ms
+        ? chartCol(MON_SHORT[m.getMonth()], ms.grade, [[TONE_BAR[ms.tone], 1]], {cls, h:Math.max(8, ms.score * 100), go:'month:' + dayKey(ma), title:name + ': ' + pctTxt(ms.score) + ', оцінка ' + ms.grade})
+        : chartCol(MON_SHORT[m.getMonth()], '', [], {cls, h:4, title:name + ': немає даних'}));
+    }
+  }
+  chart.className = span === 'month' ? 'fcal' : 'fcols';
+  chart.style.gridTemplateColumns = span === 'month' ? '' : 'repeat(' + Math.max(7, cols.length) + ',minmax(0,1fr))';
+  fill(chart, any ? cols : []);
+  $('focusChartH').textContent = head;
+  $('focusChartBox').hidden = !any;
+
+  const weekAny = week.some(d => dayScore(F.days[dayKey(d)]));
+  fill($('focusWeek'), weekAny ? week.map(d => dayCol(d, d.getTime() === a.getTime())) : []);
+  $('focusWeekH').textContent = live ? 'Останні 7 днів' : '7 днів по ' + dateTxt(a);
+  $('focusWeekBox').hidden = !weekAny;
+  $('focusCharts').hidden = $('focusChartBox').hidden && $('focusWeekBox').hidden;
 }
 // the camera stays rendered (just invisible) when folded, otherwise its frames stop updating
 function applyFocusFold(){
@@ -2502,44 +2695,7 @@ function renderFocus(st){
   $('fPostureNote').textContent = F.postureBase ? 'Правильну поставу запам’ятовано. Пересів? Натисни ще раз.' : 'Сядь рівно, як треба, і натисни, щоб я запам’ятав поставу.';
   $('focusErr').hidden = !FS.err;
   $('focusErr').textContent = FS.err;
-  const lc = $('focusLessons'); lc.textContent = '';
-  const tot = {f:0, d:0, a:0, i:0}, brk = {f:0, d:0, a:0, i:0}, curKey = st.mode === 'lesson' ? 'L' + st.p.n : '';
-  const lessons = Object.keys(day).filter(k => k[0] === 'L').sort((x, y) => x.slice(1) - y.slice(1));
-  for(const k of lessons){
-    const b = day[k], t = fTotal(b);
-    for(const x in tot) tot[x] += b[x] || 0;
-    if(t <= 20) continue;
-    const f = (b.f + (b.i || 0)) / t;
-    lc.append(chartCol(k.slice(1), Math.round(f * 100), [['f', f], ['d', b.d / t], ['a', b.a / t]],
-      {cls:k === curKey ? ' today' : '', title:'Урок ' + k.slice(1) + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(b.d / t) + ', не було ' + pctTxt(b.a / t)}));
-  }
-  for(const k of Object.keys(day)) if(k[0] === 'B') for(const x in brk) brk[x] += day[k][x] || 0;
-  if(fTotal(brk) > 20){
-    // on a break away is the good part: rested in the "good" colour at the bottom, time at the desk above it
-    const r = brk.a / fTotal(brk);
-    lc.append(chartCol('пер.', Math.round(r * 100), [['f', r], ['d', 1 - r]], {cls:st.mode === 'break' ? ' today' : '', title:'Перерви: відпочив ' + pctTxt(r) + ', за столом ' + pctTxt(1 - r)}));
-  }
-  $('focusLessonsBox').hidden = !lc.childElementCount;
-  lc.style.gridTemplateColumns = 'repeat(' + Math.max(7, lc.childElementCount) + ',minmax(0,1fr))';
-  const stats = $('focusStats'); stats.textContent = '';
-  if(fTotal(tot) > 20){
-    // at work = lessons at the desk plus breaks spent at the desk (minus phone time, which never counts as work)
-    stats.append(statTile('f', durParts(tot.f + tot.i + brk.f + brk.i), 'за роботою'), statTile('d', durParts(tot.d), 'телефон, розмови'), statTile('a', durParts(tot.a), 'не було'));
-  }
-  stats.hidden = !stats.childElementCount;
-  const ds = dayScore(day);
-  $('focusDay').hidden = !ds;
-  if(ds){
-    $('fdayPct').textContent = Math.round(ds.score * 100);
-    $('fdayParts').textContent = ds.parts.map(q => q.name + ' ' + Math.round(q.v * 100) + '%').join(' · ');
-    $('fdayGrade').textContent = ds.grade;
-    $('fdayGrade').dataset.tone = ds.tone;
-    $('fdayGrade').setAttribute('aria-label', 'Оцінка за день: ' + ds.grade + ' з 12');
-  }
-  renderWeek(now);
-  $('focusCharts').hidden = $('focusLessonsBox').hidden && $('focusWeekBox').hidden;
-  $('focusSum').hidden = !stats.hidden;
-  $('focusSum').textContent = 'Статистика з’явиться, щойно почнеться урок.';
+  renderStats(st, now);
 }
 function initFocus(){
   $('fCam').checked = F.cam;
@@ -2553,6 +2709,17 @@ function initFocus(){
   });
   $('fPreview').addEventListener('change', () => { F.preview = $('fPreview').checked; applyFocusFold(); saveFocus(); });
   $('fReset').addEventListener('click', () => { delete F.days[dayKey(new Date())]; saveFocus(); renderFocusNow(); });
+  // a new span keeps the day being looked at: from 3 October, "Тиждень" opens that week
+  $('focusSpan').addEventListener('click', (e) => { const x = e.target.closest('[data-span]'); if(x) setView(x.dataset.span, FS.view.at); });
+  $('focusPrev').addEventListener('click', () => stepView(-1));
+  $('focusNext').addEventListener('click', () => stepView(1));
+  $('focusWhen').addEventListener('click', () => setView(FS.view.span, null));
+  $('focusCharts').addEventListener('click', (e) => {
+    const g = e.target.closest('[data-go]');
+    if(!g) return;
+    const [span, k] = g.dataset.go.split(':');
+    setView(span, keyDate(k));
+  });
   $('fScreen').addEventListener('click', () => { FS.capture = {until:Date.now() + 1500, samples:[]}; renderFocusNow(); });
   $('fPosture').checked = F.posture;
   $('fPostureNotify').checked = F.postureNotify;
