@@ -234,8 +234,7 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 [data-tone="ok"]{--c:var(--ok)}
 [data-tone="mid"]{--c:var(--mid)}
 [data-tone="bad"]{--c:var(--bad)}
-/* two small charts: the period's own (a day's lessons, a week's days, a month, the months) and, for a day,
-   the seven days up to it; side by side only when there is room */
+/* the period's small chart: a day's lessons, a week's days, a month, or the months */
 .fcharts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px 20px}
 .fchart{display:flex;flex-direction:column;gap:4px;min-width:0}
 .fchart-h{font-size:12px;color:var(--ink-3)}
@@ -308,6 +307,21 @@ button.fcal-d:hover,button.fcal-d:focus-visible{background:color-mix(in srgb,var
 :root[data-skin="orbit"] .fstack i{background-image:linear-gradient(90deg,rgba(255,255,255,.35),transparent 50%)}
 :root[data-skin="pixel"] .fstack{width:12px;border-radius:0}
 :root[data-skin="pixel"] .fstack i{background-image:repeating-linear-gradient(0deg,transparent 0 6px,rgba(15,5,36,.6) 6px 8px)}
+/* a lesson or a day without data keeps its place: still ahead = a dashed outline, going on now = a solid one,
+   gone by unseen = a hatched empty shell with a dash on top; a day off has no capsule at all.
+   Written after the skins so it wins over their capsule looks. */
+.fcols .fwd.up .fstack,.fcols .fwd.miss .fstack{border:1px dashed color-mix(in srgb,var(--ink-3) 70%,transparent);border-bottom:0;background:none;box-shadow:none}
+.fcols .fwd.up.cur .fstack{border-style:solid;border-color:var(--ink-2)}
+.fcols .fwd.miss .fstack{border-style:solid;border-color:var(--track);background:repeating-linear-gradient(135deg,var(--track) 0 2px,transparent 2px 5px)}
+.fwd.miss b{color:var(--ink-3)}
+.fwd.off .fstack{visibility:hidden}
+.fwd.off span{opacity:.6}
+:root[data-skin="dots"] .fcols .fwd.up .fstack{border:0;background:#1f1f1f}
+:root[data-skin="dots"] .fcols .fwd.miss .fstack{border:0;background:#3a3a3a}
+.fcal-d.up{border:1px dashed color-mix(in srgb,var(--ink-3) 70%,transparent)}
+.fcal-d.up.cur{border-style:solid;border-color:var(--ink-2);box-shadow:none}
+.fcal-d.miss{background:repeating-linear-gradient(135deg,var(--track) 0 2px,transparent 2px 5px)}
+.fcal-d.off{opacity:.5}
 .focus-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .cam{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);padding:12px 14px 12px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--mid);box-shadow:0 10px 30px rgba(0,0,0,.45);color:var(--ink);font-weight:600}
@@ -821,7 +835,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <p class="focus-sum" id="focusSum"></p>
       <div class="fcharts" id="focusCharts" hidden>
         <div class="fchart" id="focusChartBox"><span class="fchart-h" id="focusChartH">Сьогодні</span><div class="fcols" id="focusChart"></div></div>
-        <div class="fchart" id="focusWeekBox"><span class="fchart-h" id="focusWeekH">Останні 7 днів</span><div class="fcols" id="focusWeek"></div></div>
       </div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
@@ -2577,26 +2590,39 @@ function stepView(dir){
   }
   setView(span, to);
 }
-// a day as a column: its grade on top and a bar as tall as its result; a day with data opens on click
-function dayCol(d, cur){
-  const key = dayKey(d), ds = dayScore(F.days[key]), name = WD[d.getDay()], cls = cur ? ' cur' : '';
-  return ds
-    ? chartCol(name, ds.grade, [[TONE_BAR[ds.tone], 1]], {cls, h:Math.max(8, ds.score * 100), go:'day:' + key, title:name + ', ' + dateTxt(d) + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade})
-    : chartCol(name, '', [], {cls, h:4, title:name + ', ' + dateTxt(d) + ': немає даних'});
+// A lesson or a school day without data is still ahead ('up') until it ends, then it went by unseen ('miss');
+// a day off has no lessons at all ('off').
+function dayState(d, now){
+  const plan = planFor(d);
+  return !plan ? 'off' : now < plan[plan.length - 1].end ? 'up' : 'miss';
 }
-// a month as a calendar, Monday first; days with data are coloured squares with the grade
-function monthCal(a, b, cur){
+const SLOT_TXT = {up:'ще попереду', miss:'немає даних', off:'вихідний'};
+// a column without data: an empty capsule for the state above, a dash on top when it was missed
+function emptyCol(label, state, cur, title, nowTxt = 'іде зараз'){
+  return chartCol(label, state === 'miss' ? '–' : '', [], {cls:' ' + state + (cur ? ' cur' : ''), title:title + ': ' + (cur && state === 'up' ? nowTxt : SLOT_TXT[state])});
+}
+// a day as a column: its grade on top and a bar as tall as its result; a day with data opens on click
+function dayCol(d, cur, now){
+  const key = dayKey(d), ds = dayScore(F.days[key]), name = WD[d.getDay()], when = name + ', ' + dateTxt(d);
+  return ds
+    ? chartCol(name, ds.grade, [[TONE_BAR[ds.tone], 1]], {cls:cur ? ' cur' : '', h:Math.max(8, ds.score * 100), go:'day:' + key, title:when + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade})
+    : emptyCol(name, dayState(d, now), cur, when, 'сьогодні, даних ще немає');
+}
+// a month as a calendar, Monday first; days with data are coloured squares with the grade,
+// school days without data are outlined (ahead) or hatched (missed), days off are dimmed
+function monthCal(a, b, cur, now){
   const out = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'].map(t => { const h = document.createElement('span'); h.className = 'fcal-h'; h.textContent = t; return h; });
   for(let k = (a.getDay() + 6) % 7; k > 0; k--) out.push(document.createElement('span'));
   for(let d = a; d <= b; d = addDays(d, 1)){
     const key = dayKey(d), ds = dayScore(F.days[key]), c = document.createElement(ds ? 'button' : 'span');
-    c.className = 'fcal-d' + (key === cur ? ' cur' : '');
+    const state = ds ? '' : dayState(d, now), when = WD[d.getDay()] + ', ' + dateTxt(d);
+    c.className = 'fcal-d' + (key === cur ? ' cur' : '') + (state ? ' ' + state : '');
     c.append(String(d.getDate()));
     if(ds){
       c.type = 'button'; c.dataset.go = 'day:' + key; c.dataset.tone = ds.tone;
-      c.title = WD[d.getDay()] + ', ' + dateTxt(d) + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade;
+      c.title = when + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade;
       const g = document.createElement('b'); g.textContent = ds.grade; c.append(g);
-    }
+    }else c.title = when + ': ' + SLOT_TXT[state];
     out.push(c);
   }
   return out;
@@ -2647,29 +2673,35 @@ function renderStats(st, now){
 
   // the main chart: a day's lessons, a week's days, a month's calendar, or all the months
   const chart = $('focusChart'), cols = [];
-  let head = 'По днях', any = !!ds, week = [];
+  let head = 'По днях', any = !!ds;
   if(span === 'day'){
-    const day = F.days[keys[0]] || {}, curKey = live && st.mode === 'lesson' ? 'L' + st.p.n : '';
+    const day = F.days[keys[0]] || {}, plan = planFor(a) || [], curKey = live && st.mode === 'lesson' ? 'L' + st.p.n : '';
     head = live ? 'Сьогодні' : 'Уроки';
-    for(const k of Object.keys(day).filter(k => k[0] === 'L').sort((x, y) => x.slice(1) - y.slice(1))){
-      const bk = day[k], t = fTotal(bk);
-      if(t <= 20) continue;
+    // every lesson of the schedule from the start of the day, with data or not, plus any recorded outside it
+    const ends = {};
+    for(const p of plan) if(p.kind === 'lesson') ends['L' + p.n] = p.end;
+    const lessons = [...new Set([...Object.keys(ends), ...Object.keys(day).filter(k => k[0] === 'L')])].sort((x, y) => x.slice(1) - y.slice(1));
+    for(const k of lessons){
+      const bk = day[k], t = bk ? fTotal(bk) : 0, name = 'Урок ' + k.slice(1);
+      if(t <= 20){ cols.push(emptyCol(k.slice(1), ends[k] && now < ends[k] ? 'up' : 'miss', k === curKey, name)); continue; }
       const f = (bk.f + (bk.i || 0)) / t;
       cols.push(chartCol(k.slice(1), Math.round(f * 100), [['f', f], ['d', bk.d / t], ['a', bk.a / t]],
-        {cls:k === curKey ? ' cur' : '', title:'Урок ' + k.slice(1) + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t)}));
+        {cls:k === curKey ? ' cur' : '', title:name + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t)}));
     }
+    const breaks = plan.filter(p => p.kind === 'break'), onBreak = live && st.mode === 'break';
     if(fTotal(brk) > 20){
       // on a break away is the good part: rested in the "good" colour at the bottom, time at the desk above it
       const r = brk.a / fTotal(brk);
-      cols.push(chartCol('пер.', Math.round(r * 100), [['f', r], ['d', 1 - r]], {cls:live && st.mode === 'break' ? ' cur' : '', title:'Перерви: відпочив ' + pctTxt(r) + ', за столом ' + pctTxt(1 - r)}));
-    }
+      cols.push(chartCol('пер.', Math.round(r * 100), [['f', r], ['d', 1 - r]], {cls:onBreak ? ' cur' : '', title:'Перерви: відпочив ' + pctTxt(r) + ', за столом ' + pctTxt(1 - r)}));
+    }else if(breaks.length) cols.push(emptyCol('пер.', now < breaks[breaks.length - 1].end ? 'up' : 'miss', onBreak, 'Перерви'));
     any = cols.length > 0;
-    // and under it the seven days up to this one, so a Monday still shows the week before
-    for(let k = 6; k >= 0; k--) week.push(addDays(a, -k));
   }else if(span === 'week'){
-    for(let d = a; d <= b; d = addDays(d, 1)) cols.push(dayCol(d, dayKey(d) === today));
+    // every day of the week keeps its column: with data, still ahead, missed, or a day off
+    for(let d = a; d <= b; d = addDays(d, 1)) cols.push(dayCol(d, dayKey(d) === today, now));
+    any = true;
   }else if(span === 'month'){
-    cols.push(...monthCal(a, b, today));
+    cols.push(...monthCal(a, b, today, now));
+    any = true;
   }else{
     // one column per month, the last twelve at most
     const months = [];
@@ -2688,12 +2720,7 @@ function renderStats(st, now){
   fill(chart, any ? cols : []);
   $('focusChartH').textContent = head;
   $('focusChartBox').hidden = !any;
-
-  const weekAny = week.some(d => dayScore(F.days[dayKey(d)]));
-  fill($('focusWeek'), weekAny ? week.map(d => dayCol(d, d.getTime() === a.getTime())) : []);
-  $('focusWeekH').textContent = live ? 'Останні 7 днів' : '7 днів по ' + dateTxt(a);
-  $('focusWeekBox').hidden = !weekAny;
-  $('focusCharts').hidden = $('focusChartBox').hidden && $('focusWeekBox').hidden;
+  $('focusCharts').hidden = !any;
 }
 // the camera stays rendered (just invisible) when folded, otherwise its frames stop updating
 function applyFocusFold(){
