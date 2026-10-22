@@ -191,9 +191,11 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--card-shadow)}
 .layout{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
 .side{display:flex;flex-direction:column;gap:14px;min-width:0}
+/* wide: the lesson, the schedule and the music on the left, focus and body on the right */
 @media (min-width:900px){
-  .layout{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);grid-template-rows:auto 1fr;grid-template-areas:"now side" "music side";align-items:start}
+  .layout{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);grid-template-rows:auto auto 1fr;grid-template-areas:"now side" "sched side" "music side";align-items:start}
   .now{grid-area:now}
+  .sched{grid-area:sched}
   .music{grid-area:music}
   .side{grid-area:side}
 }
@@ -221,14 +223,17 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fstack .d,.fstat-l .d{--c:var(--mid)}
 .fstack .a,.fstat-l .a{--c:var(--bad)}
 .fstack i,.fstat-l i{background:var(--c)}
-.fday{display:flex;align-items:center;gap:14px;padding:8px 12px;border:1px solid var(--line);border-radius:calc(var(--r) * .5)}
-.fday-main{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
-.fday-pct{font-family:var(--font-display);font-size:30px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums tabular-nums}
+/* the result: the percentage, what it is and the grade on one row, the details under it */
+.fday{display:flex;flex-direction:column;gap:6px;padding:8px 12px;border:1px solid var(--line);border-radius:calc(var(--r) * .5)}
+.fday-top{display:flex;align-items:center;gap:10px}
+.fday-pct{flex:none;font-family:var(--font-display);font-size:30px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums tabular-nums}
 .fday-pct small{font-size:16px;color:var(--ink-3);margin-left:2px}
-.fday-l{font-size:12px;color:var(--ink-3)}
-/* phone and talk time sit in the focus result as a line of text, its dot the legend for the yellow in the bars;
-   in the body card the posture and break dots take the colour of how well that part went */
-.fday-line{margin-top:2px;color:var(--ink-2)}
+.fday-l{flex:1;min-width:0;font-size:12px;color:var(--ink-3)}
+/* in the body card the posture and break dots take the colour of how well that part went */
+.fday-line{color:var(--ink-2)}
+/* focus: time at work, distracted and away; the dots are the legend for the colours in the bars */
+.fnums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding-top:6px;border-top:1px solid var(--line)}
+.fnum{display:flex;flex-direction:column;gap:2px;min-width:0}
 /* the grade looks like a teacher's mark in the margin */
 .fday-grade{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:2px solid var(--c);color:var(--c);font-family:var(--font-display);font-size:21px;font-weight:600;font-variant-numeric:lining-nums;transform:rotate(-8deg)}
 [data-tone="ok"]{--c:var(--ok)}
@@ -277,10 +282,8 @@ button.fwd:hover span,button.fwd:focus-visible span{color:var(--ink);text-decora
 button.fcal-d{cursor:pointer;border-color:var(--c);background:color-mix(in srgb,var(--c) 20%,transparent)}
 button.fcal-d:hover,button.fcal-d:focus-visible{background:color-mix(in srgb,var(--c) 38%,transparent)}
 .fcal-d.cur{box-shadow:inset 0 0 0 1px var(--ink-2)}
-.fstats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.fstat{display:flex;flex-direction:column;gap:3px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:calc(var(--r) * .5);container-type:inline-size}
-/* the number shrinks with its tile, so wide display fonts (Neon, Y2K) still fit */
-.fstat-v{font-family:var(--font-display);font-size:min(24px,19cqi);line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* the number shrinks with the card, so wide display fonts (Neon, Y2K) still fit a third of it */
+.fstat-v{font-family:var(--font-display);font-size:min(20px,5.6cqi);line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 .fstat-v small{font-family:var(--font-body);font-size:12px;color:var(--ink-3);margin:0 5px 0 3px}
 .fstat-l{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
 .fstat-l i{width:8px;height:8px;border-radius:50%;flex:none}
@@ -403,8 +406,10 @@ td.b.cur{background:var(--rest-soft);color:var(--rest)}
 .music-ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .music-grid{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.player{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:8px;overflow:hidden;background:var(--track)}
+.player{position:relative;aspect-ratio:16/9;width:100%;border-radius:8px;overflow:hidden;background:var(--track)}
 .player iframe,#yt{position:absolute;left:0;top:0;width:100%;height:auto;aspect-ratio:16/9;border:0}
+/* a wide screen may make the player shorter than 16:9 (fitPlayer), so the video fills it and YouTube letterboxes it */
+.player:not(.is-hide):not(.is-viz) #yt{height:100%;aspect-ratio:auto}
 .player.is-hide{aspect-ratio:auto;height:60px}
 /* hidden video: a small player makes YouTube stream a low resolution, so it costs less to decode */
 .player.is-hide #yt,.player.is-viz #yt{width:320px;max-width:100%}
@@ -426,7 +431,7 @@ td.b.cur{background:var(--rest-soft);color:var(--rest)}
 .player-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--ink-2);font-size:14px}
 .player-wrap{position:relative}
 /* the track list opens over the player, so choosing a song never needs the page scrolled */
-.list-panel{position:absolute;z-index:5;left:0;right:0;top:0;min-height:100%;max-height:min(460px,72vh);display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(var(--surface),var(--surface)),var(--bg);box-shadow:0 18px 40px -14px rgba(0,0,0,.75)}
+.list-panel{position:absolute;z-index:5;left:0;right:0;top:0;min-height:100%;max-height:min(460px,72vh,var(--list-max,460px));display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(var(--surface),var(--surface)),var(--bg);box-shadow:0 18px 40px -14px rgba(0,0,0,.75)}
 .list-panel .tracks{flex:1;min-height:0;max-height:none}
 .lp-head{display:flex;align-items:center;gap:8px}
 .lp-head input{flex:1;min-width:0}
@@ -741,6 +746,19 @@ input[type=range]{accent-color:var(--accent);width:100%}
       </div>
     </section>
 
+    <section class="card sched" id="sched">
+      <div class="sec-head">
+        <h2>Розклад дзвінків</h2>
+        <button class="fold" id="schedFold" type="button" aria-expanded="false" aria-controls="rows"><span id="schedFoldText">Усі</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">№</th><th scope="col">Урок</th><th scope="col">Перерва після</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="card music" id="music">
       <div class="sec-head">
         <h2>Музика</h2>
@@ -789,19 +807,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
     </section>
 
     <div class="side">
-    <section class="card sched">
-      <div class="sec-head">
-        <h2>Розклад дзвінків</h2>
-        <button class="fold" id="schedFold" type="button" aria-expanded="false" aria-controls="rows"><span id="schedFoldText">Усі</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th scope="col">№</th><th scope="col">Урок</th><th scope="col">Перерва після</th></tr></thead>
-          <tbody id="rows"></tbody>
-        </table>
-      </div>
-    </section>
-
     <section class="card focus" id="focusCard" hidden>
       <div class="sec-head">
         <h2>Фокус</h2>
@@ -824,14 +829,17 @@ input[type=range]{accent-color:var(--accent);width:100%}
         </div>
       </div>
       <div class="fday" id="focusDay" hidden>
-        <div class="fday-main">
+        <div class="fday-top">
           <span class="fday-pct"><span id="fdayPct">0</span><small>%</small></span>
           <span class="fday-l"><span id="fdayWhat">підсумок дня</span>: <span id="fdayParts"></span></span>
-          <span class="fstat-l fday-line"><i class="d"></i><span id="fdayPhone"></span></span>
+          <span class="fday-grade" id="fdayGrade" title="Оцінка за 12-бальною шкалою">0</span>
         </div>
-        <span class="fday-grade" id="fdayGrade" title="Оцінка за 12-бальною шкалою">0</span>
+        <div class="fnums">
+          <div class="fnum"><div class="fstat-v" id="fnumF"></div><div class="fstat-l"><i class="f"></i>за роботою</div></div>
+          <div class="fnum"><div class="fstat-v" id="fnumD"></div><div class="fstat-l"><i class="d"></i>відволікання</div></div>
+          <div class="fnum"><div class="fstat-v" id="fnumA"></div><div class="fstat-l"><i class="a"></i>не було</div></div>
+        </div>
       </div>
-      <div class="fstats" id="focusStats"></div>
       <p class="focus-sum" id="focusSum"></p>
       <div class="fcharts" id="focusCharts" hidden>
         <div class="fchart" id="focusChartBox"><span class="fchart-h" id="focusChartH">Сьогодні</span><div class="fcols" id="focusChart"></div></div>
@@ -873,13 +881,13 @@ input[type=range]{accent-color:var(--accent);width:100%}
       </div>
       <p class="focus-sum" id="fPostureNote" hidden></p>
       <div class="fday" id="bodyDay" hidden>
-        <div class="fday-main">
+        <div class="fday-top">
           <span class="fday-pct"><span id="bodyPct">0</span><small>%</small></span>
-          <span class="fday-l"><span id="bodyWhat">підсумок дня</span>: постава й перерви<span id="bodyDays"></span></span>
-          <span class="fstat-l fday-line" id="bodyPostureRow" hidden><i id="bodyPostureDot"></i><span id="bodyPosture"></span></span>
-          <span class="fstat-l fday-line" id="bodyBreaksRow" hidden><i id="bodyBreaksDot"></i><span id="bodyBreaks"></span></span>
+          <span class="fday-l"><span id="bodyWhat">підсумок дня</span>: постава й розминка<span id="bodyDays"></span></span>
+          <span class="fday-grade" id="bodyGrade" title="Оцінка за 12-бальною шкалою">0</span>
         </div>
-        <span class="fday-grade" id="bodyGrade" title="Оцінка за 12-бальною шкалою">0</span>
+        <span class="fstat-l fday-line" id="bodyPostureRow" hidden><i id="bodyPostureDot"></i><span id="bodyPosture"></span></span>
+        <span class="fstat-l fday-line" id="bodyBreaksRow" title="Скільки разів ти вставав хоча б на 3 хвилини: на перерві або на уроці перед нею" hidden><i id="bodyBreaksDot"></i><span id="bodyBreaks"></span></span>
       </div>
       <p class="focus-sum" id="bodySum"></p>
     </section>
@@ -942,7 +950,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <div class="row"><select id="fPhoneSound"></select><button class="btn icon" type="button" id="fPhoneSoundTry" aria-label="Прослухати звук про телефон"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
         <label class="lbl" for="fStandSound">Звук, коли пора встати на перерві</label>
         <div class="row"><select id="fStandSound"></select><button class="btn icon" type="button" id="fStandSoundTry" aria-label="Прослухати звук нагадування встати"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
-        <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Короткі виходи з уроку, до 5 хвилин, не рахуються. Постава й перерви мають окрему оцінку в картці «Тіло». Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
+        <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Робота за столом на перерві додається до фокусу, а короткі виходи з уроку, до 5 хвилин, у фокусі не рахуються. Постава й розминка мають окрему оцінку в картці «Тіло»: розминка зараховується, коли ти встаєш хоча б на 3 хвилини на перерві або на уроці перед нею. Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
       </fieldset>
     </form>
   </details>
@@ -2168,6 +2176,20 @@ $('viz').addEventListener('click', togglePlay);
 $('vizConnect').addEventListener('click', vizConnect);
 new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerBox'));
 applyView();
+// Wide screens: the player gives up height so the left column (lesson, schedule, music) ends with the screen
+// instead of making the page scroll; it never gets below 200 px, YouTube's smallest player. The track list
+// that opens over it keeps to the same space. It is re-measured whenever anything above the player changes size.
+function fitPlayer(){
+  const box = $('playerBox'), card = $('music');
+  if(!matchMedia('(min-width:900px)').matches){ box.style.maxHeight = ''; card.style.removeProperty('--list-max'); return; }
+  const cs = getComputedStyle(card), below = parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth) + parseFloat(getComputedStyle(document.querySelector('.wrap')).paddingBottom);
+  const free = Math.floor(innerHeight - (box.getBoundingClientRect().top + scrollY) - below);
+  box.style.maxHeight = Math.max(200, free) + 'px';
+  card.style.setProperty('--list-max', Math.max(300, free) + 'px');
+}
+const fitRO = new ResizeObserver(fitPlayer);
+for(const el of [...document.querySelectorAll('.wrap > :not(main)'), $('now'), $('sched')]) fitRO.observe(el);
+addEventListener('resize', fitPlayer);
 
 // skins
 // Pixel-art synthwave sunset for the Pixel skin, computed pixel by pixel at 320x200 and shown upscaled (image-rendering: pixelated).
@@ -2524,24 +2546,20 @@ function focusLoop(){
   if(!need && FS.timer){ clearInterval(FS.timer); FS.timer = 0; endOut(); FS.state = null; FS.last = 0; saveFocus(); }
 }
 
-// a duration as [number, unit] pairs for the stat tiles: 38 хв, 1:05 год
+// a duration as [number, unit] pairs: 38 хв, 1:05 год
 const durParts = (s) => { const m = Math.round(s / 60); return m < 60 ? [[m, 'хв']] : [[Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0'), 'год']]; };
-function statTile(dot, parts, label){
-  const tile = document.createElement('div'); tile.className = 'fstat';
-  const v = document.createElement('div'); v.className = 'fstat-v';
-  for(const [num, unit] of parts){ const u = document.createElement('small'); u.textContent = unit; v.append(String(num), u); }
-  const l = document.createElement('div'); l.className = 'fstat-l';
-  if(dot){ const i = document.createElement('i'); i.className = dot; l.append(i); }
-  l.append(label);
-  tile.append(v, l);
-  return tile;
+// a duration into one of the focus numbers, the unit in small type
+function durInto(el, s){
+  el.textContent = '';
+  for(const [num, unit] of durParts(s)){ const u = document.createElement('small'); u.textContent = unit; el.append(String(num), u); }
 }
 // short exits (x) are left out on purpose: they count neither for nor against the focus
 const fTotal = (b) => b.f + b.d + b.a + (b.i || 0);
-// a break counts as one you got up on after 3 min away from the desk (or half of it, if less was recorded)
+// A break and the lesson before it (B3 follows L3) make one stretch: you got up in it after 3 min away from the
+// desk in all, on the break or on the lesson, short exits included (or half the break, if less of it was recorded).
 const STOOD = 180;
 // Seconds per state over any set of days: lessons (tot), breaks (brk), posture on lessons (pg/pb),
-// and breaks with data (bn) and the ones you got up on (bup).
+// and the stretches with break data (bn) and the ones you got up in (bup).
 function sumDays(days){
   const s = {tot:{f:0, d:0, a:0, i:0}, brk:{f:0, d:0, a:0, i:0}, pg:0, pb:0, bn:0, bup:0};
   for(const day of days){
@@ -2551,18 +2569,24 @@ function sumDays(days){
       if(!into) continue;
       for(const x in into) into[x] += b[x] || 0;
       if(k[0] === 'L'){ s.pg += b.pg || 0; s.pb += b.pb || 0; }
-      else if(fTotal(b) > 60){ s.bn++; if(b.a >= Math.min(STOOD, fTotal(b) / 2)) s.bup++; }
+      else if(fTotal(b) > 60){
+        const l = day['L' + k.slice(1)], out = b.a + (l ? l.a + (l.x || 0) : 0);
+        s.bn++;
+        if(out >= Math.min(STOOD, fTotal(b) / 2)) s.bup++;
+      }
     }
   }
   return s;
 }
 // Two results, each with its own grade on the 12-point school scale:
-// the focus is the share of lesson time at work (phone, talk and long exits pull it down),
-// the body is how straight you sat on lessons and how many breaks you got up on, the two weighing the same.
+// the focus is the share of time at work: all of the lessons (phone, talk and long exits pull it down) plus the
+// work done at the desk on breaks, which only adds; a break spent on the phone or away is not held against it.
+// The body is how straight you sat on lessons and how many stretches you got up in, the two weighing the same.
 // Over a week or a month every second (and every break) counts the same, so a full day weighs more than one short lesson.
 const toneOf = (v) => v >= .8 ? 'ok' : v >= .6 ? 'mid' : 'bad';
 const graded = (score) => ({score, grade:Math.max(1, Math.min(12, Math.round(score * 12))), tone:toneOf(score)});
-const focusOf = ({tot}) => fTotal(tot) < 60 ? null : graded((tot.f + tot.i) / fTotal(tot));
+const workOf = ({tot, brk}) => tot.f + tot.i + brk.f + brk.i;
+const focusOf = (s) => fTotal(s.tot) < 60 ? null : graded(workOf(s) / (fTotal(s.tot) + s.brk.f + s.brk.i));
 function bodyOf({pg, pb, bn, bup}){
   const posture = pg + pb > 60 ? pg / (pg + pb) : null, breaks = bn ? bup / bn : null;
   const parts = [posture, breaks].filter(v => v !== null);
@@ -2716,13 +2740,13 @@ function monthCal(a, b, cur, now){
   }
   return out;
 }
-// The body card for its own period: posture on lessons and getting up on breaks, with a grade of its own;
-// the dots take each part's colour.
+// The body card for its own period: posture on lessons and getting up (on a break or the lesson before it),
+// with a grade of its own; the dots take each part's colour.
 function renderBody(now){
   const {span, live, first, keys} = renderNav('body', now), sum = sumDays(keys.map(k => F.days[k])), {brk} = sum, bd = bodyOf(sum);
   $('bodyDay').hidden = !bd;
   $('bodySum').hidden = !!bd;
-  $('bodySum').textContent = live && (span === 'day' || !first) ? 'Тут з’явиться, як ти сидиш на уроках і чи встаєш на перервах.' : noDataTxt(span);
+  $('bodySum').textContent = live && (span === 'day' || !first) ? 'Тут з’явиться, як ти сидиш на уроках і чи встаєш розім’ятися.' : noDataTxt(span);
   if(!bd) return;
   const n = span === 'day' ? 0 : keys.filter(k => dayBody(F.days[k])).length;
   $('bodyWhat').textContent = WHAT_TXT[span];
@@ -2735,37 +2759,30 @@ function renderBody(now){
   }
   $('bodyBreaksRow').hidden = bd.breaks === null;
   if(bd.breaks !== null){
-    const bn = sum.bn, of = bn % 10 === 1 && bn % 100 !== 11 ? 'перерви' : 'перерв';
-    $('bodyBreaks').textContent = 'встав на ' + sum.bup + ' з ' + bn + ' ' + of + ' · за столом ' + durTxt(brk.f + brk.d + brk.i);
+    $('bodyBreaks').textContent = 'розминка: ' + sum.bup + ' з ' + sum.bn + ' · за столом на перервах ' + durTxt(brk.f + brk.d + brk.i);
     $('bodyBreaksDot').dataset.tone = toneOf(bd.breaks);
   }
   $('bodyGrade').textContent = bd.grade;
   $('bodyGrade').dataset.tone = bd.tone;
   $('bodyGrade').setAttribute('aria-label', 'Оцінка тіла: ' + bd.grade + ' з 12');
 }
-// The statistics for the picked period: the result with its grade, time tiles, and the charts under them.
+// The statistics for the picked period: the result with its grade and times, and the charts under it.
 function renderStats(st, now){
   const {span, live, a, b, first, keys} = renderNav('focus', now), sum = sumDays(keys.map(k => F.days[k])), {tot} = sum;
   const today = dayKey(new Date(now));
 
-  const tiles = [];
-  if(fTotal(tot) > 20){
-    // lessons only, so the tiles add up to the focus result (the desk on breaks shows in the body card)
-    tiles.push(statTile('f', durParts(tot.f + tot.i), 'за роботою'), statTile('a', durParts(tot.a), 'не було'));
-  }
-  fill($('focusStats'), tiles);
-  $('focusStats').hidden = !tiles.length;
-  $('focusSum').hidden = !!tiles.length;
-  $('focusSum').textContent = live && (span === 'day' || !first) ? 'Статистика з’явиться, щойно почнеться урок.' : noDataTxt(span);
-
   const ds = focusOf(sum);
   $('focusDay').hidden = !ds;
+  $('focusSum').hidden = !!ds;
+  $('focusSum').textContent = live && (span === 'day' || !first) ? 'Статистика з’явиться, щойно почнеться урок.' : noDataTxt(span);
   if(ds){
     const n = span === 'day' ? 0 : keys.filter(k => dayScore(F.days[k])).length;
     $('fdayWhat').textContent = WHAT_TXT[span];
     $('fdayPct').textContent = Math.round(ds.score * 100);
     $('fdayParts').textContent = 'за роботою' + (n ? ' · ' + daysTxt(n) : '');
-    $('fdayPhone').textContent = 'телефон, розмови: ' + durTxt(tot.d);
+    // the three add up to the result: work on lessons and breaks, distracted and away on lessons only
+    durInto($('fnumF'), workOf(sum)); durInto($('fnumD'), tot.d); durInto($('fnumA'), tot.a);
+    $('fnumF').parentElement.title = 'на уроках ' + durTxt(tot.f + tot.i) + ', на перервах ' + durTxt(sum.brk.f + sum.brk.i);
     $('fdayGrade').textContent = ds.grade;
     $('fdayGrade').dataset.tone = ds.tone;
     $('fdayGrade').setAttribute('aria-label', 'Оцінка фокусу: ' + ds.grade + ' з 12');
@@ -2786,7 +2803,7 @@ function renderStats(st, now){
       if(t <= 20){ cols.push(emptyCol(k.slice(1), ends[k] && now < ends[k] ? 'up' : 'miss', k === curKey, name)); continue; }
       const f = (bk.f + (bk.i || 0)) / t, out = bk.x >= 60 ? ', короткі виходи ' + durTxt(bk.x) + ' (не рахуються)' : '';
       cols.push(chartCol(k.slice(1), Math.round(f * 100), [['f', f], ['d', bk.d / t], ['a', bk.a / t]],
-        {cls:k === curKey ? ' cur' : '', title:name + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t) + out}));
+        {cls:k === curKey ? ' cur' : '', title:name + ': за роботою ' + pctTxt(f) + ', відволікання ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t) + out}));
     }
     any = cols.length > 0;
   }else if(span === 'week'){
