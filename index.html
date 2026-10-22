@@ -227,10 +227,8 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fday-pct small{font-size:16px;color:var(--ink-3);margin-left:2px}
 .fday-l{font-size:12px;color:var(--ink-3)}
 /* phone and talk time sit in the focus result as a line of text, its dot the legend for the yellow in the bars;
-   in the body block the posture and break dots take the colour of how well that part went */
+   in the body card the posture and break dots take the colour of how well that part went */
 .fday-line{margin-top:2px;color:var(--ink-2)}
-.fbody{display:flex;flex-direction:column;gap:4px}
-.fbody-h{margin:4px 0 0;font-size:13px;font-weight:600;color:var(--ink-2)}
 /* the grade looks like a teacher's mark in the margin */
 .fday-grade{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:2px solid var(--c);color:var(--c);font-family:var(--font-display);font-size:21px;font-weight:600;font-variant-numeric:lining-nums;transform:rotate(-8deg)}
 [data-tone="ok"]{--c:var(--ok)}
@@ -252,7 +250,7 @@ button.fwd{font:inherit;font-size:11px;background:none;border:0;padding:0;color:
 button.fwd:hover span,button.fwd:focus-visible span{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
 /* which stretch of days the card shows, always on one row: the tabs, the arrows (right after the tabs, so they
    stay put while the name changes), then the period's name; a narrow card switches to the short forms */
-#focusCard{container:focus / inline-size}
+#focusCard,#bodyCard{container:focus / inline-size}
 .fnav{display:flex;align-items:center;gap:8px;min-width:0}
 .fnav .seg{flex:none}
 .fnav .fs{display:none}
@@ -838,18 +836,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <div class="fcharts" id="focusCharts" hidden>
         <div class="fchart" id="focusChartBox"><span class="fchart-h" id="focusChartH">Сьогодні</span><div class="fcols" id="focusChart"></div></div>
       </div>
-      <div class="fbody" id="bodyBox" hidden>
-        <h3 class="fbody-h">Тіло</h3>
-        <div class="fday">
-          <div class="fday-main">
-            <span class="fday-pct"><span id="bodyPct">0</span><small>%</small></span>
-            <span class="fday-l"><span id="bodyWhat">підсумок дня</span>: постава й перерви<span id="bodyDays"></span></span>
-            <span class="fstat-l fday-line" id="bodyPostureRow" hidden><i id="bodyPostureDot"></i><span id="bodyPosture"></span></span>
-            <span class="fstat-l fday-line" id="bodyBreaksRow" hidden><i id="bodyBreaksDot"></i><span id="bodyBreaks"></span></span>
-          </div>
-          <span class="fday-grade" id="bodyGrade" title="Оцінка за 12-бальною шкалою">0</span>
-        </div>
-      </div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
       <div class="focus-setup" id="focusSetup" hidden>
@@ -857,16 +843,45 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <label class="check"><input type="checkbox" id="fPreview"><span>Показати камеру</span></label>
         <button class="link" id="fReset" type="button">Скинути сьогодні</button>
       </div>
-      <div class="focus-tools" id="postureTools" hidden>
-        <button class="btn sm" id="fPostureSet" type="button" title="Сядь рівно, як треба, і натисни">Я сиджу рівно</button>
-        <span class="focus-src" id="fPostureNote"></span>
-      </div>
       <div class="focus-tools" id="screenTools">
         <button class="btn sm" id="fScreen" type="button" title="Подивись на екран і натисни; повтори для кожного екрана">Запам’ятати екран</button>
         <button class="link" id="fScreensReset" type="button" hidden>Забути екрани</button>
         <span class="focus-src" id="fScreensNote"></span>
       </div>
       </div>
+    </section>
+
+    <section class="card focus" id="bodyCard" hidden>
+      <div class="sec-head">
+        <h2>Тіло</h2>
+        <span class="sec-right">
+          <button class="btn sm" id="fPostureSet" type="button" hidden>Я сиджу рівно</button>
+        </span>
+      </div>
+      <div class="fnav">
+        <div class="seg" id="bodySpan" role="group" aria-label="За який час підсумок">
+          <button type="button" data-span="day" aria-pressed="true">День</button>
+          <button type="button" data-span="week" aria-pressed="false" aria-label="Тиждень"><span class="fl">Тиждень</span><span class="fs">Тижд.</span></button>
+          <button type="button" data-span="month" aria-pressed="false" aria-label="Місяць"><span class="fl">Місяць</span><span class="fs">Міс.</span></button>
+          <button type="button" data-span="all" aria-pressed="false">Усе</button>
+        </div>
+        <div class="fpager">
+          <button class="fstep" id="bodyPrev" type="button" aria-label="Раніше" title="Раніше"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="fstep" id="bodyNext" type="button" aria-label="Пізніше" title="Пізніше"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="fpager-l" id="bodyWhen" type="button"><span class="fl" id="bodyWhenL">Сьогодні</span><span class="fs" id="bodyWhenS">Сьогодні</span></button>
+        </div>
+      </div>
+      <p class="focus-sum" id="fPostureNote" hidden></p>
+      <div class="fday" id="bodyDay" hidden>
+        <div class="fday-main">
+          <span class="fday-pct"><span id="bodyPct">0</span><small>%</small></span>
+          <span class="fday-l"><span id="bodyWhat">підсумок дня</span>: постава й перерви<span id="bodyDays"></span></span>
+          <span class="fstat-l fday-line" id="bodyPostureRow" hidden><i id="bodyPostureDot"></i><span id="bodyPosture"></span></span>
+          <span class="fstat-l fday-line" id="bodyBreaksRow" hidden><i id="bodyBreaksDot"></i><span id="bodyBreaks"></span></span>
+        </div>
+        <span class="fday-grade" id="bodyGrade" title="Оцінка за 12-бальною шкалою">0</span>
+      </div>
+      <p class="focus-sum" id="bodySum"></p>
     </section>
 
   <details class="card settings" id="settings">
@@ -927,7 +942,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <div class="row"><select id="fPhoneSound"></select><button class="btn icon" type="button" id="fPhoneSoundTry" aria-label="Прослухати звук про телефон"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
         <label class="lbl" for="fStandSound">Звук, коли пора встати на перерві</label>
         <div class="row"><select id="fStandSound"></select><button class="btn icon" type="button" id="fStandSoundTry" aria-label="Прослухати звук нагадування встати"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
-        <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Короткі виходи з уроку, до 5 хвилин, не рахуються. Постава й перерви мають окрему оцінку в блоці «Тіло». Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
+        <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Короткі виходи з уроку, до 5 хвилин, не рахуються. Постава й перерви мають окрему оцінку в картці «Тіло». Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
       </fieldset>
     </form>
   </details>
@@ -2257,7 +2272,7 @@ function saveFocus(){ try{ localStorage.setItem(FKEY, JSON.stringify(F)); }catch
 const FS = {state:null, reason:'', last:0, savedAt:0, timer:0, n:0, stream:null, camReady:false,
   face:null, phone:null, loading:false, missSince:0, offSince:0, phoneAt:0, jaw:[], capture:null, err:'', renderAt:0,
   setupOpen:false, slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, sitSince:0, standAt:0, toast:'',
-  out:null, view:{span:'day', at:null}};
+  out:null, views:{focus:{span:'day', at:null}, body:{span:'day', at:null}}};
 const FLABEL = {focused:'Фокус', away:'Нема на місці'};
 const FREASON = {phone:'Телефон', talk:'Розмова'};
 const FBUCKET = {focused:'f', distracted:'d', away:'a'};
@@ -2298,7 +2313,7 @@ async function startCam(){
     FS.err = e && e.name === 'NotAllowedError'
       ? 'Браузер не дав доступу до камери. Дозволь її для цього сайту (значок ліворуч від адреси) і ввімкни галочку ще раз.'
       : 'Камера не запустилась: ' + ((e && e.message) || e);
-    stopCam(); F.cam = false; $('fCam').checked = false; saveFocus();
+    stopCam(); F.cam = false; $('fCam').checked = false; FS.postureCap = null; FS.capture = null; saveFocus();
   }
   FS.loading = false; FS.starting = false;
   focusLoop(); renderFocusNow();
@@ -2316,10 +2331,10 @@ function stopCam(){
   for(const k of ['face', 'phone']) if(FS[k]){ try{ FS[k].close(); }catch(e){} FS[k] = null; }
 }
 // The camera is only needed on lessons and breaks (a day off counts only with "Дзвінки сьогодні"),
-// or while its setup is open; the rest of the time it is off.
+// while its setup is open, or while "Я сиджу рівно" learns the posture; the rest of the time it is off.
 function syncCam(st){
   if(FS.starting) return;
-  const want = F.cam && (FS.setupOpen || st.mode === 'lesson' || st.mode === 'break');
+  const want = F.cam && (FS.setupOpen || !!FS.postureCap || st.mode === 'lesson' || st.mode === 'break');
   if(want && (!FS.stream || !FS.face)) startCam();
   else if(!want && FS.stream) pauseCam();
 }
@@ -2393,6 +2408,8 @@ function periodKey(st){ return st.mode === 'lesson' ? 'L' + st.p.n : st.mode ===
 function checkPosture(face, now){
   const prev = FS.postureLast; FS.postureLast = now;
   if(face && FS.postureCap){
+    // the 1.5 s start with the first frame, so a camera that is still waking up does not cut them short
+    if(!FS.postureCap.samples.length) FS.postureCap.until = now + 1500;
     FS.postureCap.samples.push(face);
     if(now > FS.postureCap.until && FS.postureCap.samples.length >= 3){
       const sm = FS.postureCap.samples;
@@ -2580,8 +2597,11 @@ function fill(el, nodes){
   if(tmp.innerHTML !== el.innerHTML) el.replaceChildren(...tmp.childNodes);
 }
 
-/* ---------- focus history: a day, a week, a month or all of it ---------- */
-// FS.view.at is any day inside the shown period; null means the period that holds today, so it moves on by itself.
+/* ---------- focus and body history: a day, a week, a month or all of it ---------- */
+// Each card has its own view, FS.views.focus and FS.views.body. A view's at is any day inside the shown period;
+// null means the period that holds today, so it moves on by itself. HAS tells a day with that card's result.
+const dayBody = (day) => day ? bodyOf(sumDays([day])) : null;
+const HAS = {focus:dayScore, body:dayBody};
 const MON_NAME = ['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
 const MON_SHORT = ['січ','лют','бер','кві','тра','чер','лип','сер','вер','жов','лис','гру'];
 const WD = ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'];
@@ -2592,16 +2612,16 @@ const keysIn = (a, b) => { const ks = []; for(let d = a; d <= b; d = addDays(d, 
 const dateTxt = (d) => d.getDate() + ' ' + MON[d.getMonth()] + (d.getFullYear() !== new Date().getFullYear() ? ' ' + d.getFullYear() : '');
 const daysTxt = (n) => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'день' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'дні' : 'днів');
 // the first day with a result, where "Усе" starts and the back arrow stops
-function firstDay(){
-  const ks = Object.keys(F.days).filter(k => dayScore(F.days[k])).sort();
+function firstDay(has = dayScore){
+  const ks = Object.keys(F.days).filter(k => has(F.days[k])).sort();
   return ks.length ? keyDate(ks[0]) : null;
 }
 // the first and last day of the period that holds day d (weeks start on Monday)
-function periodOf(span, d){
+function periodOf(span, d, has){
   d = noon(d);
   if(span === 'week'){ const a = addDays(d, -((d.getDay() + 6) % 7)); return [a, addDays(a, 6)]; }
   if(span === 'month') return [new Date(d.getFullYear(), d.getMonth(), 1, 12), new Date(d.getFullYear(), d.getMonth() + 1, 0, 12)];
-  if(span === 'all'){ const today = noon(new Date()); return [firstDay() || today, today]; }
+  if(span === 'all'){ const today = noon(new Date()); return [firstDay(has) || today, today]; }
   return [d, d];
 }
 // the period's name, in full and short (for a narrow card): "пн, 19 жовтня" / "пн, 19.10"
@@ -2628,22 +2648,37 @@ function periodName(span, a, b){
   }
   return ['з ' + dateTxt(a), 'з ' + num(a)];
 }
-function setView(span, at){
-  if(at && noon(at) >= periodOf(span, new Date())[0]) at = null;
-  FS.view = {span, at:at ? noon(at) : null};
+function setView(card, span, at){
+  if(at && noon(at) >= periodOf(span, new Date(), HAS[card])[0]) at = null;
+  FS.views[card] = {span, at:at ? noon(at) : null};
   renderFocusNow();
 }
 // the arrows: one period back or forward; days without data (weekends, holidays) are skipped
-function stepView(dir){
-  const {span, at} = FS.view, [a, b] = periodOf(span, at || new Date());
+function stepView(card, dir){
+  const {span, at} = FS.views[card], has = HAS[card], [a, b] = periodOf(span, at || new Date(), has);
   let to = dir < 0 ? addDays(a, -1) : addDays(b, 1);
   if(span === 'day'){
-    const ks = Object.keys(F.days).filter(k => dayScore(F.days[k])).sort(), k0 = dayKey(to);
+    const ks = Object.keys(F.days).filter(k => has(F.days[k])).sort(), k0 = dayKey(to);
     const k = dir < 0 ? ks.filter(x => x <= k0).pop() : ks.find(x => x >= k0);
     to = k ? keyDate(k) : dir < 0 ? to : null;
   }
-  setView(span, to);
+  setView(card, span, to);
 }
+// The tabs, the arrows and the period's name on top of a card; their ids start with the card's name (focusSpan, bodyPrev…).
+function renderNav(card, now){
+  const {span, at} = FS.views[card], has = HAS[card], live = !at, [a, b] = periodOf(span, at || new Date(now), has), first = firstDay(has);
+  document.querySelectorAll('#' + card + 'Span [data-span]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.span === span)));
+  [$(card + 'WhenL').textContent, $(card + 'WhenS').textContent] = periodName(span, a, b);
+  $(card + 'When').disabled = live;
+  $(card + 'When').title = live ? '' : 'Повернутися до ' + {day:'сьогодні', week:'цього тижня', month:'цього місяця'}[span];
+  $(card + 'Prev').hidden = $(card + 'Next').hidden = span === 'all';
+  $(card + 'Prev').disabled = !first || a <= first;
+  $(card + 'Next').disabled = live;
+  return {span, live, a, b, first, keys:keysIn(a, b)};
+}
+const WHAT_TXT = {day:'підсумок дня', week:'підсумок тижня', month:'підсумок місяця', all:'підсумок за весь час'};
+const noDataTxt = (span) => 'За ' + {day:'цей день', week:'цей тиждень', month:'цей місяць', all:'весь час'}[span] + ' даних немає.';
+const durTxt = (s) => durParts(s).map(p => p.join(' ')).join(' ');
 // A lesson or a school day without data is still ahead ('up') until it ends, then it went by unseen ('miss');
 // a day off has no lessons at all ('off').
 function dayState(d, now){
@@ -2681,67 +2716,59 @@ function monthCal(a, b, cur, now){
   }
   return out;
 }
+// The body card for its own period: posture on lessons and getting up on breaks, with a grade of its own;
+// the dots take each part's colour.
+function renderBody(now){
+  const {span, live, first, keys} = renderNav('body', now), sum = sumDays(keys.map(k => F.days[k])), {brk} = sum, bd = bodyOf(sum);
+  $('bodyDay').hidden = !bd;
+  $('bodySum').hidden = !!bd;
+  $('bodySum').textContent = live && (span === 'day' || !first) ? 'Тут з’явиться, як ти сидиш на уроках і чи встаєш на перервах.' : noDataTxt(span);
+  if(!bd) return;
+  const n = span === 'day' ? 0 : keys.filter(k => dayBody(F.days[k])).length;
+  $('bodyWhat').textContent = WHAT_TXT[span];
+  $('bodyDays').textContent = n ? ' · ' + daysTxt(n) : '';
+  $('bodyPct').textContent = Math.round(bd.score * 100);
+  $('bodyPostureRow').hidden = bd.posture === null;
+  if(bd.posture !== null){
+    $('bodyPosture').textContent = 'постава рівно: ' + pctTxt(bd.posture) + ' часу уроків';
+    $('bodyPostureDot').dataset.tone = toneOf(bd.posture);
+  }
+  $('bodyBreaksRow').hidden = bd.breaks === null;
+  if(bd.breaks !== null){
+    const bn = sum.bn, of = bn % 10 === 1 && bn % 100 !== 11 ? 'перерви' : 'перерв';
+    $('bodyBreaks').textContent = 'встав на ' + sum.bup + ' з ' + bn + ' ' + of + ' · за столом ' + durTxt(brk.f + brk.d + brk.i);
+    $('bodyBreaksDot').dataset.tone = toneOf(bd.breaks);
+  }
+  $('bodyGrade').textContent = bd.grade;
+  $('bodyGrade').dataset.tone = bd.tone;
+  $('bodyGrade').setAttribute('aria-label', 'Оцінка тіла: ' + bd.grade + ' з 12');
+}
 // The statistics for the picked period: the result with its grade, time tiles, and the charts under them.
 function renderStats(st, now){
-  const {span, at} = FS.view, live = !at, [a, b] = periodOf(span, at || new Date(now));
-  const keys = keysIn(a, b), sum = sumDays(keys.map(k => F.days[k])), {tot, brk} = sum;
-  const first = firstDay(), today = dayKey(new Date(now));
-  document.querySelectorAll('#focusSpan [data-span]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.span === span)));
-  [$('focusWhenL').textContent, $('focusWhenS').textContent] = periodName(span, a, b);
-  $('focusWhen').disabled = live;
-  $('focusWhen').title = live ? '' : 'Повернутися до ' + {day:'сьогодні', week:'цього тижня', month:'цього місяця'}[span];
-  $('focusPrev').hidden = $('focusNext').hidden = span === 'all';
-  $('focusPrev').disabled = !first || a <= first;
-  $('focusNext').disabled = live;
+  const {span, live, a, b, first, keys} = renderNav('focus', now), sum = sumDays(keys.map(k => F.days[k])), {tot} = sum;
+  const today = dayKey(new Date(now));
 
   const tiles = [];
   if(fTotal(tot) > 20){
-    // lessons only, so the tiles add up to the focus result (the desk on breaks shows in the body block)
+    // lessons only, so the tiles add up to the focus result (the desk on breaks shows in the body card)
     tiles.push(statTile('f', durParts(tot.f + tot.i), 'за роботою'), statTile('a', durParts(tot.a), 'не було'));
   }
   fill($('focusStats'), tiles);
   $('focusStats').hidden = !tiles.length;
   $('focusSum').hidden = !!tiles.length;
-  $('focusSum').textContent = live && (span === 'day' || !first) ? 'Статистика з’явиться, щойно почнеться урок.'
-    : 'За ' + {day:'цей день', week:'цей тиждень', month:'цей місяць', all:'весь час'}[span] + ' даних немає.';
+  $('focusSum').textContent = live && (span === 'day' || !first) ? 'Статистика з’явиться, щойно почнеться урок.' : noDataTxt(span);
 
-  const what = {day:'підсумок дня', week:'підсумок тижня', month:'підсумок місяця', all:'підсумок за весь час'}[span];
-  const dur = (s) => durParts(s).map(p => p.join(' ')).join(' ');
   const ds = focusOf(sum);
   $('focusDay').hidden = !ds;
   if(ds){
     const n = span === 'day' ? 0 : keys.filter(k => dayScore(F.days[k])).length;
-    $('fdayWhat').textContent = what;
+    $('fdayWhat').textContent = WHAT_TXT[span];
     $('fdayPct').textContent = Math.round(ds.score * 100);
     $('fdayParts').textContent = 'за роботою' + (n ? ' · ' + daysTxt(n) : '');
-    $('fdayPhone').textContent = 'телефон, розмови: ' + dur(tot.d);
+    $('fdayPhone').textContent = 'телефон, розмови: ' + durTxt(tot.d);
     $('fdayGrade').textContent = ds.grade;
     $('fdayGrade').dataset.tone = ds.tone;
     $('fdayGrade').setAttribute('aria-label', 'Оцінка фокусу: ' + ds.grade + ' з 12');
-  }
-
-  // the body: posture on lessons and getting up on breaks, with a grade of its own; the dots take each part's colour
-  const bd = bodyOf(sum);
-  $('bodyBox').hidden = !bd;
-  if(bd){
-    const n = span === 'day' ? 0 : keys.filter(k => F.days[k] && bodyOf(sumDays([F.days[k]]))).length;
-    $('bodyWhat').textContent = what;
-    $('bodyDays').textContent = n ? ' · ' + daysTxt(n) : '';
-    $('bodyPct').textContent = Math.round(bd.score * 100);
-    $('bodyPostureRow').hidden = bd.posture === null;
-    if(bd.posture !== null){
-      $('bodyPosture').textContent = 'постава рівно: ' + pctTxt(bd.posture) + ' часу уроків';
-      $('bodyPostureDot').dataset.tone = toneOf(bd.posture);
-    }
-    $('bodyBreaksRow').hidden = bd.breaks === null;
-    if(bd.breaks !== null){
-      const bn = sum.bn, of = bn % 10 === 1 && bn % 100 !== 11 ? 'перерви' : 'перерв';
-      $('bodyBreaks').textContent = 'встав на ' + sum.bup + ' з ' + bn + ' ' + of + ' · за столом ' + dur(brk.f + brk.d + brk.i);
-      $('bodyBreaksDot').dataset.tone = toneOf(bd.breaks);
-    }
-    $('bodyGrade').textContent = bd.grade;
-    $('bodyGrade').dataset.tone = bd.tone;
-    $('bodyGrade').setAttribute('aria-label', 'Оцінка тіла: ' + bd.grade + ' з 12');
   }
 
   // the main chart: a day's lessons, a week's days, a month's calendar, or all the months
@@ -2757,7 +2784,7 @@ function renderStats(st, now){
     for(const k of lessons){
       const bk = day[k], t = bk ? fTotal(bk) : 0, name = 'Урок ' + k.slice(1);
       if(t <= 20){ cols.push(emptyCol(k.slice(1), ends[k] && now < ends[k] ? 'up' : 'miss', k === curKey, name)); continue; }
-      const f = (bk.f + (bk.i || 0)) / t, out = bk.x >= 60 ? ', короткі виходи ' + dur(bk.x) + ' (не рахуються)' : '';
+      const f = (bk.f + (bk.i || 0)) / t, out = bk.x >= 60 ? ', короткі виходи ' + durTxt(bk.x) + ' (не рахуються)' : '';
       cols.push(chartCol(k.slice(1), Math.round(f * 100), [['f', f], ['d', bk.d / t], ['a', bk.a / t]],
         {cls:k === curKey ? ' cur' : '', title:name + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t) + out}));
     }
@@ -2801,10 +2828,11 @@ function renderFocus(st){
   syncCam(st);
   const on = F.cam, now = Date.now(), inDay = st.mode === 'lesson' || st.mode === 'break';
   $('focusCard').hidden = !on && !FS.err;
+  $('bodyCard').hidden = !on;
   $('focusPill').hidden = !on || !inDay || !FS.state;
   $('camTools').hidden = !on;
   $('screenTools').hidden = !on;
-  $('postureTools').hidden = !on || !F.posture;
+  $('fPostureSet').hidden = !F.posture;
   if(now - FS.renderAt < 1000) return;
   FS.renderAt = now;
   const day = F.days[dayKey(new Date(now))] || {};
@@ -2828,12 +2856,17 @@ function renderFocus(st){
   $('fScreen').disabled = !!FS.capture || !FS.face;
   $('fScreensNote').textContent = n ? 'Екранів: ' + n + '. Розмова перед ними — мітинг, не відволікання.' : 'Поки екрани не запам’ятовані, розмови не рахуються.';
   $('fScreensReset').hidden = !n;
+  // the button turns the camera on by itself when needed; the hint stays until the posture is learned
+  const camWait = FS.postureCap && !(FS.camReady && FS.face);
   $('fPostureSet').textContent = FS.postureCap ? 'Сиди рівно…' : 'Я сиджу рівно';
-  $('fPostureSet').disabled = !!FS.postureCap || !FS.face;
-  $('fPostureNote').textContent = F.postureBase ? 'Правильну поставу запам’ятовано. Пересів? Натисни ще раз.' : 'Сядь рівно, як треба, і натисни, щоб я запам’ятав поставу.';
+  $('fPostureSet').disabled = !!FS.postureCap;
+  $('fPostureSet').title = F.postureBase ? 'Правильну поставу запам’ятовано. Пересів? Натисни ще раз.' : 'Сядь рівно, як треба, і натисни';
+  $('fPostureNote').hidden = !F.posture || !(camWait || (!F.postureBase && !FS.postureCap));
+  $('fPostureNote').textContent = camWait ? 'Вмикаю камеру…' : 'Сядь рівно, як треба, і натисни «Я сиджу рівно», щоб я запам’ятав поставу.';
   $('focusErr').hidden = !FS.err;
   $('focusErr').textContent = FS.err;
   renderStats(st, now);
+  renderBody(now);
 }
 function initFocus(){
   $('fCam').checked = F.cam;
@@ -2848,15 +2881,17 @@ function initFocus(){
   $('fPreview').addEventListener('change', () => { F.preview = $('fPreview').checked; applyFocusFold(); saveFocus(); });
   $('fReset').addEventListener('click', () => { FS.out = null; delete F.days[dayKey(new Date())]; saveFocus(); renderFocusNow(); });
   // a new span keeps the day being looked at: from 3 October, "Тиждень" opens that week
-  $('focusSpan').addEventListener('click', (e) => { const x = e.target.closest('[data-span]'); if(x) setView(x.dataset.span, FS.view.at); });
-  $('focusPrev').addEventListener('click', () => stepView(-1));
-  $('focusNext').addEventListener('click', () => stepView(1));
-  $('focusWhen').addEventListener('click', () => setView(FS.view.span, null));
+  for(const card of ['focus', 'body']){
+    $(card + 'Span').addEventListener('click', (e) => { const x = e.target.closest('[data-span]'); if(x) setView(card, x.dataset.span, FS.views[card].at); });
+    $(card + 'Prev').addEventListener('click', () => stepView(card, -1));
+    $(card + 'Next').addEventListener('click', () => stepView(card, 1));
+    $(card + 'When').addEventListener('click', () => setView(card, FS.views[card].span, null));
+  }
   $('focusCharts').addEventListener('click', (e) => {
     const g = e.target.closest('[data-go]');
     if(!g) return;
     const [span, k] = g.dataset.go.split(':');
-    setView(span, keyDate(k));
+    setView('focus', span, keyDate(k));
   });
   $('fScreen').addEventListener('click', () => { FS.capture = {until:Date.now() + 1500, samples:[]}; renderFocusNow(); });
   $('fPosture').checked = F.posture;
@@ -2866,8 +2901,6 @@ function initFocus(){
     if(!F.posture) setSlouch(false);
     // posture needs the camera, so switching it on turns the camera on too
     if(F.posture && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); renderFocusNow(); }
-    // the "Я сиджу рівно" button lives in the card's setup, so open it when posture is not set yet
-    if(F.posture && !F.postureBase){ FS.setupOpen = true; applyFocusFold(); }
     renderFocusNow();
   });
   $('fPostureNotify').addEventListener('change', async () => {
