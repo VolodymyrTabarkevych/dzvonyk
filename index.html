@@ -899,7 +899,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <button class="skin" type="button" data-skin="pixel" aria-pressed="false"><span class="sw sw-pixel"></span>Піксель</button>
           <button class="skin" type="button" data-skin="orbit" aria-pressed="false"><span class="sw sw-orbit"></span>Орбіта</button>
         </div>
-        <label class="check skin-shuffle"><input type="checkbox" id="sShuffle"><span>Нова випадкова тема з кожним уроком</span></label>
+        <label class="check skin-shuffle"><input type="checkbox" id="sShuffle"><span>Нова випадкова тема щодня</span></label>
       </fieldset>
       <div class="field"><label for="sStart">Початок першого уроку</label><input type="time" id="sStart" value="08:00"></div>
       <div class="field"><label for="sLesson">Тривалість уроку, хв</label><input type="number" id="sLesson" min="1" max="240" inputmode="numeric" value="45"></div>
@@ -1981,7 +1981,7 @@ function tick(){
   $('today').textContent = DOW[d.getDay()] + ', ' + d.getDate() + ' ' + MON[d.getMonth()];
 
   const st = stateAt(now);
-  shuffleSkin(st);
+  shuffleSkin();
   let chip, kind = 'idle', range = '', sub = '', next = '', progress = null, count;
   if(st.mode === 'lesson' || st.mode === 'break'){
     const p = st.p, i = st.plan.indexOf(p), nx = st.plan[i + 1];
@@ -2258,22 +2258,21 @@ $('skins').addEventListener('click', (e) => {
   V.colors = null; // the visualiser picks up the new skin's colours
 });
 applySkin();
-// "Нова випадкова тема з кожним уроком": once per lesson, as it starts (or when the page opens during it),
-// a theme other than the current one. A theme picked by hand stays until the next lesson.
-const lessonKey = (p) => dayKey(new Date(p.start)) + ' ' + p.n;
-function shuffleSkin(st){
-  if(!S.skinShuffle || st.mode !== 'lesson' || S.shuffledFor === lessonKey(st.p)) return;
+// "Нова випадкова тема щодня": once per day, as it starts (or when the page first opens that day),
+// a theme other than the current one. A theme picked by hand stays until tomorrow.
+function shuffleSkin(){
+  const today = dayKey(new Date());
+  if(!S.skinShuffle || S.shuffledFor === today) return;
   const pool = SKINS.filter(s => s !== S.skin);
   S.skin = pool[Math.floor(Math.random() * pool.length)];
-  S.shuffledFor = lessonKey(st.p); save(); applySkin();
+  S.shuffledFor = today; save(); applySkin();
   V.colors = null;
 }
 $('sShuffle').checked = S.skinShuffle;
 $('sShuffle').addEventListener('change', () => {
   S.skinShuffle = $('sShuffle').checked;
-  // switched on in the middle of a lesson: the current theme stays, the next lesson brings a new one
-  const st = stateAt(Date.now());
-  if(S.skinShuffle && st.mode === 'lesson') S.shuffledFor = lessonKey(st.p);
+  // switched on during the day: today's theme stays, tomorrow brings a new one
+  if(S.skinShuffle) S.shuffledFor = dayKey(new Date());
   save();
 });
 
