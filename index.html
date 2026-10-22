@@ -226,9 +226,11 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fday-pct{font-family:var(--font-display);font-size:30px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums tabular-nums}
 .fday-pct small{font-size:16px;color:var(--ink-3);margin-left:2px}
 .fday-l{font-size:12px;color:var(--ink-3)}
-/* phone and talk time, then posture, sit in the result as lines of text; the phone dot is the legend for the
-   yellow in the bars, the posture dot takes the colour of how straight you sat */
+/* phone and talk time sit in the focus result as a line of text, its dot the legend for the yellow in the bars;
+   in the body block the posture and break dots take the colour of how well that part went */
 .fday-line{margin-top:2px;color:var(--ink-2)}
+.fbody{display:flex;flex-direction:column;gap:4px}
+.fbody-h{margin:4px 0 0;font-size:13px;font-weight:600;color:var(--ink-2)}
 /* the grade looks like a teacher's mark in the margin */
 .fday-grade{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:2px solid var(--c);color:var(--c);font-family:var(--font-display);font-size:21px;font-weight:600;font-variant-numeric:lining-nums;transform:rotate(-8deg)}
 [data-tone="ok"]{--c:var(--ok)}
@@ -828,7 +830,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
           <span class="fday-pct"><span id="fdayPct">0</span><small>%</small></span>
           <span class="fday-l"><span id="fdayWhat">підсумок дня</span>: <span id="fdayParts"></span></span>
           <span class="fstat-l fday-line"><i class="d"></i><span id="fdayPhone"></span></span>
-          <span class="fstat-l fday-line" id="fdayPostureRow" hidden><i id="fdayPostureDot"></i><span id="fdayPosture"></span></span>
         </div>
         <span class="fday-grade" id="fdayGrade" title="Оцінка за 12-бальною шкалою">0</span>
       </div>
@@ -836,6 +837,18 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <p class="focus-sum" id="focusSum"></p>
       <div class="fcharts" id="focusCharts" hidden>
         <div class="fchart" id="focusChartBox"><span class="fchart-h" id="focusChartH">Сьогодні</span><div class="fcols" id="focusChart"></div></div>
+      </div>
+      <div class="fbody" id="bodyBox" hidden>
+        <h3 class="fbody-h">Тіло</h3>
+        <div class="fday">
+          <div class="fday-main">
+            <span class="fday-pct"><span id="bodyPct">0</span><small>%</small></span>
+            <span class="fday-l"><span id="bodyWhat">підсумок дня</span>: постава й перерви<span id="bodyDays"></span></span>
+            <span class="fstat-l fday-line" id="bodyPostureRow" hidden><i id="bodyPostureDot"></i><span id="bodyPosture"></span></span>
+            <span class="fstat-l fday-line" id="bodyBreaksRow" hidden><i id="bodyBreaksDot"></i><span id="bodyBreaks"></span></span>
+          </div>
+          <span class="fday-grade" id="bodyGrade" title="Оцінка за 12-бальною шкалою">0</span>
+        </div>
       </div>
       <p class="err" id="focusErr" hidden></p>
       <video class="cam" id="cam" playsinline muted></video>
@@ -914,7 +927,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <div class="row"><select id="fPhoneSound"></select><button class="btn icon" type="button" id="fPhoneSoundTry" aria-label="Прослухати звук про телефон"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
         <label class="lbl" for="fStandSound">Звук, коли пора встати на перерві</label>
         <div class="row"><select id="fStandSound"></select><button class="btn icon" type="button" id="fStandSoundTry" aria-label="Прослухати звук нагадування встати"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
-        <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
+        <p class="fine">Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Короткі виходи з уроку, до 5 хвилин, не рахуються. Постава й перерви мають окрему оцінку в блоці «Тіло». Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.</p>
       </fieldset>
     </form>
   </details>
@@ -2244,7 +2257,7 @@ function saveFocus(){ try{ localStorage.setItem(FKEY, JSON.stringify(F)); }catch
 const FS = {state:null, reason:'', last:0, savedAt:0, timer:0, n:0, stream:null, camReady:false,
   face:null, phone:null, loading:false, missSince:0, offSince:0, phoneAt:0, jaw:[], capture:null, err:'', renderAt:0,
   setupOpen:false, slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, sitSince:0, standAt:0, toast:'',
-  view:{span:'day', at:null}};
+  out:null, view:{span:'day', at:null}};
 const FLABEL = {focused:'Фокус', away:'Нема на місці'};
 const FREASON = {phone:'Телефон', talk:'Розмова'};
 const FBUCKET = {focused:'f', distracted:'d', away:'a'};
@@ -2443,6 +2456,14 @@ function checkStand(now){
   try{ if(F.standSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.standSound || 'standBirds'); }catch(e){}
   notify('Перерва: встань і розімнись хоча б на хвилинку.', 'stand');
 }
+// A short exit from a lesson (up to 5 min) stays out of the focus: away time waits in FS.out until it is clear
+// how long you are gone, then goes to x (a short exit, not counted) or a (away). Past 5 min all of it is away.
+const SHORT_OUT = 300;
+function endOut(){
+  const o = FS.out, k = o && (o.long ? 'a' : 'x');
+  FS.out = null;
+  if(o && o.s) o.b[k] = (o.b[k] || 0) + o.s;
+}
 function sampleFocus(){
   const now = Date.now();
   let s = null;
@@ -2464,10 +2485,17 @@ function sampleFocus(){
     const pk = periodKey(stateAt(now));
     if(pk){
       const dk = dayKey(new Date(now)), day = F.days[dk] || (F.days[dk] = {});
-      const b = day[pk] || (day[pk] = {f:0, d:0, a:0, i:0});
-      b[FBUCKET[FS.state]] += Math.min(now - FS.last, 5000) / 1000;
+      const b = day[pk] || (day[pk] = {f:0, d:0, a:0, i:0}), dt = Math.min(now - FS.last, 5000) / 1000;
+      if(FS.state === 'away' && pk[0] === 'L'){
+        if(FS.out && FS.out.b !== b) endOut();
+        const o = FS.out || (FS.out = {b, s:0, long:false});
+        o.s += dt;
+        if(o.s > SHORT_OUT) o.long = true;
+        if(o.long){ b.a += o.s; o.s = 0; }
+      }else{ endOut(); b[FBUCKET[FS.state]] += dt; }
     }
   }
+  if(s !== 'away') endOut();
   FS.last = now; FS.state = s;
   checkPhone(now);
   checkStand(now);
@@ -2476,7 +2504,7 @@ function sampleFocus(){
 function focusLoop(){
   const need = F.cam && FS.camReady && FS.face;
   if(need && !FS.timer) FS.timer = setInterval(sampleFocus, 250);
-  if(!need && FS.timer){ clearInterval(FS.timer); FS.timer = 0; FS.state = null; FS.last = 0; saveFocus(); }
+  if(!need && FS.timer){ clearInterval(FS.timer); FS.timer = 0; endOut(); FS.state = null; FS.last = 0; saveFocus(); }
 }
 
 // a duration as [number, unit] pairs for the stat tiles: 38 хв, 1:05 год
@@ -2491,10 +2519,14 @@ function statTile(dot, parts, label){
   tile.append(v, l);
   return tile;
 }
+// short exits (x) are left out on purpose: they count neither for nor against the focus
 const fTotal = (b) => b.f + b.d + b.a + (b.i || 0);
-// Seconds per state over any set of days: lessons (tot), breaks (brk) and posture on lessons (pg/pb).
+// a break counts as one you got up on after 3 min away from the desk (or half of it, if less was recorded)
+const STOOD = 180;
+// Seconds per state over any set of days: lessons (tot), breaks (brk), posture on lessons (pg/pb),
+// and breaks with data (bn) and the ones you got up on (bup).
 function sumDays(days){
-  const s = {tot:{f:0, d:0, a:0, i:0}, brk:{f:0, d:0, a:0, i:0}, pg:0, pb:0};
+  const s = {tot:{f:0, d:0, a:0, i:0}, brk:{f:0, d:0, a:0, i:0}, pg:0, pb:0, bn:0, bup:0};
   for(const day of days){
     if(!day) continue;
     for(const [k, b] of Object.entries(day)){
@@ -2502,23 +2534,24 @@ function sumDays(days){
       if(!into) continue;
       for(const x in into) into[x] += b[x] || 0;
       if(k[0] === 'L'){ s.pg += b.pg || 0; s.pb += b.pb || 0; }
+      else if(fTotal(b) > 60){ s.bn++; if(b.a >= Math.min(STOOD, fTotal(b) / 2)) s.bup++; }
     }
   }
   return s;
 }
-// The result: focus on lessons weighs most; posture counts when there is data for it. Breaks stay out of it:
-// sitting at the desk on a break only shows on the break column and in the reminders to stand up.
-// Over a week or a month every second counts the same, so a full day weighs more than one short lesson.
-// Grade on the 12-point school scale.
-const dayScore = (day) => day ? scoreOf(sumDays([day])) : null;
+// Two results, each with its own grade on the 12-point school scale:
+// the focus is the share of lesson time at work (phone, talk and long exits pull it down),
+// the body is how straight you sat on lessons and how many breaks you got up on, the two weighing the same.
+// Over a week or a month every second (and every break) counts the same, so a full day weighs more than one short lesson.
 const toneOf = (v) => v >= .8 ? 'ok' : v >= .6 ? 'mid' : 'bad';
-function scoreOf({tot, pg, pb}){
-  if(fTotal(tot) < 60) return null;
-  const parts = [{name:'фокус', w:.6, v:(tot.f + tot.i) / fTotal(tot)}];
-  if(pg + pb > 60) parts.push({name:'постава', w:.2, v:pg / (pg + pb)});
-  const score = parts.reduce((t, q) => t + q.w * q.v, 0) / parts.reduce((t, q) => t + q.w, 0);
-  return {score, parts, grade:Math.max(1, Math.min(12, Math.round(score * 12))), tone:toneOf(score)};
+const graded = (score) => ({score, grade:Math.max(1, Math.min(12, Math.round(score * 12))), tone:toneOf(score)});
+const focusOf = ({tot}) => fTotal(tot) < 60 ? null : graded((tot.f + tot.i) / fTotal(tot));
+function bodyOf({pg, pb, bn, bup}){
+  const posture = pg + pb > 60 ? pg / (pg + pb) : null, breaks = bn ? bup / bn : null;
+  const parts = [posture, breaks].filter(v => v !== null);
+  return parts.length ? Object.assign(graded(parts.reduce((t, v) => t + v, 0) / parts.length), {posture, breaks}) : null;
 }
+const dayScore = (day) => day ? focusOf(sumDays([day])) : null;
 // One column of a mini chart: a number on top, a stacked bar (fractions of its height), a label underneath.
 // With o.go ('day:2026-10-19', 'month:2026-10-01') it is a button that opens that day or month.
 function chartCol(label, top, segs, o){
@@ -2663,8 +2696,8 @@ function renderStats(st, now){
 
   const tiles = [];
   if(fTotal(tot) > 20){
-    // at work = lessons at the desk plus breaks spent at the desk (minus phone time, which never counts as work)
-    tiles.push(statTile('f', durParts(tot.f + tot.i + brk.f + brk.i), 'за роботою'), statTile('a', durParts(tot.a), 'не було'));
+    // lessons only, so the tiles add up to the focus result (the desk on breaks shows in the body block)
+    tiles.push(statTile('f', durParts(tot.f + tot.i), 'за роботою'), statTile('a', durParts(tot.a), 'не було'));
   }
   fill($('focusStats'), tiles);
   $('focusStats').hidden = !tiles.length;
@@ -2672,24 +2705,43 @@ function renderStats(st, now){
   $('focusSum').textContent = live && (span === 'day' || !first) ? 'Статистика з’явиться, щойно почнеться урок.'
     : 'За ' + {day:'цей день', week:'цей тиждень', month:'цей місяць', all:'весь час'}[span] + ' даних немає.';
 
-  const ds = scoreOf(sum);
+  const what = {day:'підсумок дня', week:'підсумок тижня', month:'підсумок місяця', all:'підсумок за весь час'}[span];
+  const dur = (s) => durParts(s).map(p => p.join(' ')).join(' ');
+  const ds = focusOf(sum);
   $('focusDay').hidden = !ds;
   if(ds){
     const n = span === 'day' ? 0 : keys.filter(k => dayScore(F.days[k])).length;
-    $('fdayWhat').textContent = {day:'підсумок дня', week:'підсумок тижня', month:'підсумок місяця', all:'підсумок за весь час'}[span];
+    $('fdayWhat').textContent = what;
     $('fdayPct').textContent = Math.round(ds.score * 100);
-    // posture still counts in the result, but gets its own line under phone and talk
-    const pos = ds.parts.find(q => q.name === 'постава');
-    $('fdayParts').textContent = ds.parts.filter(q => q !== pos).map(q => q.name + ' ' + Math.round(q.v * 100) + '%').join(' · ') + (n ? ' · ' + daysTxt(n) : '');
-    $('fdayPhone').textContent = 'телефон, розмови: ' + durParts(tot.d).map(p => p.join(' ')).join(' ');
-    $('fdayPostureRow').hidden = !pos;
-    if(pos){
-      $('fdayPosture').textContent = 'постава рівно: ' + Math.round(pos.v * 100) + '% часу';
-      $('fdayPostureDot').dataset.tone = toneOf(pos.v);
-    }
+    $('fdayParts').textContent = 'за роботою' + (n ? ' · ' + daysTxt(n) : '');
+    $('fdayPhone').textContent = 'телефон, розмови: ' + dur(tot.d);
     $('fdayGrade').textContent = ds.grade;
     $('fdayGrade').dataset.tone = ds.tone;
-    $('fdayGrade').setAttribute('aria-label', 'Оцінка: ' + ds.grade + ' з 12');
+    $('fdayGrade').setAttribute('aria-label', 'Оцінка фокусу: ' + ds.grade + ' з 12');
+  }
+
+  // the body: posture on lessons and getting up on breaks, with a grade of its own; the dots take each part's colour
+  const bd = bodyOf(sum);
+  $('bodyBox').hidden = !bd;
+  if(bd){
+    const n = span === 'day' ? 0 : keys.filter(k => F.days[k] && bodyOf(sumDays([F.days[k]]))).length;
+    $('bodyWhat').textContent = what;
+    $('bodyDays').textContent = n ? ' · ' + daysTxt(n) : '';
+    $('bodyPct').textContent = Math.round(bd.score * 100);
+    $('bodyPostureRow').hidden = bd.posture === null;
+    if(bd.posture !== null){
+      $('bodyPosture').textContent = 'постава рівно: ' + pctTxt(bd.posture) + ' часу уроків';
+      $('bodyPostureDot').dataset.tone = toneOf(bd.posture);
+    }
+    $('bodyBreaksRow').hidden = bd.breaks === null;
+    if(bd.breaks !== null){
+      const bn = sum.bn, of = bn % 10 === 1 && bn % 100 !== 11 ? 'перерви' : 'перерв';
+      $('bodyBreaks').textContent = 'встав на ' + sum.bup + ' з ' + bn + ' ' + of + ' · за столом ' + dur(brk.f + brk.d + brk.i);
+      $('bodyBreaksDot').dataset.tone = toneOf(bd.breaks);
+    }
+    $('bodyGrade').textContent = bd.grade;
+    $('bodyGrade').dataset.tone = bd.tone;
+    $('bodyGrade').setAttribute('aria-label', 'Оцінка тіла: ' + bd.grade + ' з 12');
   }
 
   // the main chart: a day's lessons, a week's days, a month's calendar, or all the months
@@ -2705,16 +2757,10 @@ function renderStats(st, now){
     for(const k of lessons){
       const bk = day[k], t = bk ? fTotal(bk) : 0, name = 'Урок ' + k.slice(1);
       if(t <= 20){ cols.push(emptyCol(k.slice(1), ends[k] && now < ends[k] ? 'up' : 'miss', k === curKey, name)); continue; }
-      const f = (bk.f + (bk.i || 0)) / t;
+      const f = (bk.f + (bk.i || 0)) / t, out = bk.x >= 60 ? ', короткі виходи ' + dur(bk.x) + ' (не рахуються)' : '';
       cols.push(chartCol(k.slice(1), Math.round(f * 100), [['f', f], ['d', bk.d / t], ['a', bk.a / t]],
-        {cls:k === curKey ? ' cur' : '', title:name + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t)}));
+        {cls:k === curKey ? ' cur' : '', title:name + ': за роботою ' + pctTxt(f) + ', телефон і розмови ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t) + out}));
     }
-    const breaks = plan.filter(p => p.kind === 'break'), onBreak = live && st.mode === 'break';
-    if(fTotal(brk) > 20){
-      // on a break away is the good part: rested in the "good" colour at the bottom, time at the desk above it
-      const r = brk.a / fTotal(brk);
-      cols.push(chartCol('пер.', Math.round(r * 100), [['f', r], ['d', 1 - r]], {cls:onBreak ? ' cur' : '', title:'Перерви: відпочив ' + pctTxt(r) + ', за столом ' + pctTxt(1 - r)}));
-    }else if(breaks.length) cols.push(emptyCol('пер.', now < breaks[breaks.length - 1].end ? 'up' : 'miss', onBreak, 'Перерви'));
     any = cols.length > 0;
   }else if(span === 'week'){
     // every day of the week keeps its column: with data, still ahead, missed, or a day off
@@ -2729,7 +2775,7 @@ function renderStats(st, now){
     for(let m = new Date(a.getFullYear(), a.getMonth(), 1, 12); m <= b; m = new Date(m.getFullYear(), m.getMonth() + 1, 1, 12)) months.push(m);
     head = months.length > 12 ? 'Останні 12 місяців' : 'По місяцях';
     for(const m of months.slice(-12)){
-      const [ma, mb] = periodOf('month', m), ms = scoreOf(sumDays(keysIn(ma, mb).map(k => F.days[k])));
+      const [ma, mb] = periodOf('month', m), ms = focusOf(sumDays(keysIn(ma, mb).map(k => F.days[k])));
       const name = MON_NAME[m.getMonth()] + ' ' + m.getFullYear(), cls = mb >= noon(new Date(now)) ? ' cur' : '';
       cols.push(ms
         ? chartCol(MON_SHORT[m.getMonth()], ms.grade, [[TONE_BAR[ms.tone], 1]], {cls, h:Math.max(8, ms.score * 100), go:'month:' + dayKey(ma), title:name + ': ' + pctTxt(ms.score) + ', оцінка ' + ms.grade})
@@ -2800,7 +2846,7 @@ function initFocus(){
     renderFocusNow();
   });
   $('fPreview').addEventListener('change', () => { F.preview = $('fPreview').checked; applyFocusFold(); saveFocus(); });
-  $('fReset').addEventListener('click', () => { delete F.days[dayKey(new Date())]; saveFocus(); renderFocusNow(); });
+  $('fReset').addEventListener('click', () => { FS.out = null; delete F.days[dayKey(new Date())]; saveFocus(); renderFocusNow(); });
   // a new span keeps the day being looked at: from 3 October, "Тиждень" opens that week
   $('focusSpan').addEventListener('click', (e) => { const x = e.target.closest('[data-span]'); if(x) setView(x.dataset.span, FS.view.at); });
   $('focusPrev').addEventListener('click', () => stepView(-1));
