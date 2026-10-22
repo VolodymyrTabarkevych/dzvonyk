@@ -379,7 +379,7 @@ button.fcal-d:hover,button.fcal-d:focus-visible{background:color-mix(in srgb,var
 .ticks{position:relative;height:16px;font-family:var(--font-display);font-size:12px;color:var(--ink-3)}
 .tick{position:absolute;transform:translateX(-50%)}
 
-/* schedule: under the day ruler, the rows that fit the screen, or all of them with "Розклад" */
+/* schedule: the full table opens under the day ruler with "Розклад" */
 .now-sched{margin-top:2px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;margin-bottom:4px}
 h2,.settings summary{font-family:var(--font-hand);font-weight:700;font-size:28px;line-height:1;margin:0;text-wrap:balance}
@@ -405,7 +405,7 @@ td.b.cur{background:var(--rest-soft);color:var(--rest)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .player{position:relative;aspect-ratio:16/9;width:100%;border-radius:8px;overflow:hidden;background:var(--track)}
 .player iframe,#yt{position:absolute;left:0;top:0;width:100%;height:auto;aspect-ratio:16/9;border:0}
-/* a wide screen may make the player shorter than 16:9 (fitLeft), so the video fills it and YouTube letterboxes it */
+/* a wide screen fits the player to the room it has, not 16:9 (fitLeft), so the video fills it and YouTube letterboxes it */
 .player:not(.is-hide):not(.is-viz) #yt{height:100%;aspect-ratio:auto}
 .player.is-hide{aspect-ratio:auto;height:60px}
 /* hidden video: a small player makes YouTube stream a low resolution, so it costs less to decode */
@@ -905,7 +905,6 @@ input[type=range]{accent-color:var(--accent);width:100%}
       <div class="field"><label for="sLesson">Тривалість уроку, хв</label><input type="number" id="sLesson" min="1" max="240" inputmode="numeric" value="45"></div>
       <div class="field"><label for="sBreak">Тривалість перерви, хв</label><input type="number" id="sBreak" min="0" max="180" inputmode="numeric" value="15"></div>
       <div class="field"><label for="sCount">Кількість уроків</label><input type="number" id="sCount" min="1" max="20" inputmode="numeric" value="8"></div>
-      <div class="field"><label for="sPeek">Уроків у згорнутому розкладі</label><select id="sPeek"></select></div>
       <fieldset class="field">
         <legend class="lbl">Робочі дні</legend>
         <div class="days">
@@ -958,12 +957,9 @@ input[type=range]{accent-color:var(--accent);width:100%}
 const $ = (id) => document.getElementById(id);
 const MIN = 60000;
 const KEY = 'dzvonyk.v1';
-const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', skinShuffle:false, shuffledFor:'', dayOn:{}, peek:0};
+const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', skinShuffle:false, shuffledFor:'', dayOn:{}};
 const SOUNDS = [['japan','Японська школа'],['japanShort','Японська школа, коротко'],['school','Шкільний дзвінок'],['rise','Три ноти вгору'],['chime','Три ноти вниз'],['dingdong','Дінь-дон'],['gong','Гонг']];
-const WARN = [[0,'Без попередження'],[1,'За 1 хв до уроку'],[2,'За 2 хв до уроку'],[3,'За 3 хв до уроку'],[5,'За 5 хв до уроку']];
-// rows of the closed schedule: 0 is as many as fit on the screen (fitLeft)
-const PEEK = [[0,'Скільки влізе'],[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8']];
-const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
+const WARN = [[0,'Без попередження'],[1,'За 1 хв до уроку'],[2,'За 2 хв до уроку'],[3,'За 3 хв до уроку'],[5,'За 5 хв до уроку']];const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
 const DOW_ACC = ['у неділю','у понеділок','у вівторок','у середу','у четвер','у пʼятницю','у суботу'];
 const MON = ['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'];
 
@@ -986,7 +982,7 @@ function load(){
   const names = SOUNDS.map(s => s[0]);
   if(!names.includes(base.soundLesson)) base.soundLesson = DEFAULTS.soundLesson;
   if(!names.includes(base.soundBreak)) base.soundBreak = DEFAULTS.soundBreak;
-  if(!PEEK.some(p => p[0] === base.peek)) base.peek = DEFAULTS.peek;
+  delete base.peek; // rows of the closed schedule, a setting no longer used
   return base;
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
@@ -2053,7 +2049,6 @@ function tick(){
     tr.classList.toggle('cur', cur);
     tr.lastElementChild.classList.toggle('cur', brkCur);
   }
-  applySchedRows();
   // day ruler
   if(dayInfo){
     for(const {el, p} of dayInfo.blocks){
@@ -2070,29 +2065,17 @@ function tick(){
 
 /* ---------- wiring ---------- */
 $('nowFold').addEventListener('click', () => { nowOpen = !nowOpen; applyNowFold(); });
-// The schedule under the day ruler. Open, it is all of it with the break lengths; closed (as on every load), it is
-// as many rows from the current lesson on as set in the settings, or by default the current lesson's row plus as many
-// of the next ones as fit on a wide screen without a scroll (fitLeft).
-let schedOpen = false, schedPeek = 0;
-function applySchedRows(){
-  const trs = [...$('rows').children], n = Math.min(schedPeek, trs.length);
-  const ci = trs.findIndex(tr => tr.classList.contains('cur') || tr.lastElementChild.classList.contains('cur'));
-  const from = Math.max(0, Math.min(ci < 0 ? 0 : ci, trs.length - n));
-  trs.forEach((tr, i) => { tr.hidden = !schedOpen && (i < from || i >= from + n); });
-  $('schedBox').hidden = !schedOpen && !n;
-}
+// The full schedule (times and break lengths) opens under the day ruler; closed on every load, like the setup,
+// so the player under the card gets the rest of the screen (fitLeft).
 $('schedFold').addEventListener('click', () => {
-  schedOpen = !schedOpen;
-  $('schedFold').setAttribute('aria-expanded', String(schedOpen));
-  applySchedRows(); fitLeft();
+  const open = $('schedBox').hidden;
+  $('schedBox').hidden = !open;
+  $('schedFold').setAttribute('aria-expanded', String(open));
 });
 function fillSelect(el, items){ for(const [v, label] of items){ const o = document.createElement('option'); o.value = v; o.textContent = label; el.append(o); } }
 fillSelect($('sSoundLesson'), SOUNDS);
 fillSelect($('sSoundBreak'), SOUNDS);
 fillSelect($('sWarn'), WARN);
-fillSelect($('sPeek'), PEEK);
-$('sPeek').value = String(S.peek);
-$('sPeek').addEventListener('change', () => { S.peek = +$('sPeek').value; save(); fitLeft(); });
 
 $('enableBtn').addEventListener('click', enable);
 $('resumeBtn').addEventListener('click', enable);
@@ -2111,7 +2094,7 @@ document.querySelectorAll('[data-preview]').forEach(b => b.addEventListener('cli
 
 $('form').addEventListener('submit', (e) => e.preventDefault());
 $('form').addEventListener('change', (e) => {
-  if(['sVol', 'sDuck', 'sShuffle', 'sPeek', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound', 'fPhoneSound', 'fStand', 'fStandSound'].includes(e.target.id)) return; // these have their own handlers
+  if(['sVol', 'sDuck', 'sShuffle', 'fCam', 'fPosture', 'fPostureNotify', 'fPostureSound', 'fPhoneSound', 'fStand', 'fStandSound'].includes(e.target.id)) return; // these have their own handlers
   readForm(); fillForm(); save();
   renderAll();
   setKeepAlive(S.keepAlive && isRunning());
@@ -2177,33 +2160,24 @@ $('nextBtn').addEventListener('click', () => playItem(M.cur + 1, true));
 $('sDuck').checked = M.duck;
 $('sDuck').addEventListener('change', () => { M.duck = $('sDuck').checked; saveMusic(); });
 window.addEventListener('pagehide', () => { if(duckBase !== null && yt.ready) yt.player.setVolume(duckBase); });
-// a new view changes the player's height, so the schedule rows above it are fitted again
+// the hidden view keeps its own strip, so the player is fitted again for the new view
 document.querySelectorAll('#viewSeg [data-view]').forEach(b => b.addEventListener('click', () => { M.view = b.dataset.view; saveMusic(); applyView(); fitLeft(); }));
 $('coverPlay').addEventListener('click', togglePlay);
 $('viz').addEventListener('click', togglePlay);
 $('vizConnect').addEventListener('click', vizConnect);
 new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerBox'));
 applyView();
-// Wide screens: the left column (the lesson card, then music) ends with the screen, without a scroll.
-// With the schedule closed, it shows the number of rows set in the settings; by default its first row always shows,
-// and the next ones fill whatever room the player leaves at its own size. When there is not even that,
-// the player gives up height, though never below 200 px, YouTube's smallest player.
-// The track list that opens over it keeps to the same space. It is re-measured whenever anything above changes size.
+// Wide screens: the player takes all the room left under the lesson card, so the left column (the lesson card,
+// then music) ends with the screen, without a scroll; it never gets below 200 px, YouTube's smallest player,
+// and the hidden view keeps its strip. The track list that opens over it keeps to the same space.
+// It is re-measured whenever anything above changes size.
 function fitLeft(){
-  const box = $('playerBox'), card = $('music'), wide = matchMedia('(min-width:900px)').matches;
-  const wrapPad = parseFloat(getComputedStyle(document.querySelector('.wrap')).paddingBottom);
-  box.style.maxHeight = ''; card.style.removeProperty('--list-max');
-  if(!schedOpen){
-    // by default, after the first, add rows one by one while the music card still ends above the screen's bottom
-    const total = $('rows').children.length, spare = () => innerHeight - wrapPad - (card.getBoundingClientRect().bottom + scrollY);
-    let n = Math.min(S.peek || 1, total);
-    if(wide && !S.peek) while(n < total){ schedPeek = n + 1; applySchedRows(); if(spare() < 0) break; n++; }
-    schedPeek = n; applySchedRows();
-  }
-  if(!wide) return;
-  const cs = getComputedStyle(card), below = parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth) + wrapPad;
+  const box = $('playerBox'), card = $('music');
+  box.style.height = ''; card.style.removeProperty('--list-max');
+  if(!matchMedia('(min-width:900px)').matches) return;
+  const cs = getComputedStyle(card), below = parseFloat(cs.paddingBottom) + parseFloat(cs.borderBottomWidth) + parseFloat(getComputedStyle(document.querySelector('.wrap')).paddingBottom);
   const free = Math.floor(innerHeight - (box.getBoundingClientRect().top + scrollY) - below);
-  box.style.maxHeight = Math.max(200, free) + 'px';
+  if(M.view !== 'hide') box.style.height = Math.max(200, free) + 'px';
   card.style.setProperty('--list-max', Math.max(300, free) + 'px');
 }
 // fitLeft resizes the lesson card it watches, so it runs in the next frame, outside the observer's own loop
