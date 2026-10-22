@@ -191,11 +191,10 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--card-shadow)}
 .layout{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
 .side{display:flex;flex-direction:column;gap:14px;min-width:0}
-/* wide: the lesson, the schedule and the music on the left, focus and body on the right */
+/* wide: the lesson (with the schedule) and the music on the left, focus and body on the right */
 @media (min-width:900px){
-  .layout{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);grid-template-rows:auto auto 1fr;grid-template-areas:"now side" "sched side" "music side";align-items:start}
+  .layout{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);grid-template-rows:auto 1fr;grid-template-areas:"now side" "music side";align-items:start}
   .now{grid-area:now}
-  .sched{grid-area:sched}
   .music{grid-area:music}
   .side{grid-area:side}
 }
@@ -360,9 +359,6 @@ button.fcal-d:hover,button.fcal-d:focus-visible{background:color-mix(in srgb,var
 .btn.icon{padding:9px 11px}
 .fold{font:inherit;font-size:13px;font-weight:600;background:none;border:0;padding:4px 0;color:var(--ink-2);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .fold:hover{color:var(--ink)}
-/* the schedule's fold stays beside the heading; in a narrow column the heading wraps instead */
-.sched .sec-head{flex-wrap:nowrap}
-.sched .sec-head h2{min-width:0}
 .fold{flex:none}
 .fold .chev{transition:transform .2s}
 .fold[aria-expanded="true"] .chev{transform:rotate(180deg)}
@@ -370,20 +366,21 @@ button.fcal-d:hover,button.fcal-d:focus-visible{background:color-mix(in srgb,var
 .focus-setup{display:flex;flex-direction:column;gap:12px}
 .link{font:inherit;font-size:13px;background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 
-/* day ruler */
+/* day ruler: it doubles as the schedule at a glance, each lesson with its number (its times on hover) */
 .day{display:flex;flex-direction:column;gap:4px}
 .track{position:relative;height:20px;border-bottom:1px solid var(--line)}
 .blk{position:absolute;border-radius:3px}
-.blk.lesson{top:2px;bottom:2px;background:var(--accent-soft);border-right:2px solid var(--surface)}
+.blk.lesson{top:2px;bottom:2px;display:grid;place-items:center;overflow:hidden;font-family:var(--font-display);font-size:10px;line-height:1;color:var(--ink-2);background:var(--accent-soft);border-right:2px solid var(--surface)}
 .blk.break{top:7px;bottom:8px;background:var(--rest-soft)}
-.blk.past{background:var(--track)}
-.blk.lesson.cur{background:var(--accent)}
+.blk.past{background:var(--track);color:var(--ink-3)}
+.blk.lesson.cur{background:var(--accent);color:var(--accent-ink)}
 .blk.break.cur{background:var(--rest)}
 .nowmark{position:absolute;top:-5px;bottom:-5px;width:2px;margin-left:-1px;border-radius:2px;background:var(--now)}
 .ticks{position:relative;height:16px;font-family:var(--font-display);font-size:12px;color:var(--ink-3)}
 .tick{position:absolute;transform:translateX(-50%)}
 
-/* schedule */
+/* schedule: the full table opens under the day ruler with "Розклад" */
+.now-sched{margin-top:2px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;margin-bottom:4px}
 h2,.settings summary{font-family:var(--font-hand);font-weight:700;font-size:28px;line-height:1;margin:0;text-wrap:balance}
 .table-wrap{overflow-x:auto}
@@ -527,7 +524,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="aero"] td.end{font-size:13px;text-transform:uppercase;color:var(--accent)}
 :root[data-skin="aero"] .add input,:root[data-skin="aero"] .lp-head input,:root[data-skin="aero"] .brk,:root[data-skin="aero"] .form input[type=time],:root[data-skin="aero"] .form input[type=number],:root[data-skin="aero"] .form select{background:var(--bg);border:1px solid rgba(255,255,255,.35);border-radius:0;color:var(--ink)}
 :root[data-skin="aero"] .player{border-radius:0;background:var(--bg)}
-:root[data-skin="aero"] .sched::after{content:"";display:block;height:34px;margin-top:14px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 9px,var(--ink) 9px 13px,transparent 13px 15px,var(--ink) 15px 16px,transparent 16px 21px)}
+:root[data-skin="aero"] .now-sched::after{content:"";display:block;height:34px;margin-top:14px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 9px,var(--ink) 9px 13px,transparent 13px 15px,var(--ink) 15px 16px,transparent 16px 21px)}
 :root[data-skin="dots"] .card{border:0}
 :root[data-skin="dots"] .logo{font-family:var(--font-body);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.06em}
 :root[data-skin="dots"] .logo svg{color:var(--rest)}
@@ -545,7 +542,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="dots"] .bar-fill{border-radius:0;background:radial-gradient(var(--ink) 1.6px,transparent 2px) 0 50%/8px 8px}
 :root[data-skin="dots"] .now[data-kind="break"] .bar-fill{background:radial-gradient(var(--rest) 1.6px,transparent 2px) 0 50%/8px 8px}
 :root[data-skin="dots"] .blk{border-radius:999px}
-:root[data-skin="dots"] .blk.lesson{border-right:0;top:6px;bottom:6px}
+:root[data-skin="dots"] .blk.lesson{border-right:0;top:6px;bottom:6px;font-size:0}
 :root[data-skin="dots"] .btn{background:#262626;border-color:#262626;color:var(--ink);font-family:var(--font-body);font-weight:500}
 :root[data-skin="dots"] .btn.primary{background:var(--ink);border-color:var(--ink);color:#000}
 :root[data-skin="dots"] .btn.ghost{background:transparent;border-color:#3a3a3a}
@@ -567,7 +564,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 :root[data-skin="line"] .now-range{font-weight:300}
 :root[data-skin="line"] .bar{height:2px;border-radius:0}
 :root[data-skin="line"] .bar-fill,:root[data-skin="line"] .blk{border-radius:0}
-:root[data-skin="line"] .blk.lesson{top:8px;bottom:8px;border-right:2px solid var(--bg)}
+:root[data-skin="line"] .blk.lesson{top:8px;bottom:8px;border-right:2px solid var(--bg);font-size:0}
 :root[data-skin="line"] .blk.break{top:9px;bottom:9px}
 :root[data-skin="line"] .btn{background:transparent;border:1px solid #3a3a3a;color:var(--ink);font-weight:400}
 :root[data-skin="line"] .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
@@ -716,6 +713,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <div class="power" id="powerOff">
           <button class="btn primary" id="enableBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="enableLabel">Увімкнути дзвінки</span></button>
         </div>
+        <button class="fold" id="schedFold" type="button" aria-expanded="false" aria-controls="schedBox">Розклад<svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="fold" id="nowFold" type="button" aria-expanded="false" aria-controls="nowSetup" hidden><span id="nowFoldText">Налаштувати</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </div>
       </div>
@@ -744,15 +742,9 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <div class="track" id="track"></div>
         <div class="ticks" id="ticks"></div>
       </div>
-    </section>
-
-    <section class="card sched" id="sched">
-      <div class="sec-head">
-        <h2>Розклад дзвінків</h2>
-        <button class="fold" id="schedFold" type="button" aria-expanded="false" aria-controls="rows"><span id="schedFoldText">Усі</span><svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      </div>
-      <div class="table-wrap">
+      <div class="table-wrap now-sched" id="schedBox" hidden>
         <table>
+          <caption class="sr-only">Розклад дзвінків</caption>
           <thead><tr><th scope="col">№</th><th scope="col">Урок</th><th scope="col">Перерва після</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
@@ -965,7 +957,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 const $ = (id) => document.getElementById(id);
 const MIN = 60000;
 const KEY = 'dzvonyk.v1';
-const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', skinShuffle:false, shuffledFor:'', dayOn:{}, schedFull:false};
+const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', skinShuffle:false, shuffledFor:'', dayOn:{}};
 const SOUNDS = [['japan','Японська школа'],['japanShort','Японська школа, коротко'],['school','Шкільний дзвінок'],['rise','Три ноти вгору'],['chime','Три ноти вниз'],['dingdong','Дінь-дон'],['gong','Гонг']];
 const WARN = [[0,'Без попередження'],[1,'За 1 хв до уроку'],[2,'За 2 хв до уроку'],[3,'За 3 хв до уроку'],[5,'За 5 хв до уроку']];
 const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
@@ -1943,6 +1935,7 @@ function renderDay(){
     el.style.left = pct(p.start);
     el.style.width = ((p.end - p.start) / span * 100) + '%';
     el.title = (p.kind === 'lesson' ? 'Урок ' + p.n : 'Перерва') + ' · ' + hm(p.start) + ' – ' + hm(p.end);
+    if(p.kind === 'lesson') el.textContent = p.n;
     track.append(el); blocks.push({el, p});
   }
   const mark = document.createElement('span'); mark.className = 'nowmark'; track.append(mark);
@@ -2056,10 +2049,6 @@ function tick(){
     tr.classList.toggle('cur', cur);
     tr.lastElementChild.classList.toggle('cur', brkCur);
   }
-  // folded: only the current lesson (or the break after it) and the next one; outside the school day, the first two
-  const trs = [...$('rows').children];
-  const ci = trs.findIndex(tr => tr.classList.contains('cur') || tr.lastElementChild.classList.contains('cur'));
-  trs.forEach((tr, i) => { tr.hidden = !S.schedFull && !(ci < 0 ? i < 2 : i === ci || i === ci + 1); });
   // day ruler
   if(dayInfo){
     for(const {el, p} of dayInfo.blocks){
@@ -2076,12 +2065,13 @@ function tick(){
 
 /* ---------- wiring ---------- */
 $('nowFold').addEventListener('click', () => { nowOpen = !nowOpen; applyNowFold(); });
-function applySchedFold(){
-  $('schedFold').setAttribute('aria-expanded', String(S.schedFull));
-  $('schedFoldText').textContent = S.schedFull ? 'Менше' : 'Усі';
-}
-$('schedFold').addEventListener('click', () => { S.schedFull = !S.schedFull; save(); applySchedFold(); tick(); });
-applySchedFold();
+// The full schedule (times and break lengths) opens under the day ruler; closed on every load, like the setup,
+// so the card stays short enough for the music to fit under it.
+$('schedFold').addEventListener('click', () => {
+  const open = $('schedBox').hidden;
+  $('schedBox').hidden = !open;
+  $('schedFold').setAttribute('aria-expanded', String(open));
+});
 function fillSelect(el, items){ for(const [v, label] of items){ const o = document.createElement('option'); o.value = v; o.textContent = label; el.append(o); } }
 fillSelect($('sSoundLesson'), SOUNDS);
 fillSelect($('sSoundBreak'), SOUNDS);
@@ -2176,7 +2166,7 @@ $('viz').addEventListener('click', togglePlay);
 $('vizConnect').addEventListener('click', vizConnect);
 new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerBox'));
 applyView();
-// Wide screens: the player gives up height so the left column (lesson, schedule, music) ends with the screen
+// Wide screens: the player gives up height so the left column (the lesson card, then music) ends with the screen
 // instead of making the page scroll; it never gets below 200 px, YouTube's smallest player. The track list
 // that opens over it keeps to the same space. It is re-measured whenever anything above the player changes size.
 function fitPlayer(){
@@ -2188,7 +2178,7 @@ function fitPlayer(){
   card.style.setProperty('--list-max', Math.max(300, free) + 'px');
 }
 const fitRO = new ResizeObserver(fitPlayer);
-for(const el of [...document.querySelectorAll('.wrap > :not(main)'), $('now'), $('sched')]) fitRO.observe(el);
+for(const el of [...document.querySelectorAll('.wrap > :not(main)'), $('now')]) fitRO.observe(el);
 addEventListener('resize', fitPlayer);
 
 // skins
