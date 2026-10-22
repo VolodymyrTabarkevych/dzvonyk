@@ -1709,20 +1709,21 @@ const VIZ = {
     }
   },
   // Line: hairlines on an axis; the loudest band in orange with its frequency, Swiss-poster style
-  line(g, G, C, L){
+  // levels are `lv` here because the frequency label needs the global L() for its units
+  line(g, G, C, lv){
     const lw = Math.max(1, G.step * .1);
     g.fillStyle = C.i; g.fillRect(G.padX, G.mid - G.dpr / 2, G.W - G.padX * 2, Math.max(1, G.dpr));
     let best = 0;
-    for(let i = 1; i < G.N; i++) if(L[i] > L[best]) best = i;
+    for(let i = 1; i < G.N; i++) if(lv[i] > lv[best]) best = i;
     for(let i = 0; i < G.N; i++){
-      const h = Math.max(lw, L[i] * G.area);
+      const h = Math.max(lw, lv[i] * G.area);
       g.fillStyle = i === best ? C.a : C.ink;
       g.fillRect(G.padX + G.step * (i + .5) - lw / 2, G.mid - h / 2, lw, h);
     }
-    if(L[best] > .08){
+    if(lv[best] > .08){
       const hz = bandHz(best, G.N), x = G.padX + G.step * (best + .5), right = x > G.W * .75;
       g.font = 11 * G.dpr + 'px ' + C.fb; g.fillStyle = C.a; g.textBaseline = 'bottom'; g.textAlign = right ? 'right' : 'left';
-      g.fillText((hz >= 1000 ? L((hz / 1000).toFixed(1).replace('.', ',') + ' кГц', (hz / 1000).toFixed(1) + ' kHz') : Math.round(hz) + L(' Гц', ' Hz')), x + (right ? -6 : 6) * G.dpr, G.mid - L[best] * G.area / 2);
+      g.fillText((hz >= 1000 ? L((hz / 1000).toFixed(1).replace('.', ',') + ' кГц', (hz / 1000).toFixed(1) + ' kHz') : Math.round(hz) + L(' Гц', ' Hz')), x + (right ? -6 : 6) * G.dpr, G.mid - lv[best] * G.area / 2);
     }
   },
   // Pixel: a chunky 8-bit equaliser in synthwave colours over a stepped, striped pixel sun, with blinking pixel stars
