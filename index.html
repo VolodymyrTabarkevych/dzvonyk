@@ -227,6 +227,9 @@ body::before{content:"";position:fixed;top:0;bottom:0;left:max(6px,calc(50% - 61
 .fday-top{display:flex;align-items:center;gap:10px}
 .fday-pct{flex:none;font-family:var(--font-display);font-size:30px;line-height:1;color:var(--ink);font-variant-numeric:lining-nums tabular-nums}
 .fday-pct small{font-size:16px;color:var(--ink-3);margin-left:2px}
+/* short exits sit under the percentage: recorded, but part of neither the result nor the numbers below */
+.fday-pcol{flex:none;display:flex;flex-direction:column;gap:4px}
+.fday-out{font-size:11px;line-height:1;color:var(--ink-3);white-space:nowrap}
 .fday-l{flex:1;min-width:0;font-size:12px;color:var(--ink-3)}
 /* in the body card the posture and break dots take the colour of how well that part went */
 .fday-line{color:var(--ink-2)}
@@ -823,7 +826,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
       </div>
       <div class="fday" id="focusDay" hidden>
         <div class="fday-top">
-          <span class="fday-pct"><span id="fdayPct">0</span><small>%</small></span>
+          <span class="fday-pcol"><span class="fday-pct"><span id="fdayPct">0</span><small>%</small></span><span class="fday-out" id="fdayOut" hidden></span></span>
           <span class="fday-l"><span id="fdayWhat">підсумок дня</span>: <span id="fdayParts"></span></span>
           <span class="fday-grade" id="fdayGrade" title="Оцінка за 12-бальною шкалою">0</span>
         </div>
@@ -2660,7 +2663,7 @@ const STOOD = 180;
 // Seconds per state over any set of days: lessons (tot), breaks (brk), posture on lessons (pg/pb),
 // and the stretches with break data (bn) and the ones you got up in (bup).
 function sumDays(days){
-  const s = {tot:{f:0, d:0, a:0, i:0}, brk:{f:0, d:0, a:0, i:0}, pg:0, pb:0, bn:0, bup:0};
+  const s = {tot:{f:0, d:0, a:0, i:0, x:0}, brk:{f:0, d:0, a:0, i:0}, pg:0, pb:0, bn:0, bup:0};
   for(const day of days){
     if(!day) continue;
     for(const [k, b] of Object.entries(day)){
@@ -2906,6 +2909,9 @@ function renderStats(st, now){
     const n = span === 'day' ? 0 : keys.filter(k => dayScore(F.days[k])).length;
     $('fdayWhat').textContent = whatTxt(span);
     $('fdayPct').textContent = Math.round(ds.score * 100);
+    $('fdayOut').hidden = tot.x < 30;
+    $('fdayOut').textContent = L('виходи ', 'exits ') + durTxt(tot.x);
+    $('fdayOut').title = L('Короткі виходи з уроків, до 5 хвилин: не рахуються ні за фокус, ні проти', 'Short exits from lessons, up to 5 minutes: they count neither for nor against the focus');
     $('fdayParts').textContent = L('за роботою', 'working') + (n ? ' · ' + daysTxt(n) : '');
     // the three add up to the result: work on lessons and breaks, distracted and away on lessons only
     durInto($('fnumF'), workOf(sum)); durInto($('fnumD'), tot.d); durInto($('fnumA'), tot.a);
