@@ -2067,7 +2067,7 @@ function tick(){
 /* ---------- wiring ---------- */
 $('nowFold').addEventListener('click', () => { nowOpen = !nowOpen; applyNowFold(); });
 // The schedule under the day ruler. Open, it is all of it with the break lengths; closed (as on every load), it is
-// as many rows as fit on a wide screen without a scroll (fitLeft), from the current lesson on, none on a narrow one.
+// the current lesson's row, plus as many of the next ones as fit on a wide screen without a scroll (fitLeft).
 let schedOpen = false, schedPeek = 0;
 function applySchedRows(){
   const trs = [...$('rows').children], n = Math.min(schedPeek, trs.length);
@@ -2177,17 +2177,17 @@ $('vizConnect').addEventListener('click', vizConnect);
 new ResizeObserver(() => { if(M.view === 'viz') sizeViz(); }).observe($('playerBox'));
 applyView();
 // Wide screens: the left column (the lesson card, then music) ends with the screen, without a scroll.
-// With the schedule closed, its rows fill whatever room the player leaves at its own size; when there is
-// not even that, the player gives up height, though never below 200 px, YouTube's smallest player.
+// With the schedule closed, its first row always shows, and the next ones fill whatever room the player leaves at
+// its own size; when there is not even that, the player gives up height, though never below 200 px, YouTube's smallest player.
 // The track list that opens over it keeps to the same space. It is re-measured whenever anything above changes size.
 function fitLeft(){
   const box = $('playerBox'), card = $('music'), wide = matchMedia('(min-width:900px)').matches;
   const wrapPad = parseFloat(getComputedStyle(document.querySelector('.wrap')).paddingBottom);
   box.style.maxHeight = ''; card.style.removeProperty('--list-max');
   if(!schedOpen){
-    // add rows one by one while the music card still ends above the screen's bottom
+    // after the first, add rows one by one while the music card still ends above the screen's bottom
     const total = $('rows').children.length, spare = () => innerHeight - wrapPad - (card.getBoundingClientRect().bottom + scrollY);
-    let n = 0;
+    let n = Math.min(1, total);
     if(wide) while(n < total){ schedPeek = n + 1; applySchedRows(); if(spare() < 0) break; n++; }
     schedPeek = n; applySchedRows();
   }
