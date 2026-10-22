@@ -2506,16 +2506,16 @@ function sumDays(days){
   }
   return s;
 }
-// The result: focus on lessons weighs most; posture and resting on breaks count when there is data for them.
+// The result: focus on lessons weighs most; posture counts when there is data for it. Breaks stay out of it:
+// sitting at the desk on a break only shows on the break column and in the reminders to stand up.
 // Over a week or a month every second counts the same, so a full day weighs more than one short lesson.
 // Grade on the 12-point school scale.
 const dayScore = (day) => day ? scoreOf(sumDays([day])) : null;
 const toneOf = (v) => v >= .8 ? 'ok' : v >= .6 ? 'mid' : 'bad';
-function scoreOf({tot, brk, pg, pb}){
+function scoreOf({tot, pg, pb}){
   if(fTotal(tot) < 60) return null;
   const parts = [{name:'фокус', w:.6, v:(tot.f + tot.i) / fTotal(tot)}];
   if(pg + pb > 60) parts.push({name:'постава', w:.2, v:pg / (pg + pb)});
-  if(fTotal(brk) > 60) parts.push({name:'перерви', w:.2, v:brk.a / fTotal(brk)});
   const score = parts.reduce((t, q) => t + q.w * q.v, 0) / parts.reduce((t, q) => t + q.w, 0);
   return {score, parts, grade:Math.max(1, Math.min(12, Math.round(score * 12))), tone:toneOf(score)};
 }
