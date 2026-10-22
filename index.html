@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Дзвоник</title>
+<title>Фокусмаксінг</title>
 <script>try{var s=JSON.parse(localStorage.getItem('dzvonyk.v1')||'{}').skin;if(['cyber','aero','dots','line','synth','pixel','orbit'].indexOf(s)>=0)document.documentElement.setAttribute('data-skin',s)}catch(e){}</script>
 <meta name="description" content="Особистий розклад дзвінків: уроки й перерви у фіксований час, дзвінки та музика з YouTube.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z' fill='%23f1cf5e'/%3E%3Cpath d='M9.8 19.8a2.3 2.3 0 0 0 4.4 0' fill='none' stroke='%23f1cf5e' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -459,6 +459,7 @@ td.b.cur{background:var(--rest-soft);color:var(--rest)}
 .field{display:flex;flex-direction:column;gap:6px;min-width:0;margin:0;padding:0;border:0}
 .field>label{font-size:13px;font-weight:600;color:var(--ink-2)}
 .field.wide{grid-column:1/-1}
+.field .seg{align-self:flex-start}
 input[type=time],input[type=number],select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0}
 input[type=range]{accent-color:var(--accent);width:100%}
 .row{display:flex;gap:8px;align-items:center}
@@ -688,7 +689,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <span class="logo"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Дзвоник</span>
+      <span class="logo"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 3a1.5 1.5 0 0 1 1.5 1.5v.6A6 6 0 0 1 18 11v4l1.6 2.2a.6.6 0 0 1-.5.9H4.9a.6.6 0 0 1-.5-.9L6 15v-4a6 6 0 0 1 4.5-5.9v-.6A1.5 1.5 0 0 1 12 3Z" fill="currentColor"/><path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Фокусмаксінг</span>
       <span class="today" id="today">вівторок, 13 жовтня</span>
     </div>
     <div class="top-right">
@@ -901,6 +902,13 @@ input[type=range]{accent-color:var(--accent);width:100%}
         </div>
         <label class="check skin-shuffle"><input type="checkbox" id="sShuffle"><span>Нова випадкова тема щодня</span></label>
       </fieldset>
+      <fieldset class="field">
+        <legend class="lbl">Мова</legend>
+        <div class="seg" id="langSeg" role="group" aria-label="Мова">
+          <button type="button" data-lang="uk" lang="uk" aria-pressed="true">Українська</button>
+          <button type="button" data-lang="en" lang="en" aria-pressed="false">English</button>
+        </div>
+      </fieldset>
       <div class="field"><label for="sStart">Початок першого уроку</label><input type="time" id="sStart" value="08:00"></div>
       <div class="field"><label for="sLesson">Тривалість уроку, хв</label><input type="number" id="sLesson" min="1" max="240" inputmode="numeric" value="45"></div>
       <div class="field"><label for="sBreak">Тривалість перерви, хв</label><input type="number" id="sBreak" min="0" max="180" inputmode="numeric" value="15"></div>
@@ -935,7 +943,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
         <label class="check"><input type="checkbox" id="fCam"><span>Стежити через вебкамеру</span></label>
         <label class="check"><input type="checkbox" id="fPosture"><span>Нагадувати сидіти рівно</span></label>
         <label class="check"><input type="checkbox" id="fStand"><span>Нагадувати встати на перерві</span></label>
-        <label class="check"><input type="checkbox" id="fPostureNotify"><span>Нагадування сповіщенням Windows, коли Дзвоник згорнутий</span></label>
+        <label class="check"><input type="checkbox" id="fPostureNotify"><span>Нагадування сповіщенням Windows, коли Фокусмаксінг згорнутий</span></label>
         <label class="lbl" for="fPostureSound">Звук нагадування про поставу</label>
         <div class="row"><select id="fPostureSound"></select><button class="btn icon" type="button" id="fPostureSoundTry" aria-label="Прослухати звук нагадування про поставу"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button></div>
         <label class="lbl" for="fPhoneSound">Звук, коли береш телефон на уроці</label>
@@ -958,17 +966,24 @@ const $ = (id) => document.getElementById(id);
 const MIN = 60000;
 const KEY = 'dzvonyk.v1';
 const DEFAULTS = {v:2, start:'08:00', lesson:45, brk:15, count:8, days:[1,2,3,4,5], overrides:{}, soundLesson:'japan', soundBreak:'japan', warn:0, volume:0.7, keepAlive:true, enabled:false, skin:'chalk', skinShuffle:false, shuffledFor:'', dayOn:{}};
-const SOUNDS = [['japan','Японська школа'],['japanShort','Японська школа, коротко'],['school','Шкільний дзвінок'],['rise','Три ноти вгору'],['chime','Три ноти вниз'],['dingdong','Дінь-дон'],['gong','Гонг']];
-const WARN = [[0,'Без попередження'],[1,'За 1 хв до уроку'],[2,'За 2 хв до уроку'],[3,'За 3 хв до уроку'],[5,'За 5 хв до уроку']];const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
+const SOUNDS = [['japan','Японська школа','Japanese school'],['japanShort','Японська школа, коротко','Japanese school, short'],['school','Шкільний дзвінок','School bell'],['rise','Три ноти вгору','Three notes up'],['chime','Три ноти вниз','Three notes down'],['dingdong','Дінь-дон','Ding-dong'],['gong','Гонг','Gong']];
+const WARN = [[0,'Без попередження','No warning'],[1,'За 1 хв до уроку','1 min before a lesson'],[2,'За 2 хв до уроку','2 min before a lesson'],[3,'За 3 хв до уроку','3 min before a lesson'],[5,'За 5 хв до уроку','5 min before a lesson']];
+const POSTURE_SOUNDS = [['postureRise','Перелив угору','Rising chime'],['postureGlide','Ковзання вгору','Upward glide'],['postureSoft','Тихий дзвіночок','Soft bell'],['none','Без звуку','No sound']];
+const PHONE_SOUNDS = [['phoneUhOh','Ой-ой','Uh-oh'],['phoneKnock','Стук-стук','Knock-knock'],['phonePips','Три писки','Three beeps'],['none','Без звуку','No sound']];
+const STAND_SOUNDS = [['standBirds','Пташки','Birds'],['standMarimba','Маримба','Marimba'],['standWhistle','Свисток','Whistle'],['none','Без звуку','No sound']];
+const DOW = ['неділя','понеділок','вівторок','середа','четвер','пʼятниця','субота'];
+const DOW_EN = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const DOW_ACC = ['у неділю','у понеділок','у вівторок','у середу','у четвер','у пʼятницю','у суботу'];
 const MON = ['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'];
+const MON_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 /* ---------- settings ---------- */
 const S = load();
 function load(){
   const base = JSON.parse(JSON.stringify(DEFAULTS));
+  let raw = null;
   try{
-    const raw = localStorage.getItem(KEY);
+    raw = localStorage.getItem(KEY);
     if(raw){
       const o = JSON.parse(raw);
       if(o && typeof o === 'object') Object.assign(base, o);
@@ -982,15 +997,83 @@ function load(){
   const names = SOUNDS.map(s => s[0]);
   if(!names.includes(base.soundLesson)) base.soundLesson = DEFAULTS.soundLesson;
   if(!names.includes(base.soundBreak)) base.soundBreak = DEFAULTS.soundBreak;
+  // whoever used the app before English keeps Ukrainian; a first visit follows the browser's languages
+  if(base.lang !== 'uk' && base.lang !== 'en') base.lang = raw || (navigator.languages || [navigator.language]).some(l => /^uk\b/i.test(l || '')) ? 'uk' : 'en';
   delete base.peek; // rows of the closed schedule, a setting no longer used
   return base;
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 
+/* ---------- language ---------- */
+// Ukrainian is the source. The code passes both texts to L(); the markup keeps its Ukrainian, and EN translates
+// its texts, titles, labels and placeholders by their exact Ukrainian text (applyLang swaps them in place).
+const L = (uk, en) => S.lang === 'en' ? en : uk;
+const EN = {
+  'Фокусмаксінг':'Focusmaxxing', 'Сядь рівно':'Sit up straight', 'Добре':'OK',
+  'Дзвінки на паузі: після перезавантаження браузер чекає, поки ти натиснеш на сторінку.':'Bells are paused: after a reload the browser waits for you to click the page.',
+  'Відновити дзвінки':'Resume bells', 'Увімкнути дзвінки':'Turn on bells', 'Фокус':'Focus', 'Розклад':'Schedule', 'Налаштувати':'Set up',
+  'Дзвінки увімкнені':'Bells are on', 'Тест':'Test', 'Вимкнути':'Turn off', 'Дзвінки сьогодні':'Bells today',
+  'Браузер вмикає звук лише після натискання. Потім вкладку можна згорнути або перейти на іншу: дзвінки гратимуть самі.':'The browser only allows sound after a click. Then you can minimize the tab or switch to another one: the bells will ring on their own.',
+  'Розклад дзвінків':'Bell schedule', 'Урок':'Lesson', 'Перерва після':'Break after',
+  'Музика':'Music', 'Що показувати в плеєрі':'What the player shows', 'Відео':'Video', 'Візуал':'Visual', 'Сховати':'Hide',
+  'Попереднє':'Previous', 'Наступне':'Next', 'Список':'List',
+  "Додай посилання з YouTube, і відео з'явиться тут.":'Add a YouTube link and the video will show up here.',
+  'Додати посилання':'Add a link', 'Підключити звук':'Connect sound', 'Нічого не вибрано':'Nothing selected', 'Грати':'Play',
+  'Знайти в списку':'Search the list', 'Закрити список':'Close the list',
+  'Список порожній. Встав нижче посилання на відео або плейлист: його можна скопіювати з адресного рядка чи кнопкою «Поділитися».':'The list is empty. Paste a video or playlist link below: copy it from the address bar or with the Share button.',
+  'Нічого не знайдено.':'Nothing found.', 'Посилання на відео або плейлист YouTube':'YouTube video or playlist link',
+  'Встав посилання на відео або плейлист YouTube':'Paste a YouTube video or playlist link', 'Додати':'Add',
+  'За який час статистика':'Stats period', 'За який час підсумок':'Summary period',
+  'День':'Day', 'Тиждень':'Week', 'Тижд.':'Week', 'Місяць':'Month', 'Міс.':'Month', 'Усе':'All',
+  'Раніше':'Earlier', 'Пізніше':'Later', 'Сьогодні':'Today', 'підсумок дня':'day summary',
+  'Оцінка за 12-бальною шкалою':'Grade on a 12-point scale', 'за роботою':'working', 'відволікання':'distracted', 'не було':'away',
+  'Показати камеру':'Show camera', 'Скинути сьогодні':'Reset today',
+  'Подивись на екран і натисни; повтори для кожного екрана':'Look at the screen and press; repeat for each screen',
+  'Запам’ятати екран':'Remember screen', 'Забути екрани':'Forget screens',
+  'Тіло':'Body', 'Я сиджу рівно':'I’m sitting straight', ': постава й розминка':': posture & stretching',
+  'Скільки разів ти вставав хоча б на 3 хвилини: на перерві або на уроці перед нею':'How many times you got up for at least 3 minutes: on a break or in the lesson before it',
+  'Налаштування':'Settings', 'Тема':'Theme', 'Мова':'Language',
+  'Дошка':'Chalkboard', 'Неон':'Neon', 'Аеро':'Aero', 'Точки':'Dots', 'Лінія':'Line', 'Ретро':'Retro', 'Піксель':'Pixel', 'Орбіта':'Orbit',
+  'Нова випадкова тема щодня':'A new random theme every day',
+  'Початок першого уроку':'First lesson starts at', 'Тривалість уроку, хв':'Lesson length, min', 'Тривалість перерви, хв':'Break length, min',
+  'Кількість уроків':'Number of lessons', 'Робочі дні':'Working days',
+  'Пн':'Mo', 'Вт':'Tu', 'Ср':'We', 'Чт':'Th', 'Пт':'Fr', 'Сб':'Sa', 'Нд':'Su',
+  'Дзвінок на урок':'Lesson bell', 'Прослухати дзвінок на урок':'Play the lesson bell',
+  'Дзвінок на перерву':'Break bell', 'Прослухати дзвінок на перерву':'Play the break bell',
+  'Попередній сигнал':'Early warning', 'Прослухати попередній сигнал':'Play the early warning',
+  'Гучність дзвінків:':'Bell volume:', 'Тихіше на дзвінок':'Turn the music down for bells',
+  'Музика з YouTube стишується до 10%, поки звучить дзвінок, і потім плавно повертається.':'YouTube music drops to 10% while a bell rings, then fades back in.',
+  'Не давати браузеру приспати вкладку':'Keep the browser from putting the tab to sleep',
+  'Грає дуже тихий фоновий тон, якого не чути. Без нього Chrome або Edge можуть приспати фонову вкладку, і дзвінок спрацює із запізненням.':'Plays a background tone too quiet to hear. Without it, Chrome or Edge may put a background tab to sleep and the bell will ring late.',
+  "Вкладку можна згорнути, але не закривати, а комп'ютер не повинен засинати: у сні браузер не грає звук. Розклад, налаштування й музика зберігаються в цьому браузері.":'You can minimize the tab but not close it, and the computer must stay awake: a sleeping browser plays no sound. The schedule, settings and music are saved in this browser.',
+  'Фокус (бета)':'Focus (beta)', 'Стежити через вебкамеру':'Track with the webcam',
+  'Нагадувати сидіти рівно':'Remind me to sit up straight', 'Нагадувати встати на перерві':'Remind me to get up on breaks',
+  'Нагадування сповіщенням Windows, коли Фокусмаксінг згорнутий':'Windows notifications when Focusmaxxing is minimized',
+  'Звук нагадування про поставу':'Posture reminder sound', 'Прослухати звук нагадування про поставу':'Play the posture reminder sound',
+  'Звук, коли береш телефон на уроці':'Sound when you pick up your phone in a lesson', 'Прослухати звук про телефон':'Play the phone sound',
+  'Звук, коли пора встати на перерві':'Sound when it’s time to get up on a break', 'Прослухати звук нагадування встати':'Play the get-up sound',
+  "Відволікання — це телефон у руках або розмова, коли ти повернувся не до своїх екранів. Розмова перед екраном — мітинг, а куди ти дивишся мовчки, не важливо: думати теж робота. Робота за столом на перерві додається до фокусу, а короткі виходи з уроку, до 5 хвилин, у фокусі не рахуються. Постава й розминка мають окрему оцінку в картці «Тіло»: розминка зараховується, коли ти встаєш хоча б на 3 хвилини на перерві або на уроці перед нею. Екрани запам’ятовуються в картці «Фокус». Усе рахується на цьому комп'ютері: відео нікуди не надсилається й не зберігається, лише хвилини.":'A distraction is a phone in your hands, or talking while turned away from your screens. Talking in front of a screen is a meeting, and where you look in silence doesn’t matter: thinking is work too. Desk work on a break adds to your focus, while short exits from a lesson, up to 5 minutes, don’t count. Posture and stretching get their own grade in the “Body” card: a stretch counts when you get up for at least 3 minutes on a break or in the lesson before it. Screens are remembered in the “Focus” card. Everything is counted on this computer: no video is sent or saved anywhere, only minutes.',
+};
+const UI_TEXT = [], UI_ATTR = [];
+{
+  const cyr = /[\u0400-\u04ff]/, w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for(let n; (n = w.nextNode());) if(cyr.test(n.data) && !n.parentElement.closest('script')) UI_TEXT.push([n, n.data]);
+  for(const el of document.body.querySelectorAll('[title],[aria-label],[placeholder]'))
+    for(const a of ['title', 'aria-label', 'placeholder']) if(cyr.test(el.getAttribute(a) || '')) UI_ATTR.push([el, a, el.getAttribute(a)]);
+}
+function applyLang(){
+  const en = S.lang === 'en';
+  document.documentElement.lang = S.lang;
+  for(const [n, uk] of UI_TEXT){ const t = uk.trim(); n.data = en && EN[t] ? uk.replace(t, EN[t]) : uk; }
+  for(const [el, a, uk] of UI_ATTR) el.setAttribute(a, en && EN[uk] || uk);
+  document.querySelectorAll('#langSeg [data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === S.lang)));
+}
+applyLang();
+
 /* ---------- time & plan ---------- */
 const pad = (n) => String(n).padStart(2, '0');
 const hm = (t) => { const d = new Date(t); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
-const at = (t) => (new Date(t).getHours() === 11 ? 'об ' : 'о ') + hm(t);
+const at = (t) => L(new Date(t).getHours() === 11 ? 'об ' : 'о ', 'at ') + hm(t);
 const breakLen = (i) => (S.overrides[i] ?? S.brk);
 
 function dayKey(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
@@ -1187,7 +1270,7 @@ const A = {ctx:null, master:null, cache:{}, sched:new Map(), keep:null};
 function ensureCtx(){
   if(A.ctx) return A.ctx;
   const AC = window.AudioContext || window.webkitAudioContext;
-  if(!AC) throw new Error('цей браузер не підтримує відтворення звуку');
+  if(!AC) throw new Error(L('цей браузер не підтримує відтворення звуку', 'this browser can’t play sound'));
   try{ A.ctx = new AC({latencyHint:'playback'}); }catch(e){ A.ctx = new AC(); }
   A.master = A.ctx.createGain();
   A.master.gain.value = S.volume;
@@ -1291,7 +1374,7 @@ async function enable(){
     S.enabled = true;
     await A.ctx.resume();
   }catch(e){
-    $('err').textContent = 'Не вдалося увімкнути звук: ' + e.message;
+    $('err').textContent = L('Не вдалося увімкнути звук: ', 'Couldn’t turn on sound: ') + e.message;
     $('err').hidden = false;
     return;
   }
@@ -1310,7 +1393,7 @@ function updatePower(){
   $('powerOff').hidden = on;
   $('powerOn').hidden = !on;
   $('hint').hidden = on;
-  $('enableLabel').textContent = S.enabled ? 'Відновити дзвінки' : 'Увімкнути дзвінки';
+  $('enableLabel').textContent = S.enabled ? L('Відновити дзвінки', 'Resume bells') : L('Увімкнути дзвінки', 'Turn on bells');
   $('banner').hidden = !(S.enabled && !on);
   applyNowFold();
 }
@@ -1322,7 +1405,7 @@ function applyNowFold(){
   $('nowFold').hidden = !any;
   $('nowSetup').hidden = !(any && nowOpen);
   $('nowFold').setAttribute('aria-expanded', String(nowOpen));
-  $('nowFoldText').textContent = nowOpen ? 'Готово' : 'Налаштувати';
+  $('nowFoldText').textContent = nowOpen ? L('Готово', 'Done') : L('Налаштувати', 'Set up');
 }
 
 /* ---------- music (YouTube) ---------- */
@@ -1384,7 +1467,7 @@ window.onYouTubeIframeAPIReady = () => {
 function loadYtApi(){
   const s = document.createElement('script');
   s.src = 'https://www.youtube.com/iframe_api';
-  s.onerror = () => showYtErr('Не вдалося завантажити YouTube. Перевір інтернет і онови сторінку.');
+  s.onerror = () => showYtErr(L('Не вдалося завантажити YouTube. Перевір інтернет і онови сторінку.', 'Couldn’t load YouTube. Check your connection and reload the page.'));
   document.head.append(s);
 }
 
@@ -1411,7 +1494,7 @@ function onYtState(e){
   const it = M.items[M.cur];
   if(e.data === YT.PlayerState.PLAYING && it && !it.title){
     const d = yt.player.getVideoData();
-    if(d && d.title){ it.title = it.type === 'playlist' ? 'Плейлист: ' + d.title : d.title; saveMusic(); renderTracks(); }
+    if(d && d.title){ it.title = it.type === 'playlist' ? L('Плейлист: ', 'Playlist: ') + d.title : d.title; saveMusic(); renderTracks(); }
   }
   if(e.data === YT.PlayerState.ENDED){
     if(it && it.type === 'playlist'){
@@ -1424,9 +1507,9 @@ function onYtState(e){
 function onYtError(e){
   const c = e.data;
   showYtErr(c === 101 || c === 150
-    ? 'Автор цього відео заборонив показ на інших сайтах. Спробуй інше відео чи плейлист.'
-    : c === 100 ? 'Відео не знайдено: можливо, його видалили або зробили приватним.'
-    : 'YouTube не зміг відтворити це відео.');
+    ? L('Автор цього відео заборонив показ на інших сайтах. Спробуй інше відео чи плейлист.', 'The owner of this video doesn’t allow it on other sites. Try another video or playlist.')
+    : c === 100 ? L('Відео не знайдено: можливо, його видалили або зробили приватним.', 'Video not found: it may have been deleted or made private.')
+    : L('YouTube не зміг відтворити це відео.', 'YouTube couldn’t play this video.'));
 }
 
 function renderTracks(){
@@ -1439,13 +1522,13 @@ function renderTracks(){
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'trk-play'; b.dataset.play = i;
     const t = document.createElement('span'); t.className = 'tt';
-    t.textContent = it.title || (it.type === 'playlist' ? 'Плейлист' : 'Відео');
+    t.textContent = it.title || (it.type === 'playlist' ? L('Плейлист', 'Playlist') : L('Відео', 'Video'));
     const s = document.createElement('span'); s.className = 'ts';
-    s.textContent = it.type === 'playlist' ? 'плейлист · ' + it.list : 'youtu.be/' + it.id;
+    s.textContent = it.type === 'playlist' ? L('плейлист · ', 'playlist · ') + it.list : 'youtu.be/' + it.id;
     b.append(t, s);
     const del = document.createElement('button');
     del.type = 'button'; del.className = 'trk-del'; del.dataset.del = i; del.textContent = '×';
-    del.setAttribute('aria-label', 'Видалити зі списку');
+    del.setAttribute('aria-label', L('Видалити зі списку', 'Remove from the list'));
     li.append(b, del); ol.append(li);
   });
   filterTracks();
@@ -1491,11 +1574,11 @@ function applyView(){
 }
 function updateCover(){
   const it = M.items[M.cur];
-  $('coverTitle').textContent = it ? (it.title || (it.type === 'playlist' ? 'Плейлист' : 'Відео')) : 'Нічого не вибрано';
-  $('coverPlay').textContent = yt.state === 1 ? 'Пауза' : 'Грати';
+  $('coverTitle').textContent = it ? (it.title || (it.type === 'playlist' ? L('Плейлист', 'Playlist') : L('Відео', 'Video'))) : L('Нічого не вибрано', 'Nothing selected');
+  $('coverPlay').textContent = yt.state === 1 ? L('Пауза', 'Pause') : L('Грати', 'Play');
   $('coverPlay').disabled = !M.items.length;
   $('vizConnect').hidden = !(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
-  $('vizConnect').textContent = V.analyser ? 'Відключити' : 'Підключити звук';
+  $('vizConnect').textContent = V.analyser ? L('Відключити', 'Disconnect') : L('Підключити звук', 'Connect sound');
   $('vizSrcText').textContent = ''; // only connection errors are shown here
 }
 function togglePlay(){
@@ -1639,7 +1722,7 @@ const VIZ = {
     if(L[best] > .08){
       const hz = bandHz(best, G.N), x = G.padX + G.step * (best + .5), right = x > G.W * .75;
       g.font = 11 * G.dpr + 'px ' + C.fb; g.fillStyle = C.a; g.textBaseline = 'bottom'; g.textAlign = right ? 'right' : 'left';
-      g.fillText((hz >= 1000 ? (hz / 1000).toFixed(1).replace('.', ',') + ' кГц' : Math.round(hz) + ' Гц'), x + (right ? -6 : 6) * G.dpr, G.mid - L[best] * G.area / 2);
+      g.fillText((hz >= 1000 ? L((hz / 1000).toFixed(1).replace('.', ',') + ' кГц', (hz / 1000).toFixed(1) + ' kHz') : Math.round(hz) + L(' Гц', ' Hz')), x + (right ? -6 : 6) * G.dpr, G.mid - L[best] * G.area / 2);
     }
   },
   // Pixel: a chunky 8-bit equaliser in synthwave colours over a stepped, striped pixel sun, with blinking pixel stars
@@ -1803,7 +1886,7 @@ async function vizConnect(){
     if(!track){
       stream.getTracks().forEach(t => t.stop());
       updateCover();
-      $('vizSrcText').textContent = 'Звук не підключився: у вікні вибору відкрий «Весь екран» і ввімкни «Поділитися системним звуком».';
+      $('vizSrcText').textContent = L('Звук не підключився: у вікні вибору відкрий «Весь екран» і ввімкни «Поділитися системним звуком».', 'No sound came through: in the picker, open “Entire screen” and turn on “Also share system audio”.');
       return;
     }
     ensureCtx(); await A.ctx.resume();
@@ -1819,7 +1902,7 @@ async function vizConnect(){
     updateCover();
   }catch(e){
     updateCover();
-    if(e && e.name !== 'NotAllowedError') $('vizSrcText').textContent = 'Не вдалося підключити звук: ' + e.message;
+    if(e && e.name !== 'NotAllowedError') $('vizSrcText').textContent = L('Не вдалося підключити звук: ', 'Couldn’t connect sound: ') + e.message;
   }
 }
 function vizDisconnect(){
@@ -1892,10 +1975,10 @@ function makeRow(n){
     const inp = document.createElement('input');
     inp.type = 'number'; inp.min = '0'; inp.max = '180'; inp.inputMode = 'numeric';
     inp.className = 'brk'; inp.id = 'brk' + n; inp.dataset.i = n;
-    inp.setAttribute('aria-label', 'Перерва після уроку ' + n + ', хвилин');
-    tdB.append(inp, ' хв');
+    inp.setAttribute('aria-label', L('Перерва після уроку ' + n + ', хвилин', 'Break after lesson ' + n + ', minutes'));
+    tdB.append(inp, L(' хв', ' min'));
   }else{
-    tdB.classList.add('end'); tdB.textContent = 'кінець';
+    tdB.classList.add('end'); tdB.textContent = L('кінець', 'end');
   }
   tr.append(tdN, tdT, tdB);
   return tr;
@@ -1934,7 +2017,7 @@ function renderDay(){
     el.className = 'blk ' + p.kind;
     el.style.left = pct(p.start);
     el.style.width = ((p.end - p.start) / span * 100) + '%';
-    el.title = (p.kind === 'lesson' ? 'Урок ' + p.n : 'Перерва') + ' · ' + hm(p.start) + ' – ' + hm(p.end);
+    el.title = (p.kind === 'lesson' ? L('Урок ', 'Lesson ') + p.n : L('Перерва', 'Break')) + ' · ' + hm(p.start) + ' – ' + hm(p.end);
     if(p.kind === 'lesson') el.textContent = p.n;
     track.append(el); blocks.push({el, p});
   }
@@ -1978,7 +2061,7 @@ function tick(){
   if(d.toDateString() !== lastDate) renderAll();
   // colons get their own spans so the dot-matrix skin can draw them as single dots
   $('clock').innerHTML = [pad(d.getHours()), pad(d.getMinutes()), pad(d.getSeconds())].join('<span class="cc">:</span>');
-  $('today').textContent = DOW[d.getDay()] + ', ' + d.getDate() + ' ' + MON[d.getMonth()];
+  $('today').textContent = L(DOW[d.getDay()] + ', ' + d.getDate() + ' ' + MON[d.getMonth()], DOW_EN[d.getDay()] + ', ' + MON_EN[d.getMonth()] + ' ' + d.getDate());
 
   const st = stateAt(now);
   shuffleSkin();
@@ -1989,32 +2072,33 @@ function tick(){
     progress = (now - p.start) / (p.end - p.start);
     count = fmtLeft(st.target - now);
     if(st.mode === 'lesson'){
-      chip = 'Урок ' + p.n; kind = 'lesson';
-      if(!nx){ sub = 'до кінця уроків ' + at(p.end); next = 'Це останній урок на сьогодні'; }
+      chip = L('Урок ', 'Lesson ') + p.n; kind = 'lesson';
+      if(!nx){ sub = L('до кінця уроків ', 'until lessons end ') + at(p.end); next = L('Це останній урок на сьогодні', 'This is the last lesson today'); }
       else if(nx.kind === 'break'){
-        const after = st.plan[i + 2];
-        sub = 'до перерви ' + at(p.end);
-        next = 'Далі перерва ' + Math.round((nx.end - nx.start) / MIN) + ' хв, потім урок ' + after.n + ' ' + at(after.start);
-      }else{ sub = 'до уроку ' + nx.n + ' ' + at(p.end); next = 'Далі одразу урок ' + nx.n + ', без перерви'; }
+        const after = st.plan[i + 2], len = Math.round((nx.end - nx.start) / MIN);
+        sub = L('до перерви ', 'until the break ') + at(p.end);
+        next = L('Далі перерва ' + len + ' хв, потім урок ', 'Next: a ' + len + '-min break, then lesson ') + after.n + ' ' + at(after.start);
+      }else{ sub = L('до уроку ', 'until lesson ') + nx.n + ' ' + at(p.end); next = L('Далі одразу урок ' + nx.n + ', без перерви', 'Next: lesson ' + nx.n + ' right away, no break'); }
     }else{
-      chip = 'Перерва'; kind = 'break';
-      sub = 'до уроку ' + nx.n + ' ' + at(p.end);
-      next = 'Урок ' + nx.n + ': ' + hm(nx.start) + ' – ' + hm(nx.end);
+      chip = L('Перерва', 'Break'); kind = 'break';
+      sub = L('до уроку ', 'until lesson ') + nx.n + ' ' + at(p.end);
+      next = L('Урок ', 'Lesson ') + nx.n + ': ' + hm(nx.start) + ' – ' + hm(nx.end);
     }
   }else if(st.mode === 'before'){
-    chip = 'До уроків';
+    chip = L('До уроків', 'Before lessons');
     count = fmtLeft(st.target - now);
-    sub = 'перший дзвінок ' + at(st.target);
-    next = 'Урок 1: ' + hm(st.plan[0].start) + ' – ' + hm(st.plan[0].end);
+    sub = L('перший дзвінок ', 'first bell ') + at(st.target);
+    next = L('Урок 1: ', 'Lesson 1: ') + hm(st.plan[0].start) + ' – ' + hm(st.plan[0].end);
   }else if(st.mode === 'after' || st.mode === 'off'){
-    chip = st.mode === 'after' ? 'Уроки закінчились' : 'Вихідний';
+    chip = st.mode === 'after' ? L('Уроки закінчились', 'Lessons are over') : L('Вихідний', 'Day off');
     count = hm(st.target);
     const left = st.target - now, H = Math.floor(left / 3600e3), M_ = Math.floor(left % 3600e3 / MIN);
-    sub = 'перший дзвінок ' + (st.k === 1 ? 'завтра' : DOW_ACC[st.nextDate.getDay()]) + ' · через ' + (H ? H + ' год ' : '') + M_ + ' хв';
-    next = st.mode === 'after' ? 'На сьогодні все.' : 'Сьогодні дзвінків немає.';
+    sub = L('перший дзвінок ' + (st.k === 1 ? 'завтра' : DOW_ACC[st.nextDate.getDay()]) + ' · через ' + (H ? H + ' год ' : '') + M_ + ' хв',
+      'first bell ' + (st.k === 1 ? 'tomorrow' : 'on ' + DOW_EN[st.nextDate.getDay()]) + ' · in ' + (H ? H + ' h ' : '') + M_ + ' min');
+    next = st.mode === 'after' ? L('На сьогодні все.', 'That’s it for today.') : L('Сьогодні дзвінків немає.', 'No bells today.');
   }else{
-    chip = 'Немає робочих днів'; count = '--:--';
-    sub = 'Обери дні в налаштуваннях нижче';
+    chip = L('Немає робочих днів', 'No working days'); count = '--:--';
+    sub = L('Обери дні в налаштуваннях нижче', 'Pick your days in the settings below');
   }
 
   $('now').dataset.kind = kind;
@@ -2026,14 +2110,14 @@ function tick(){
   $('next').hidden = !next;
   $('bar').hidden = progress === null;
   if(progress !== null) $('barFill').style.width = (Math.min(1, Math.max(0, progress)) * 100).toFixed(2) + '%';
-  document.title = (kind === 'idle' ? 'Дзвоник' : count + ' · ' + chip);
+  document.title = (kind === 'idle' ? L('Фокусмаксінг', 'Focusmaxxing') : count + ' · ' + chip);
 
   // a day off by the weekly schedule can still get bells, just for today
   const offToday = !S.days.includes(d.getDay()), onToday = S.dayOn[dayKey(d)] === true;
   $('todayCtl').hidden = !offToday;
   applyNowFold();
-  $('todayNote').textContent = onToday ? 'Сьогодні вихідний, але дзвінки ввімкнені.' : '';
-  $('todayBtn').textContent = onToday ? 'Вимкнути на сьогодні' : 'Дзвінки сьогодні';
+  $('todayNote').textContent = onToday ? L('Сьогодні вихідний, але дзвінки ввімкнені.', 'Today is a day off, but the bells are on.') : '';
+  $('todayBtn').textContent = onToday ? L('Вимкнути на сьогодні', 'Turn off for today') : L('Дзвінки сьогодні', 'Bells today');
 
   // highlight rows
   for(const tr of $('rows').children){
@@ -2072,10 +2156,31 @@ $('schedFold').addEventListener('click', () => {
   $('schedBox').hidden = !open;
   $('schedFold').setAttribute('aria-expanded', String(open));
 });
-function fillSelect(el, items){ for(const [v, label] of items){ const o = document.createElement('option'); o.value = v; o.textContent = label; el.append(o); } }
-fillSelect($('sSoundLesson'), SOUNDS);
-fillSelect($('sSoundBreak'), SOUNDS);
-fillSelect($('sWarn'), WARN);
+// options in the current language; filled again when it changes, keeping what was picked
+function fillSelect(el, items){
+  const was = el.value;
+  el.textContent = '';
+  for(const [v, uk, en] of items){ const o = document.createElement('option'); o.value = v; o.textContent = L(uk, en); el.append(o); }
+  if(was) el.value = was;
+}
+function fillSelects(){
+  fillSelect($('sSoundLesson'), SOUNDS);
+  fillSelect($('sSoundBreak'), SOUNDS);
+  fillSelect($('sWarn'), WARN);
+  fillSelect($('fPostureSound'), POSTURE_SOUNDS);
+  fillSelect($('fPhoneSound'), PHONE_SOUNDS);
+  fillSelect($('fStandSound'), STAND_SOUNDS);
+}
+fillSelects();
+// a new language: applyLang swaps the markup, and everything the code writes is drawn again
+$('langSeg').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-lang]');
+  if(!b || b.dataset.lang === S.lang) return;
+  S.lang = b.dataset.lang; save();
+  applyLang(); fillSelects();
+  $('rows').textContent = '';
+  renderAll(); renderTracks(); updatePower(); updateCover(); applyFocusFold(); tick(); renderFocusNow();
+});
 
 $('enableBtn').addEventListener('click', enable);
 $('resumeBtn').addEventListener('click', enable);
@@ -2123,7 +2228,7 @@ $('addForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const item = parseYt($('ytUrl').value);
   if(!item){
-    $('addErr').textContent = 'Це не схоже на посилання YouTube. Скопіюй адресу відео чи плейлиста з браузера або кнопкою «Поділитися».';
+    $('addErr').textContent = L('Це не схоже на посилання YouTube. Скопіюй адресу відео чи плейлиста з браузера або кнопкою «Поділитися».', 'That doesn’t look like a YouTube link. Copy the video or playlist address from the browser or with the Share button.');
     $('addErr').hidden = false;
     return;
   }
@@ -2288,8 +2393,8 @@ const FS = {state:null, reason:'', last:0, savedAt:0, timer:0, n:0, stream:null,
   face:null, phone:null, loading:false, missSince:0, offSince:0, phoneAt:0, jaw:[], capture:null, err:'', renderAt:0,
   setupOpen:false, slouchSince:0, remindedAt:0, postureCap:null, slouch:false, postureLast:0, phoneSince:0, phoneBeepAt:0, sitSince:0, standAt:0, toast:'',
   out:null, views:{focus:{span:'day', at:null}, body:{span:'day', at:null}}};
-const FLABEL = {focused:'Фокус', away:'Нема на місці'};
-const FREASON = {phone:'Телефон', talk:'Розмова'};
+const FLABEL = {focused:['Фокус', 'Focus'], away:['Нема на місці', 'Away']};
+const FREASON = {phone:['Телефон', 'Phone'], talk:['Розмова', 'Talking']};
 const FBUCKET = {focused:'f', distracted:'d', away:'a'};
 const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
 const MP_FACE = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
@@ -2326,8 +2431,8 @@ async function startCam(){
     }
   }catch(e){
     FS.err = e && e.name === 'NotAllowedError'
-      ? 'Браузер не дав доступу до камери. Дозволь її для цього сайту (значок ліворуч від адреси) і ввімкни галочку ще раз.'
-      : 'Камера не запустилась: ' + ((e && e.message) || e);
+      ? L('Браузер не дав доступу до камери. Дозволь її для цього сайту (значок ліворуч від адреси) і ввімкни галочку ще раз.', 'The browser blocked the camera. Allow it for this site (the icon left of the address) and tick the box again.')
+      : L('Камера не запустилась: ', 'The camera didn’t start: ') + ((e && e.message) || e);
     stopCam(); F.cam = false; $('fCam').checked = false; FS.postureCap = null; FS.capture = null; saveFocus();
   }
   FS.loading = false; FS.starting = false;
@@ -2457,13 +2562,13 @@ function setSlouch(on){
   if(!on) hideToast('posture');
 }
 function remindPosture(){
-  showToast('posture', 'Сядь рівно: ти вже 20 секунд сидиш згорбившись.');
+  showToast('posture', L('Сядь рівно: ти вже 20 секунд сидиш згорбившись.', 'Sit up straight: you’ve been slouching for 20 seconds.'));
   try{ if(F.postureSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.postureSound || 'postureRise'); }catch(e){}
-  notify('Сядь рівно: ти вже 20 секунд сидиш згорбившись.', 'posture');
+  notify(L('Сядь рівно: ти вже 20 секунд сидиш згорбившись.', 'Sit up straight: you’ve been slouching for 20 seconds.'), 'posture');
 }
 function notify(body, tag){
   if(F.postureNotify && document.hidden && 'Notification' in window && Notification.permission === 'granted'){
-    try{ new Notification('Дзвоник', {body, tag}); }catch(e){}
+    try{ new Notification(L('Фокусмаксінг', 'Focusmaxxing'), {body, tag}); }catch(e){}
   }
 }
 // Phone on a lesson: a signal a couple of seconds after "Телефон" shows up, then once a minute while it lasts.
@@ -2473,7 +2578,7 @@ function checkPhone(now){
   if(!FS.phoneSince) FS.phoneSince = now;
   if(now - FS.phoneSince < 2000 || now - FS.phoneBeepAt < 60000) return;
   FS.phoneBeepAt = now;
-  showToast('phone', 'Відклади телефон: зараз урок.');
+  showToast('phone', L('Відклади телефон: зараз урок.', 'Put the phone down: it’s lesson time.'));
   try{ if(F.phoneSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.phoneSound || 'phoneUhOh'); }catch(e){}
 }
 // Break: any time the camera sees you at the desk (phone or not) for a minute, it is time to get up; repeats every
@@ -2484,9 +2589,9 @@ function checkStand(now){
   if(!FS.sitSince) FS.sitSince = now;
   if(now - FS.sitSince < 60000 || now - FS.standAt < 180000) return;
   FS.standAt = now;
-  showToast('stand', 'Перерва: встань і розімнись хоча б на хвилинку.');
+  showToast('stand', L('Перерва: встань і розімнись хоча б на хвилинку.', 'Break: get up and stretch, even for a minute.'));
   try{ if(F.standSound !== 'none' && A.ctx && A.ctx.state === 'running') playNow(F.standSound || 'standBirds'); }catch(e){}
-  notify('Перерва: встань і розімнись хоча б на хвилинку.', 'stand');
+  notify(L('Перерва: встань і розімнись хоча б на хвилинку.', 'Break: get up and stretch, even for a minute.'), 'stand');
 }
 // A short exit from a lesson (up to 5 min) stays out of the focus: away time waits in FS.out until it is clear
 // how long you are gone, then goes to x (a short exit, not counted) or a (away). Past 5 min all of it is away.
@@ -2540,7 +2645,7 @@ function focusLoop(){
 }
 
 // a duration as [number, unit] pairs: 38 хв, 1:05 год
-const durParts = (s) => { const m = Math.round(s / 60); return m < 60 ? [[m, 'хв']] : [[Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0'), 'год']]; };
+const durParts = (s) => { const m = Math.round(s / 60); return m < 60 ? [[m, L('хв', 'min')]] : [[Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0'), L('год', 'h')]]; };
 // a duration into one of the focus numbers, the unit in small type
 function durInto(el, s){
   el.textContent = '';
@@ -2622,12 +2727,19 @@ const HAS = {focus:dayScore, body:dayBody};
 const MON_NAME = ['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
 const MON_SHORT = ['січ','лют','бер','кві','тра','чер','лип','сер','вер','жов','лис','гру'];
 const WD = ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'];
+const MON_SHORT_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const WD_EN = ['Su','Mo','Tu','We','Th','Fr','Sa'], WD3_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const noon = (d) => { const x = new Date(d); x.setHours(12, 0, 0, 0); return x; };
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const keyDate = (k) => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d, 12); };
 const keysIn = (a, b) => { const ks = []; for(let d = a; d <= b; d = addDays(d, 1)) ks.push(dayKey(d)); return ks; };
-const dateTxt = (d) => d.getDate() + ' ' + MON[d.getMonth()] + (d.getFullYear() !== new Date().getFullYear() ? ' ' + d.getFullYear() : '');
-const daysTxt = (n) => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'день' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'дні' : 'днів');
+const dateTxt = (d) => {
+  const y = d.getFullYear() !== new Date().getFullYear() ? d.getFullYear() : 0;
+  return L(d.getDate() + ' ' + MON[d.getMonth()] + (y ? ' ' + y : ''), MON_EN[d.getMonth()] + ' ' + d.getDate() + (y ? ', ' + y : ''));
+};
+// a day with its weekday, for the tooltips: "Пн, 19 жовтня" / "Mon, October 19"
+const dayTxt = (d) => L(WD[d.getDay()], WD3_EN[d.getDay()]) + ', ' + dateTxt(d);
+const daysTxt = (n) => n + ' ' + L(n % 10 === 1 && n % 100 !== 11 ? 'день' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'дні' : 'днів', n === 1 ? 'day' : 'days');
 // the first day with a result, where "Усе" starts and the back arrow stops
 function firstDay(has = dayScore){
   const ks = Object.keys(F.days).filter(k => has(F.days[k])).sort();
@@ -2644,6 +2756,7 @@ function periodOf(span, d, has){
 // the period's name, in full and short (for a narrow card): "пн, 19 жовтня" / "пн, 19.10"
 function periodName(span, a, b){
   const back = Math.round((periodOf(span, new Date())[0] - a) / 864e5), other = (d) => d.getFullYear() !== new Date().getFullYear();
+  if(S.lang === 'en') return periodNameEn(span, a, b, back, other);
   const dm = (d) => d.getDate() + '.' + pad(d.getMonth() + 1), num = (d) => dm(d) + (other(d) ? '.' + String(d.getFullYear()).slice(2) : '');
   const short = (d) => d.getDate() + ' ' + MON_SHORT[d.getMonth()];
   if(span === 'day'){
@@ -2664,6 +2777,24 @@ function periodName(span, a, b){
     return [MON_NAME[a.getMonth()] + y, (y ? MON_SHORT[a.getMonth()][0].toUpperCase() + MON_SHORT[a.getMonth()].slice(1) : MON_NAME[a.getMonth()]) + y];
   }
   return ['з ' + dateTxt(a), 'з ' + num(a)];
+}
+// the same in English: "Mon, October 19" / "Mon, Oct 19", "Oct 13–19", "Sep 29 – Oct 5", "October", "Since Oct 13"
+function periodNameEn(span, a, b, back, other){
+  const md = (d) => MON_SHORT_EN[d.getMonth()] + ' ' + d.getDate(), yr = (d) => other(d) ? ', ' + d.getFullYear() : '';
+  if(span === 'day'){
+    if(back < 2) return back ? ['Yesterday', 'Yesterday'] : ['Today', 'Today'];
+    const wd = other(a) ? '' : WD3_EN[a.getDay()] + ', ';
+    return [wd + dateTxt(a), wd + md(a) + yr(a)];
+  }
+  if(span === 'week'){
+    const range = md(a) + (a.getMonth() === b.getMonth() ? '–' + b.getDate() : ' – ' + md(b)) + yr(b);
+    return [back === 0 ? 'This week' : back === 7 ? 'Last week' : range, range];
+  }
+  if(span === 'month'){
+    const y = other(a) ? ' ' + a.getFullYear() : '';
+    return [MON_EN[a.getMonth()] + y, (y ? MON_SHORT_EN[a.getMonth()] : MON_EN[a.getMonth()]) + y];
+  }
+  return ['Since ' + dateTxt(a), 'Since ' + md(a) + yr(a)];
 }
 function setView(card, span, at){
   if(at && noon(at) >= periodOf(span, new Date(), HAS[card])[0]) at = null;
@@ -2687,14 +2818,16 @@ function renderNav(card, now){
   document.querySelectorAll('#' + card + 'Span [data-span]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.span === span)));
   [$(card + 'WhenL').textContent, $(card + 'WhenS').textContent] = periodName(span, a, b);
   $(card + 'When').disabled = live;
-  $(card + 'When').title = live ? '' : 'Повернутися до ' + {day:'сьогодні', week:'цього тижня', month:'цього місяця'}[span];
+  $(card + 'When').title = live ? '' : L('Повернутися до ' + {day:'сьогодні', week:'цього тижня', month:'цього місяця'}[span], 'Back to ' + {day:'today', week:'this week', month:'this month'}[span]);
   $(card + 'Prev').hidden = $(card + 'Next').hidden = span === 'all';
   $(card + 'Prev').disabled = !first || a <= first;
   $(card + 'Next').disabled = live;
   return {span, live, a, b, first, keys:keysIn(a, b)};
 }
-const WHAT_TXT = {day:'підсумок дня', week:'підсумок тижня', month:'підсумок місяця', all:'підсумок за весь час'};
-const noDataTxt = (span) => 'За ' + {day:'цей день', week:'цей тиждень', month:'цей місяць', all:'весь час'}[span] + ' даних немає.';
+const whatTxt = (span) => L({day:'підсумок дня', week:'підсумок тижня', month:'підсумок місяця', all:'підсумок за весь час'}[span],
+  {day:'day summary', week:'week summary', month:'month summary', all:'all-time summary'}[span]);
+const noDataTxt = (span) => L('За ' + {day:'цей день', week:'цей тиждень', month:'цей місяць', all:'весь час'}[span] + ' даних немає.',
+  'No data for ' + {day:'this day', week:'this week', month:'this month', all:'all time'}[span] + '.');
 const durTxt = (s) => durParts(s).map(p => p.join(' ')).join(' ');
 // A lesson or a school day without data is still ahead ('up') until it ends, then it went by unseen ('miss');
 // a day off has no lessons at all ('off').
@@ -2702,33 +2835,33 @@ function dayState(d, now){
   const plan = planFor(d);
   return !plan ? 'off' : now < plan[plan.length - 1].end ? 'up' : 'miss';
 }
-const SLOT_TXT = {up:'ще попереду', miss:'немає даних', off:'вихідний'};
+const slotTxt = (state) => L({up:'ще попереду', miss:'немає даних', off:'вихідний'}[state], {up:'still ahead', miss:'no data', off:'day off'}[state]);
 // a column without data: an empty capsule for the state above, a dash on top when it was missed
-function emptyCol(label, state, cur, title, nowTxt = 'іде зараз'){
-  return chartCol(label, state === 'miss' ? '–' : '', [], {cls:' ' + state + (cur ? ' cur' : ''), title:title + ': ' + (cur && state === 'up' ? nowTxt : SLOT_TXT[state])});
+function emptyCol(label, state, cur, title, nowTxt = L('іде зараз', 'in progress')){
+  return chartCol(label, state === 'miss' ? '–' : '', [], {cls:' ' + state + (cur ? ' cur' : ''), title:title + ': ' + (cur && state === 'up' ? nowTxt : slotTxt(state))});
 }
 // a day as a column: its grade on top and a bar as tall as its result; a day with data opens on click
 function dayCol(d, cur, now){
-  const key = dayKey(d), ds = dayScore(F.days[key]), name = WD[d.getDay()], when = name + ', ' + dateTxt(d);
+  const key = dayKey(d), ds = dayScore(F.days[key]), name = L(WD[d.getDay()], WD_EN[d.getDay()]), when = dayTxt(d);
   return ds
-    ? chartCol(name, ds.grade, [[TONE_BAR[ds.tone], 1]], {cls:cur ? ' cur' : '', h:Math.max(8, ds.score * 100), go:'day:' + key, title:when + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade})
-    : emptyCol(name, dayState(d, now), cur, when, 'сьогодні, даних ще немає');
+    ? chartCol(name, ds.grade, [[TONE_BAR[ds.tone], 1]], {cls:cur ? ' cur' : '', h:Math.max(8, ds.score * 100), go:'day:' + key, title:when + ': ' + pctTxt(ds.score) + L(', оцінка ', ', grade ') + ds.grade})
+    : emptyCol(name, dayState(d, now), cur, when, L('сьогодні, даних ще немає', 'today, no data yet'));
 }
 // a month as a calendar, Monday first; days with data are coloured squares with the grade,
 // school days without data are outlined (ahead) or hatched (missed), days off are dimmed
 function monthCal(a, b, cur, now){
-  const out = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'].map(t => { const h = document.createElement('span'); h.className = 'fcal-h'; h.textContent = t; return h; });
+  const out = L(['Пн','Вт','Ср','Чт','Пт','Сб','Нд'], ['Mo','Tu','We','Th','Fr','Sa','Su']).map(t => { const h = document.createElement('span'); h.className = 'fcal-h'; h.textContent = t; return h; });
   for(let k = (a.getDay() + 6) % 7; k > 0; k--) out.push(document.createElement('span'));
   for(let d = a; d <= b; d = addDays(d, 1)){
     const key = dayKey(d), ds = dayScore(F.days[key]), c = document.createElement(ds ? 'button' : 'span');
-    const state = ds ? '' : dayState(d, now), when = WD[d.getDay()] + ', ' + dateTxt(d);
+    const state = ds ? '' : dayState(d, now), when = dayTxt(d);
     c.className = 'fcal-d' + (key === cur ? ' cur' : '') + (state ? ' ' + state : '');
     c.append(String(d.getDate()));
     if(ds){
       c.type = 'button'; c.dataset.go = 'day:' + key; c.dataset.tone = ds.tone;
-      c.title = when + ': ' + pctTxt(ds.score) + ', оцінка ' + ds.grade;
+      c.title = when + ': ' + pctTxt(ds.score) + L(', оцінка ', ', grade ') + ds.grade;
       const g = document.createElement('b'); g.textContent = ds.grade; c.append(g);
-    }else c.title = when + ': ' + SLOT_TXT[state];
+    }else c.title = when + ': ' + slotTxt(state);
     out.push(c);
   }
   return out;
@@ -2739,25 +2872,25 @@ function renderBody(now){
   const {span, live, first, keys} = renderNav('body', now), sum = sumDays(keys.map(k => F.days[k])), {brk} = sum, bd = bodyOf(sum);
   $('bodyDay').hidden = !bd;
   $('bodySum').hidden = !!bd;
-  $('bodySum').textContent = live && (span === 'day' || !first) ? 'Тут з’явиться, як ти сидиш на уроках і чи встаєш розім’ятися.' : noDataTxt(span);
+  $('bodySum').textContent = live && (span === 'day' || !first) ? L('Тут з’явиться, як ти сидиш на уроках і чи встаєш розім’ятися.', 'This is where you’ll see how you sit in lessons and whether you get up to stretch.') : noDataTxt(span);
   if(!bd) return;
   const n = span === 'day' ? 0 : keys.filter(k => dayBody(F.days[k])).length;
-  $('bodyWhat').textContent = WHAT_TXT[span];
+  $('bodyWhat').textContent = whatTxt(span);
   $('bodyDays').textContent = n ? ' · ' + daysTxt(n) : '';
   $('bodyPct').textContent = Math.round(bd.score * 100);
   $('bodyPostureRow').hidden = bd.posture === null;
   if(bd.posture !== null){
-    $('bodyPosture').textContent = 'постава рівно: ' + pctTxt(bd.posture) + ' часу уроків';
+    $('bodyPosture').textContent = L('постава рівно: ' + pctTxt(bd.posture) + ' часу уроків', 'upright: ' + pctTxt(bd.posture) + ' of lesson time');
     $('bodyPostureDot').dataset.tone = toneOf(bd.posture);
   }
   $('bodyBreaksRow').hidden = bd.breaks === null;
   if(bd.breaks !== null){
-    $('bodyBreaks').textContent = 'розминка: ' + sum.bup + ' з ' + sum.bn + ' · за столом на перервах ' + durTxt(brk.f + brk.d + brk.i);
+    $('bodyBreaks').textContent = L('розминка: ' + sum.bup + ' з ' + sum.bn + ' · за столом на перервах ', 'stretch breaks: ' + sum.bup + ' of ' + sum.bn + ' · at the desk on breaks ') + durTxt(brk.f + brk.d + brk.i);
     $('bodyBreaksDot').dataset.tone = toneOf(bd.breaks);
   }
   $('bodyGrade').textContent = bd.grade;
   $('bodyGrade').dataset.tone = bd.tone;
-  $('bodyGrade').setAttribute('aria-label', 'Оцінка тіла: ' + bd.grade + ' з 12');
+  $('bodyGrade').setAttribute('aria-label', L('Оцінка тіла: ' + bd.grade + ' з 12', 'Body grade: ' + bd.grade + ' of 12'));
 }
 // The statistics for the picked period: the result with its grade and times, and the charts under it.
 function renderStats(st, now){
@@ -2767,36 +2900,36 @@ function renderStats(st, now){
   const ds = focusOf(sum);
   $('focusDay').hidden = !ds;
   $('focusSum').hidden = !!ds;
-  $('focusSum').textContent = live && (span === 'day' || !first) ? 'Статистика з’явиться, щойно почнеться урок.' : noDataTxt(span);
+  $('focusSum').textContent = live && (span === 'day' || !first) ? L('Статистика з’явиться, щойно почнеться урок.', 'Stats will show up once a lesson starts.') : noDataTxt(span);
   if(ds){
     const n = span === 'day' ? 0 : keys.filter(k => dayScore(F.days[k])).length;
-    $('fdayWhat').textContent = WHAT_TXT[span];
+    $('fdayWhat').textContent = whatTxt(span);
     $('fdayPct').textContent = Math.round(ds.score * 100);
-    $('fdayParts').textContent = 'за роботою' + (n ? ' · ' + daysTxt(n) : '');
+    $('fdayParts').textContent = L('за роботою', 'working') + (n ? ' · ' + daysTxt(n) : '');
     // the three add up to the result: work on lessons and breaks, distracted and away on lessons only
     durInto($('fnumF'), workOf(sum)); durInto($('fnumD'), tot.d); durInto($('fnumA'), tot.a);
-    $('fnumF').parentElement.title = 'на уроках ' + durTxt(tot.f + tot.i) + ', на перервах ' + durTxt(sum.brk.f + sum.brk.i);
+    $('fnumF').parentElement.title = L('на уроках ', 'in lessons ') + durTxt(tot.f + tot.i) + L(', на перервах ', ', on breaks ') + durTxt(sum.brk.f + sum.brk.i);
     $('fdayGrade').textContent = ds.grade;
     $('fdayGrade').dataset.tone = ds.tone;
-    $('fdayGrade').setAttribute('aria-label', 'Оцінка фокусу: ' + ds.grade + ' з 12');
+    $('fdayGrade').setAttribute('aria-label', L('Оцінка фокусу: ' + ds.grade + ' з 12', 'Focus grade: ' + ds.grade + ' of 12'));
   }
 
   // the main chart: a day's lessons, a week's days, a month's calendar, or all the months
   const chart = $('focusChart'), cols = [];
-  let head = 'По днях', any = !!ds;
+  let head = L('По днях', 'By day'), any = !!ds;
   if(span === 'day'){
     const day = F.days[keys[0]] || {}, plan = planFor(a) || [], curKey = live && st.mode === 'lesson' ? 'L' + st.p.n : '';
-    head = live ? 'Сьогодні' : 'Уроки';
+    head = live ? L('Сьогодні', 'Today') : L('Уроки', 'Lessons');
     // every lesson of the schedule from the start of the day, with data or not, plus any recorded outside it
     const ends = {};
     for(const p of plan) if(p.kind === 'lesson') ends['L' + p.n] = p.end;
     const lessons = [...new Set([...Object.keys(ends), ...Object.keys(day).filter(k => k[0] === 'L')])].sort((x, y) => x.slice(1) - y.slice(1));
     for(const k of lessons){
-      const bk = day[k], t = bk ? fTotal(bk) : 0, name = 'Урок ' + k.slice(1);
+      const bk = day[k], t = bk ? fTotal(bk) : 0, name = L('Урок ', 'Lesson ') + k.slice(1);
       if(t <= 20){ cols.push(emptyCol(k.slice(1), ends[k] && now < ends[k] ? 'up' : 'miss', k === curKey, name)); continue; }
-      const f = (bk.f + (bk.i || 0)) / t, out = bk.x >= 60 ? ', короткі виходи ' + durTxt(bk.x) + ' (не рахуються)' : '';
+      const f = (bk.f + (bk.i || 0)) / t, out = bk.x >= 60 ? L(', короткі виходи ', ', short exits ') + durTxt(bk.x) + L(' (не рахуються)', ' (not counted)') : '';
       cols.push(chartCol(k.slice(1), Math.round(f * 100), [['f', f], ['d', bk.d / t], ['a', bk.a / t]],
-        {cls:k === curKey ? ' cur' : '', title:name + ': за роботою ' + pctTxt(f) + ', відволікання ' + pctTxt(bk.d / t) + ', не було ' + pctTxt(bk.a / t) + out}));
+        {cls:k === curKey ? ' cur' : '', title:name + L(': за роботою ', ': working ') + pctTxt(f) + L(', відволікання ', ', distracted ') + pctTxt(bk.d / t) + L(', не було ', ', away ') + pctTxt(bk.a / t) + out}));
     }
     any = cols.length > 0;
   }else if(span === 'week'){
@@ -2810,13 +2943,13 @@ function renderStats(st, now){
     // one column per month, the last twelve at most
     const months = [];
     for(let m = new Date(a.getFullYear(), a.getMonth(), 1, 12); m <= b; m = new Date(m.getFullYear(), m.getMonth() + 1, 1, 12)) months.push(m);
-    head = months.length > 12 ? 'Останні 12 місяців' : 'По місяцях';
+    head = months.length > 12 ? L('Останні 12 місяців', 'Last 12 months') : L('По місяцях', 'By month');
     for(const m of months.slice(-12)){
       const [ma, mb] = periodOf('month', m), ms = focusOf(sumDays(keysIn(ma, mb).map(k => F.days[k])));
-      const name = MON_NAME[m.getMonth()] + ' ' + m.getFullYear(), cls = mb >= noon(new Date(now)) ? ' cur' : '';
+      const name = L(MON_NAME[m.getMonth()], MON_EN[m.getMonth()]) + ' ' + m.getFullYear(), mon = L(MON_SHORT[m.getMonth()], MON_SHORT_EN[m.getMonth()]), cls = mb >= noon(new Date(now)) ? ' cur' : '';
       cols.push(ms
-        ? chartCol(MON_SHORT[m.getMonth()], ms.grade, [[TONE_BAR[ms.tone], 1]], {cls, h:Math.max(8, ms.score * 100), go:'month:' + dayKey(ma), title:name + ': ' + pctTxt(ms.score) + ', оцінка ' + ms.grade})
-        : chartCol(MON_SHORT[m.getMonth()], '', [], {cls, h:4, title:name + ': немає даних'}));
+        ? chartCol(mon, ms.grade, [[TONE_BAR[ms.tone], 1]], {cls, h:Math.max(8, ms.score * 100), go:'month:' + dayKey(ma), title:name + ': ' + pctTxt(ms.score) + L(', оцінка ', ', grade ') + ms.grade})
+        : chartCol(mon, '', [], {cls, h:4, title:name + L(': немає даних', ': no data')}));
     }
   }
   chart.className = span === 'month' ? 'fcal' : 'fcols';
@@ -2830,7 +2963,7 @@ function renderStats(st, now){
 function applyFocusFold(){
   $('focusSetup').hidden = !FS.setupOpen;
   $('focusFold').setAttribute('aria-expanded', String(FS.setupOpen));
-  $('focusFoldText').textContent = FS.setupOpen ? 'Готово' : 'Налаштувати';
+  $('focusFoldText').textContent = FS.setupOpen ? L('Готово', 'Done') : L('Налаштувати', 'Set up');
   $('cam').classList.toggle('show', F.preview && FS.setupOpen);
 }
 function renderFocusNow(){ FS.renderAt = 0; renderFocus(stateAt(Date.now())); }
@@ -2852,27 +2985,27 @@ function renderFocus(st){
       // on a break being away is the good outcome and sitting at the desk is what to fix
       const away = FS.state === 'away';
       $('focusPill').dataset.state = away ? 'rest' : 'sit';
-      $('focusText').textContent = away ? 'Відпочиваєш' : FS.standAt ? 'Пора встати' : 'За столом';
+      $('focusText').textContent = away ? L('Відпочиваєш', 'Resting') : FS.standAt ? L('Пора встати', 'Time to get up') : L('За столом', 'At the desk');
     }else{
       $('focusPill').dataset.state = FS.state;
-      const label = FS.state === 'distracted' ? (FREASON[FS.reason] || 'Відволікся') : FLABEL[FS.state];
+      const label = L(...(FS.state === 'distracted' ? FREASON[FS.reason] || ['Відволікся', 'Distracted'] : FLABEL[FS.state]));
       const pct = b && fTotal(b) > 20 ? ' · ' + Math.round((b.f + (b.i || 0)) / fTotal(b) * 100) + '%' : '';
       $('focusText').textContent = label + pct;
     }
   }
-  $('focusSrc').textContent = FS.loading ? 'завантажую розпізнавання…' : !on ? '' : FS.stream ? 'камера' : 'камера на паузі';
+  $('focusSrc').textContent = FS.loading ? L('завантажую розпізнавання…', 'loading detection…') : !on ? '' : FS.stream ? L('камера', 'camera') : L('камера на паузі', 'camera paused');
   const n = F.screens.length;
-  $('fScreen').textContent = FS.capture ? 'Дивись на екран…' : n ? 'Запам’ятати ще екран' : 'Запам’ятати екран';
+  $('fScreen').textContent = FS.capture ? L('Дивись на екран…', 'Look at the screen…') : n ? L('Запам’ятати ще екран', 'Remember another screen') : L('Запам’ятати екран', 'Remember screen');
   $('fScreen').disabled = !!FS.capture || !FS.face;
-  $('fScreensNote').textContent = n ? 'Екранів: ' + n + '. Розмова перед ними — мітинг, не відволікання.' : 'Поки екрани не запам’ятовані, розмови не рахуються.';
+  $('fScreensNote').textContent = n ? L('Екранів: ' + n + '. Розмова перед ними — мітинг, не відволікання.', 'Screens: ' + n + '. Talking in front of them is a meeting, not a distraction.') : L('Поки екрани не запам’ятовані, розмови не рахуються.', 'Until a screen is remembered, talking doesn’t count.');
   $('fScreensReset').hidden = !n;
   // the button turns the camera on by itself when needed; the hint stays until the posture is learned
   const camWait = FS.postureCap && !(FS.camReady && FS.face);
-  $('fPostureSet').textContent = FS.postureCap ? 'Сиди рівно…' : 'Я сиджу рівно';
+  $('fPostureSet').textContent = FS.postureCap ? L('Сиди рівно…', 'Hold still…') : L('Я сиджу рівно', 'I’m sitting straight');
   $('fPostureSet').disabled = !!FS.postureCap;
-  $('fPostureSet').title = F.postureBase ? 'Правильну поставу запам’ятовано. Пересів? Натисни ще раз.' : 'Сядь рівно, як треба, і натисни';
+  $('fPostureSet').title = F.postureBase ? L('Правильну поставу запам’ятовано. Пересів? Натисни ще раз.', 'Good posture remembered. Moved? Press again.') : L('Сядь рівно, як треба, і натисни', 'Sit up properly and press');
   $('fPostureNote').hidden = !F.posture || !(camWait || (!F.postureBase && !FS.postureCap));
-  $('fPostureNote').textContent = camWait ? 'Вмикаю камеру…' : 'Сядь рівно, як треба, і натисни «Я сиджу рівно», щоб я запам’ятав поставу.';
+  $('fPostureNote').textContent = camWait ? L('Вмикаю камеру…', 'Turning on the camera…') : L('Сядь рівно, як треба, і натисни «Я сиджу рівно», щоб я запам’ятав поставу.', 'Sit up properly and press “I’m sitting straight” so I can learn your posture.');
   $('focusErr').hidden = !FS.err;
   $('focusErr').textContent = FS.err;
   renderStats(st, now);
@@ -2917,14 +3050,11 @@ function initFocus(){
     F.postureNotify = $('fPostureNotify').checked;
     if(F.postureNotify && 'Notification' in window && Notification.permission !== 'granted'){
       const p = await Notification.requestPermission().catch(() => 'denied');
-      if(p !== 'granted'){ F.postureNotify = false; $('fPostureNotify').checked = false; FS.err = 'Браузер не дозволив сповіщення. Їх можна дозволити в налаштуваннях сайту (значок ліворуч від адреси).'; }
+      if(p !== 'granted'){ F.postureNotify = false; $('fPostureNotify').checked = false; FS.err = L('Браузер не дозволив сповіщення. Їх можна дозволити в налаштуваннях сайту (значок ліворуч від адреси).', 'The browser blocked notifications. You can allow them in the site settings (the icon left of the address).'); }
     }
     saveFocus(); renderFocusNow();
   });
   $('fPostureSet').addEventListener('click', () => { FS.postureCap = {until:Date.now() + 1500, samples:[]}; setSlouch(false); renderFocusNow(); });
-  for(const [v, label] of [['postureRise', 'Перелив угору'], ['postureGlide', 'Ковзання вгору'], ['postureSoft', 'Тихий дзвіночок'], ['none', 'Без звуку']]){
-    const o = document.createElement('option'); o.value = v; o.textContent = label; $('fPostureSound').append(o);
-  }
   $('fPostureSound').value = F.postureSound || 'postureRise';
   $('fPostureSound').addEventListener('change', () => { F.postureSound = $('fPostureSound').value; saveFocus(); });
   $('fPostureSoundTry').addEventListener('click', async () => {
@@ -2932,9 +3062,6 @@ function initFocus(){
     if(v === 'none') return;
     try{ ensureCtx(); await A.ctx.resume(); playNow(v); }catch(e){}
   });
-  for(const [v, label] of [['phoneUhOh', 'Ой-ой'], ['phoneKnock', 'Стук-стук'], ['phonePips', 'Три писки'], ['none', 'Без звуку']]){
-    const o = document.createElement('option'); o.value = v; o.textContent = label; $('fPhoneSound').append(o);
-  }
   $('fPhoneSound').value = F.phoneSound || 'phoneUhOh';
   $('fStand').checked = F.stand;
   $('fStand').addEventListener('change', () => {
@@ -2943,9 +3070,6 @@ function initFocus(){
     // like posture, this needs the camera, so switching it on turns the camera on too
     if(F.stand && !F.cam){ F.cam = true; $('fCam').checked = true; saveFocus(); renderFocusNow(); }
   });
-  for(const [v, label] of [['standBirds', 'Пташки'], ['standMarimba', 'Маримба'], ['standWhistle', 'Свисток'], ['none', 'Без звуку']]){
-    const o = document.createElement('option'); o.value = v; o.textContent = label; $('fStandSound').append(o);
-  }
   $('fStandSound').value = F.standSound || 'standBirds';
   $('fStandSound').addEventListener('change', () => { F.standSound = $('fStandSound').value; saveFocus(); });
   $('fStandSoundTry').addEventListener('click', async () => {
